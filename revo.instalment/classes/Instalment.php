@@ -3,7 +3,7 @@
 namespace Revo;
 
 /**
- * Class Instalment
+ * Class API
  * @package Revo
  */
 class API
@@ -20,7 +20,7 @@ class API
     {
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, self::API_URL);
+        curl_setopt($ch, CURLOPT_URL, self::API_URL . $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
