@@ -1,0 +1,4 @@
+<?
+$MESS['LK_MODULE_NAME'] = 'Revo.Instalment';
+$MESS['LK_MODULE_DESCRIPTION'] = '';
+$MESS['LK_MODULE_PARTNER_NAME'] = 'REVO';
