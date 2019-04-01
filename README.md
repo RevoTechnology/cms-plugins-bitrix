@@ -5,6 +5,8 @@
 
 ## Run tests
 
+```
 apt install phpunit
 cd $MODULE_DIR
 phpunit
+```
