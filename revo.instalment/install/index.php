@@ -40,8 +40,9 @@ class revo_instalment extends CModule
         global $USER;
         if (!\Bitrix\Main\Loader::includeModule('sale')) {
             $GLOBALS['errors'] = [
-                'Даный плагин работает только с модулем "Интернет-магазин"'
+                GetMessage('REVO_MODULE_SALE_FAIL')
             ];
+
             return;
         }
         if ($USER->IsAdmin()) {
@@ -83,8 +84,8 @@ class revo_instalment extends CModule
         \Bitrix\Main\Loader::includeModule('sale');
         $result = \Bitrix\Sale\Internals\PaySystemActionTable::add(
             array(
-                'NAME' => 'Revo Instalment',
-                'PSA_NAME' => 'Revo Instalment',
+                'NAME' => GetMessage('REVO_MODULE_PAYMENT_NAME'),
+                'PSA_NAME' => GetMessage('REVO_MODULE_PAYMENT_NAME'),
                 'ACTIVE' => 'Y',
                 'CAN_PRINT_CHECK' => 'N',
                 'CODE' => '',
@@ -96,7 +97,7 @@ class revo_instalment extends CModule
                     dirname(__FILE__) . '/img/revoplus.png'
                 ), '/revo.instalment/'),
                 'ENCODING' => 'utf-8',
-                'DESCRIPTION' => 'Оформление рассрочки от REVO',
+                'DESCRIPTION' => GetMessage('REVO_MODULE_PAYMENT_DESC'),
                 'ACTION_FILE' => '/local/php_interface/include/sale_payment/revo',
                 'PS_MODE' => '',
                 'AUTO_CHANGE_1C' => 'N',
@@ -106,7 +107,7 @@ class revo_instalment extends CModule
         );
 
         if (!$result->isSuccess()) {
-            $this->errors[] = 'Не удалось добавить платежную систему.';
+            $this->errors[] = GetMessage('REVO_MODULE_PAYMENT_FAIL');
         } else {
             $paySystemId = $result->getId();
 
