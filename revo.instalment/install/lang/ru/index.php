@@ -2,7 +2,7 @@
 $MESS['REVO_MODULE_NAME'] = 'Revo.Instalment';
 $MESS['REVO_MODULE_DESCRIPTION'] = '';
 $MESS['REVO_MODULE_PARTNER_NAME'] = 'REVO';
-$MESS['REVO_MODULE_PAYMENT_NAME'] = 'REVO Р Р°СЃСЃСЂРѕС‡РєР°';
-$MESS['REVO_MODULE_PAYMENT_DESC'] = 'РћС„РѕСЂРјР»РµРЅРёРµ СЂР°СЃСЃСЂРѕС‡РєРё РЅР° 6 РјРµСЃСЏС†РµРІ';
-$MESS['REVO_MODULE_PAYMENT_FAIL'] = 'РќРµ СѓРґР°Р»РѕСЃСЊ РґРѕР±Р°РІРёС‚СЊ РїР»Р°С‚РµР¶РЅСѓСЋ СЃРёСЃС‚РµРјСѓ.';
-$MESS['REVO_MODULE_SALE_FAIL'] = 'Р”Р°РЅС‹Р№ РїР»Р°РіРёРЅ СЂР°Р±РѕС‚Р°РµС‚ С‚РѕР»СЊРєРѕ СЃ РјРѕРґСѓР»РµРј "РРЅС‚РµСЂРЅРµС‚-РјР°РіР°Р·РёРЅ"';
+$MESS['REVO_MODULE_PAYMENT_NAME'] = 'REVO Рассрочка';
+$MESS['REVO_MODULE_PAYMENT_DESC'] = 'Оформление рассрочки на 6 месяцев';
+$MESS['REVO_MODULE_PAYMENT_FAIL'] = 'Не удалось добавить платежную систему.';
+$MESS['REVO_MODULE_SALE_FAIL'] = 'Даный плагин работает только с модулем "Интернет-магазин"';
