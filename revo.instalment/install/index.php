@@ -40,7 +40,7 @@ class revo_instalment extends CModule
         global $USER;
         if (!\Bitrix\Main\Loader::includeModule('sale')) {
             $GLOBALS['errors'] = [
-                'Ð”Ð°Ð½Ñ‹Ð¹ Ð¿Ð»Ð°Ð³Ð¸Ð½ Ñ€Ð°Ð±Ð¾Ñ‚Ð°ÐµÑ‚ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ñ Ð¼Ð¾Ð´ÑƒÐ»ÐµÐ¼ "Ð˜Ð½Ñ‚ÐµÑ€Ð½ÐµÑ‚-Ð¼Ð°Ð³Ð°Ð·Ð¸Ð½"'
+                'Äàíûé ïëàãèí ðàáîòàåò òîëüêî ñ ìîäóëåì "Èíòåðíåò-ìàãàçèí"'
             ];
             return;
         }
@@ -88,21 +88,22 @@ class revo_instalment extends CModule
                 'ACTIVE' => 'Y',
                 'CAN_PRINT_CHECK' => 'N',
                 'CODE' => '',
-                'NEW_WINDOW' => 'Y',
+                'NEW_WINDOW' => 'N',
                 'ALLOW_EDIT_PAYMENT' => 'Y',
                 'IS_CASH' => 'N',
                 'SORT' => 100,
                 'ENCODING' => 'utf-8',
-                'DESCRIPTION' => 'ÐžÑ„Ð¾Ñ€Ð¼Ð»ÐµÐ½Ð¸Ðµ Ñ€Ð°ÑÑÑ€Ð¾Ñ‡ÐºÐ¸ Ð¾Ñ‚ REVO',
+                'DESCRIPTION' => 'Îôîðìëåíèå ðàññðî÷êè îò REVO',
                 'ACTION_FILE' => '/local/php_interface/include/sale_payment/revo',
                 'PS_MODE' => '',
                 'AUTO_CHANGE_1C' => 'N',
-                'HAVE_PAYMENT' => 'Y'
+                'HAVE_PAYMENT' => 'Y',
+                'ENTITY_REGISTRY_TYPE' => \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER,
             )
         );
 
         if (!$result->isSuccess()) {
-            $this->errors[] = 'ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð´Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð¿Ð»Ð°Ñ‚ÐµÐ¶Ð½ÑƒÑŽ ÑÐ¸ÑÑ‚ÐµÐ¼Ñƒ.';
+            $this->errors[] = 'Íå óäàëîñü äîáàâèòü ïëàòåæíóþ ñèñòåìó.';
         } else {
             $paySystemId = $result->getId();
 
@@ -163,6 +164,7 @@ class revo_instalment extends CModule
     {
         $paySystemId = Option::get($this->MODULE_ID, self::OPTION_PAYSYS_ID);
         if ($paySystemId) {
+            \Bitrix\Main\Loader::includeModule('sale');
             \Bitrix\Sale\PaySystem\Manager::delete($paySystemId);
         }
     }

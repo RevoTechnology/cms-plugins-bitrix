@@ -16,6 +16,6 @@ class ModuleTest extends PHPUnit\Framework\TestCase
         }
         $module->DoInstall();
 
-        $this->assertTrue(\Bitrix\Main\Loader::includeModule(self::MODULE_ID), 'РќРµ СѓРґР°Р»РѕСЃСЊ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ РјРѕРґСѓР»СЊ');
+        $this->assertTrue(\Bitrix\Main\Loader::includeModule(self::MODULE_ID), 'Не удалось установить модуль');
     }
 }

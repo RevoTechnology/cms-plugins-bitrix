@@ -1,16 +1,16 @@
 <?
-$MESS['T_PAYSYS_DESCRIPTION'] = 'РџР»Р°С‚С‘Р¶РЅР°СЏ СЃРёСЃС‚РµРјР° <a href="https://revo.ru">Revo СЂР°СЃСЃСЂРѕС‡РєР°</a>';
-$MESS['T_PAYSYS_OPT_MERCHANTID'] = 'Р’Р°С€ ID РІ СЃРёСЃС‚РµРјРµ Revo';
-$MESS['T_PAYSYS_OPT_MERCHANTID_DESC'] = 'Р’С‹ РїРѕР»СѓС‡РёС‚Рµ РµРіРѕ РїРѕСЃР»Рµ <a href="https://revo.ru/">СЂРµРіРёСЃС‚СЂР°С†РёРё</a>';
-$MESS['T_PAYSYS_OPT_ORDER_ID'] = 'Order ID Р·Р°РєР°Р·Р°';
-$MESS['T_PAYSYS_OPT_ORDER_ID_DESC'] = 'РЈРЅРёРєР°Р»СЊРЅС‹Р№ id Р·Р°РєР°Р·Р° РЅР° РІР°С€РµРј СЃР°Р№С‚Рµ РЅРµРѕР±С…РѕРґРёРј РґР»СЏ РёРґРµРЅС‚РёС„РёРєР°С†РёРё РїР»Р°С‚РµР¶Р°';
-$MESS['T_PAYSYS_OPT_ORDER_SUM'] = 'РЎСѓРјРјР° Р·Р°РєР°Р·Р°';
-$MESS['T_PAYSYS_OPT_ORDER_VALUTE'] = 'Р’Р°Р»СЋС‚Р° Р·Р°РєР°Р·Р°';
-$MESS['T_VALUTE_RUB'] = 'СЂСѓР±Р»Рё';
-$MESS['T_VALUTE_BAKS'] = 'РґРѕР»Р»Р°СЂС‹ РЎРЁРђ';
-$MESS['T_VALUTE_EURO'] = 'РµРІСЂРѕ';
-$MESS['T_PAYSYS_OPT_MERCHANTID_PRIVATE_KEY'] = 'Р’Р°С€ РїСЂРёРІР°С‚РЅС‹Р№ РєР»СЋС‡ (Private security key)';
-$MESS['T_PAYSYS_OPT_MERCHANTID_PRIVATE_KEY_DESC'] = 'РЎРІРѕР№ РєР»СЋС‡ РІС‹ РјРѕР¶РµС‚Рµ РїРѕР»СѓС‡РёС‚СЊ РїРѕСЃР»Рµ СЂРµРіРёСЃС‚СЂР°С†РёРё РІ Р»РёС‡РЅРѕРј РєР°Р±РёРЅРµС‚Рµ';
-$MESS['T_PAYSYS_OPT_BACKPAGE_SUCCESS'] = 'РђРґСЂРµСЃ СЃС‚СЂР°РЅРёС†С‹, РЅР° РєРѕС‚РѕСЂСѓСЋ Р±СѓРґРµС‚ РІРѕР·РІСЂР°С‰РµРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїСЂРё СѓСЃРїРµС€РЅРѕРј РѕС„РѕСЂРјР»РµРЅРёРё СЂР°СЃСЃСЂРѕС‡РєРё';
-$MESS['T_PAYSYS_OPT_BACKPAGE_FAILURE'] = 'РђРґСЂРµСЃ СЃС‚СЂР°РЅРёС†С‹, РЅР° РєРѕС‚РѕСЂСѓСЋ Р±СѓРґРµС‚ РІРѕР·РІСЂР°С‰РµРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РїСЂРё РѕС‚РєР°Р·Рµ РІ РѕС„РѕСЂРјР»РµРЅРёРё СЂР°СЃСЃСЂРѕС‡РєРё';
+$MESS['T_PAYSYS_DESCRIPTION'] = 'Платёжная система <a href="https://revo.ru">Revo рассрочка</a>';
+$MESS['T_PAYSYS_OPT_MERCHANTID'] = 'Ваш ID в системе Revo';
+$MESS['T_PAYSYS_OPT_MERCHANTID_DESC'] = 'Вы получите его после <a href="https://revo.ru/">регистрации</a>';
+$MESS['T_PAYSYS_OPT_ORDER_ID'] = 'Order ID заказа';
+$MESS['T_PAYSYS_OPT_ORDER_ID_DESC'] = 'Уникальный id заказа на вашем сайте необходим для идентификации платежа';
+$MESS['T_PAYSYS_OPT_ORDER_SUM'] = 'Сумма заказа';
+$MESS['T_PAYSYS_OPT_ORDER_VALUTE'] = 'Валюта заказа';
+$MESS['T_VALUTE_RUB'] = 'рубли';
+$MESS['T_VALUTE_BAKS'] = 'доллары США';
+$MESS['T_VALUTE_EURO'] = 'евро';
+$MESS['T_PAYSYS_OPT_MERCHANTID_PRIVATE_KEY'] = 'Ваш приватный ключ (Private security key)';
+$MESS['T_PAYSYS_OPT_MERCHANTID_PRIVATE_KEY_DESC'] = 'Свой ключ вы можете получить после регистрации в личном кабинете';
+$MESS['T_PAYSYS_OPT_BACKPAGE_SUCCESS'] = 'Адрес страницы, на которую будет возвращен пользователь при успешном оформлении рассрочки';
+$MESS['T_PAYSYS_OPT_BACKPAGE_FAILURE'] = 'Адрес страницы, на которую будет возвращен пользователь при отказе в оформлении рассрочки';
 ?>
