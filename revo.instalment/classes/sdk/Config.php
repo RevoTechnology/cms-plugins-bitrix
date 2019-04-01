@@ -30,7 +30,7 @@ class Config
         $this->storeId      = $options['storeId'];
         $this->testMode     = $options['testMode'];
 
-        $this->baseHost = ( $this->testMode ? 'https://demo.revoplus.ru/' : 'https://r.revoplus.ru' );
+        $this->baseHost = ( $this->testMode ? 'https://backend.demo.revoup.ru/' : 'https://r.revoplus.ru' );
     }
 
 }

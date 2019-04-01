@@ -56,12 +56,12 @@ class Base
                 $data
             );
 
-            if(!$response->success)
+            if($response->status)
             {
               throw new Error((object)['status' => $response->status_code, 'message' => $response->message ? $response->message : "Can't connect to API host"]);
             }
 
-            return json_decode($response->body);
+            return $response;
         }
         catch(\Exception $e)
         {

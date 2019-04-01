@@ -4,15 +4,17 @@ class SDKTest extends PHPUnit\Framework\TestCase
 {
     public function testSDK()
     {
-        \Bitrix\Main\Loader::includeModule('revo.instalment');
+        if (!\Bitrix\Main\Loader::includeModule('revo.instalment')) {
+            $this->fail('Module not installed');
+        }
 
         $config = new Revo\Sdk\Config(
             [
                 'testMode' => true,
                 'redirectUrl' => 'http://example.com/',
                 'callbackUrl' => 'http://example.com/',
-                'storeId' => 1,
-                'secret' => 'secret'
+                'storeId' => 204,
+                'secret' => '6279a164f5cb8bbe93f7'
             ]
         );
 
@@ -24,6 +26,15 @@ class SDKTest extends PHPUnit\Framework\TestCase
             $response = '';
         }
 
-        $this->assertStringContainsString('http:', $response, 'Не удалось получить ссылку для iframe');
+        $this->assertStringContainsString('http', $response, 'Can\'t get link for iframe');
+    }
+
+    public function testInstalment() {
+        if (!\Bitrix\Main\Loader::includeModule('revo.instalment')) {
+            $this->fail('Module not installed');
+        }
+
+        $el = \Revo\Instalment::getInstance();
+        $this->assertStringContainsString('http', $el->getIframeUri(), 'Can\'t get link for iframe');
     }
 }
