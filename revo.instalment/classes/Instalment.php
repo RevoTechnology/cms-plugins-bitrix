@@ -34,11 +34,11 @@ class Instalment
         try {
             $this->_config = new Sdk\Config(
                 [
-                    'testMode' => $this->_getOption('debug_mode', true),
+                    'testMode' => $this->_getOption('debug_mode', 'Y') == 'N' ? false : true,
                     'redirectUrl' => $this->_getOption('redirect_url', 'http://example.com/'),
                     'callbackUrl' => $this->_getOption('callback_url', 'http://example.com/'),
-                    'storeId' => $this->_getOption('store_id', 204),
-                    'secret' => $this->_getOption('secret', '6279a164f5cb8bbe93f7')
+                    'storeId' => $this->_getOption('api_merchant', 204),
+                    'secret' => $this->_getOption('api_secret', '6279a164f5cb8bbe93f7')
                 ]
             );
 

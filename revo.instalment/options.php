@@ -20,11 +20,9 @@ $arAllOptions = array(
 
 
 $arVpbxApiOptions = [
-    ['api_url', Loc::getMessage('OPTIONS_API_URL'), '', ['text', 100]],
-    ['api_url', Loc::getMessage('OPTIONS_API_TEST_URL'), '', ['text', 100]],
     ['api_merchant', Loc::getMessage('OPTIONS_API_METCHANT'), '', ['text', 100]],
     ['api_secret', Loc::getMessage('OPTIONS_API_SECRET'), '', ['text', 100]],
-    array('ACTIVE_DEBUG', Loc::getMessage('OPTIONS_API_TEST_MODE'), 'N', array('checkbox', 'Y')),
+    array('debug_mode', Loc::getMessage('OPTIONS_API_TEST_MODE'), 'N', array('checkbox', 'Y')),
 ];
 
 $aTabs = [
