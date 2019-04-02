@@ -82,29 +82,32 @@ class revo_instalment extends CModule
     public function InstallDb()
     {
         \Bitrix\Main\Loader::includeModule('sale');
-        $result = \Bitrix\Sale\Internals\PaySystemActionTable::add(
-            array(
-                'NAME' => GetMessage('REVO_MODULE_PAYMENT_NAME'),
-                'PSA_NAME' => GetMessage('REVO_MODULE_PAYMENT_NAME'),
-                'ACTIVE' => 'Y',
-                'CAN_PRINT_CHECK' => 'N',
-                'CODE' => '',
-                'NEW_WINDOW' => 'N',
-                'ALLOW_EDIT_PAYMENT' => 'Y',
-                'IS_CASH' => 'N',
-                'SORT' => 100,
-                'LOGOTIP' => CFile::SaveFile(CFile::MakeFileArray(
-                    dirname(__FILE__) . '/img/revoplus.png'
-                ), '/revo.instalment/'),
-                'ENCODING' => 'utf-8',
-                'DESCRIPTION' => GetMessage('REVO_MODULE_PAYMENT_DESC'),
-                'ACTION_FILE' => '/local/php_interface/include/sale_payment/revo',
-                'PS_MODE' => '',
-                'AUTO_CHANGE_1C' => 'N',
-                'HAVE_PAYMENT' => 'Y',
-                'ENTITY_REGISTRY_TYPE' => \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER,
-            )
+        $arAdd = array(
+            'NAME' => GetMessage('REVO_MODULE_PAYMENT_NAME'),
+            'PSA_NAME' => GetMessage('REVO_MODULE_PAYMENT_NAME'),
+            'ACTIVE' => 'Y',
+            'CAN_PRINT_CHECK' => 'N',
+            'CODE' => '',
+            'NEW_WINDOW' => 'N',
+            'ALLOW_EDIT_PAYMENT' => 'Y',
+            'IS_CASH' => 'N',
+            'SORT' => 100,
+            'LOGOTIP' => CFile::SaveFile(CFile::MakeFileArray(
+                dirname(__FILE__) . '/img/revoplus.png'
+            ), '/revo.instalment/'),
+            'ENCODING' => 'utf-8',
+            'DESCRIPTION' => GetMessage('REVO_MODULE_PAYMENT_DESC'),
+            'ACTION_FILE' => '/local/php_interface/include/sale_payment/revo',
+            'PS_MODE' => '',
+            'AUTO_CHANGE_1C' => 'N',
+            'HAVE_PAYMENT' => 'Y',
+            'ENTITY_REGISTRY_TYPE' => \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER,
         );
+        if (array_key_exists('ENTITY_REGISTRY_TYPE', \Bitrix\Sale\Internals\PaySystemActionTable::getMap())) {
+            $arAdd['ENTITY_REGISTRY_TYPE'] = \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER;
+        }
+
+        $result = \Bitrix\Sale\Internals\PaySystemActionTable::add($arAdd);
 
         if (!$result->isSuccess()) {
             $this->errors[] = GetMessage('REVO_MODULE_PAYMENT_FAIL');
