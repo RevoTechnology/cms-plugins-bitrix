@@ -100,8 +100,7 @@ class revo_instalment extends CModule
             'ACTION_FILE' => '/local/php_interface/include/sale_payment/revo',
             'PS_MODE' => '',
             'AUTO_CHANGE_1C' => 'N',
-            'HAVE_PAYMENT' => 'Y',
-            'ENTITY_REGISTRY_TYPE' => \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER,
+            'HAVE_PAYMENT' => 'Y'
         );
         if (array_key_exists('ENTITY_REGISTRY_TYPE', \Bitrix\Sale\Internals\PaySystemActionTable::getMap())) {
             $arAdd['ENTITY_REGISTRY_TYPE'] = \Bitrix\Sale\Registry::REGISTRY_TYPE_ORDER;
