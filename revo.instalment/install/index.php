@@ -71,12 +71,12 @@ class revo_instalment extends CModule
 
     public function InstallEvents()
     {
-
+        RegisterModuleDependences('main', 'onProlog',$this->MODULE_ID, '\Revo\Events','onProlog');
     }
 
     public function UnInstallEvents()
     {
-
+        UnRegisterModuleDependences('main', 'onProlog',$this->MODULE_ID, '\Revo\Events','onProlog');
     }
 
     public function InstallDb()
@@ -180,6 +180,7 @@ class revo_instalment extends CModule
     {
         CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/admin/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin');
         CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/sale_payment/', $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/sale_payment', true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/ajax/', $_SERVER['DOCUMENT_ROOT'] . '/ajax/'.$this->MODULE_ID.'/', true);
         return true;
     }
 
@@ -188,6 +189,7 @@ class revo_instalment extends CModule
     {
         DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/admin/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin');
         DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/sale_payment/', $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/sale_payment');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/ajax/', $_SERVER['DOCUMENT_ROOT'] . '/ajax/'.$this->MODULE_ID.'/');
         return true;
     }
 
