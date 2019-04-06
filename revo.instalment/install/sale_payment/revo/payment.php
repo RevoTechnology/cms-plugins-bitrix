@@ -4,6 +4,18 @@ use \Bitrix\Main\Localization\Loc;
 \Bitrix\Main\Loader::includeModule('revo.instalment');
 
 Loc::loadLanguageFile(__FILE__);
-$url = \Revo\Instalment::getInstance()->getIframeUri();
-?>
-<iframe src="<?=$url?>" style="width: 100%;height: 400px;"></iframe>
+try {
+    $url = \Revo\Instalment::getInstance()
+        ->getOrderIframeUri(
+            $GLOBALS["SALE_INPUT_PARAMS"],
+            'http' . (CMain::IsHTTPS() ? 's':'') . SITE_SERVER_NAME . '/personal/orders/'
+        );
+    ?>
+    <script>
+        window.open('<?=$url?>');
+    </script>
+<?} catch (\Revo\Sdk\Error $e) {
+    ?>
+    <p><?=$e->getMessage()?></p>
+    <?
+}

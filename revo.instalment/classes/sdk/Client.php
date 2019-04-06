@@ -4,14 +4,14 @@ namespace Revo\Sdk;
 
 use Revo\Requests;
 
-class Base
+class Client
 {
     private $config;
     private $ENDPOINTS = [
         'return' => '/online/v1/return',
         'phone' => '/api/external/v1/client/limit',
         'preorder' => '/factoring/v1/limit/auth',
-        'order' => '/online/v1/auth'
+        'order' => '/factoring/v1/precheck/auth'
     ];
 
     public function __construct($config)
@@ -30,7 +30,7 @@ class Base
             'callback_url' => $this->config->callbackUrl,
             'redirect_url' => $this->config->redirectUrl,
             'current_order' => [
-                'sum' => number_format($amount, 2, '.', ''),
+                'amount' => number_format($amount, 2, '.', ''),
                 'order_id' => $orderId
             ]
         ];

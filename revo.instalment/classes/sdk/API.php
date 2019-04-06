@@ -2,13 +2,18 @@
 
 namespace Revo\Sdk;
 
+use Bitrix\Main\Application;
+use Revo\Dto\Order;
+use Revo\Dto\OrderData;
+use Revo\Dto\Person;
+
 class API
 {
     private $api;
 
     public function __construct(Config $config)
     {
-        $this->api = new Base($config);
+        $this->api = new Client($config);
     }
 
     public function limitByPhone($phone)
@@ -20,24 +25,41 @@ class API
         return $result;
     }
 
-    public function preorderIframeLink($phone = '')
+    public function registration(
+        $phone = '',
+        $email = '',
+        $name = '',
+        $last_name = '',
+        $backurl = false
+    )
     {
-        $additionalParams = (empty($phone)) ? [] : [ 'primary_phone' => $phone ];
+        $order = new Order(
+            $email,
+            $phone,
+            new OrderData(uniqid(), 1),
+            new Person($name,$last_name,'')
+        );
 
-        $data = $this->api->orderData(1, bin2hex(openssl_random_pseudo_bytes(10)), $additionalParams);
-        $response = $this->api->callService($data, 'preorder');
+        if ($backurl) $order->redirect_url = $backurl;
+        $order = \Bitrix\Main\Web\Json::encode($order);
+        $response = $this->api->callService($order, 'preorder');
         $result = $this->api->parseOrderResponse($response);
 
         return $result;
     }
 
-    public function orderIframeLink($amount, $orderId, $additionalParams = array())
+    public function orderIframeLink(Order $order)
     {
-        $data = $this->api->orderData($amount, $orderId, $additionalParams);
-        $response = $this->api->callService($data, 'order');
+        if (!Application::getInstance()->isUtfMode()) {
+            $order = Converter::convertObjectToUtf($order);
+        }
+        $order = json_encode($order);
+
+        $response = $this->api->callService($order, 'order');
         $result = $this->api->parseOrderResponse($response);
 
         return $result;
+
     }
 
     public function returnOrder($amount, $orderId)

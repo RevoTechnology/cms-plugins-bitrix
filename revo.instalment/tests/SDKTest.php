@@ -11,8 +11,6 @@ class SDKTest extends PHPUnit\Framework\TestCase
         $config = new Revo\Sdk\Config(
             [
                 'testMode' => true,
-                'redirectUrl' => 'http://example.com/',
-                'callbackUrl' => 'http://example.com/',
                 'storeId' => 204,
                 'secret' => '6279a164f5cb8bbe93f7'
             ]
@@ -20,7 +18,7 @@ class SDKTest extends PHPUnit\Framework\TestCase
 
         try {
             $client = new Revo\Sdk\API($config);
-            $response = $client->preorderIframeLink();
+            $response = $client->registration();
         } catch (\Revo\Sdk\Error $error) {
             $this->fail('API Test error: ' . $error->getMessage());
             $response = '';
@@ -35,6 +33,10 @@ class SDKTest extends PHPUnit\Framework\TestCase
         }
 
         $el = \Revo\Instalment::getInstance();
-        $this->assertStringContainsString('http', $el->getIframeUri(), 'Can\'t get link for iframe');
+        $this->assertStringContainsString(
+            'http',
+            $el->getRegistrationUri(),
+            'Can\'t get link for iframe'
+        );
     }
 }

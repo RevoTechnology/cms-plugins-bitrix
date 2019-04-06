@@ -20,6 +20,8 @@ $arAllOptions = array(
 
 
 $arVpbxApiOptions = [
+    ['callback_url', Loc::getMessage('OPTIONS_API_CALLBACK'), '', ['text', 200]],
+    ['redirect_url', Loc::getMessage('OPTIONS_API_REDIRECT'), '', ['text', 200]],
     ['api_merchant', Loc::getMessage('OPTIONS_API_METCHANT'), '', ['text', 100]],
     ['api_secret', Loc::getMessage('OPTIONS_API_SECRET'), '', ['text', 100]],
     array('debug_mode', Loc::getMessage('OPTIONS_API_TEST_MODE'), 'N', array('checkbox', 'Y')),

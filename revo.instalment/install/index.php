@@ -164,6 +164,18 @@ class revo_instalment extends CModule
                 ]);
             }
         }
+        $prefix = CMain::IsHTTPS() ? 'https' : 'http' . '://' ;
+            Option::set(
+            $this->MODULE_ID,
+            'callback_url',
+                $prefix . $_SERVER['HTTP_HOST'] . '/ajax/revo.instalment/ajax.php'
+        );
+
+        Option::set(
+            $this->MODULE_ID,
+            'redirect_url',
+            $prefix . $_SERVER['HTTP_HOST'] . '/personal/cart/'
+        );
     }
 
     public function UnInstallDb()

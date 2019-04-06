@@ -57,7 +57,28 @@ class Instalment
         return static::$instance;
     }
 
-    public function getIframeUri() {
-        return $this->_client->preorderIframeLink();
+    public function getRegistrationUri($backurl = false) {
+        global $USER;
+        $u = \CUser::GetByID($USER->GetID())->Fetch();
+        return $this->_client->registration(
+            $u['PERSONAL_PHONE'],
+            $u['EMAIL'],
+            $u['NAME'],
+            $u['LAST_NAME'],
+            $backurl
+        );
+    }
+
+    public function getOrderIframeUri($globalOrderParams, $backurl = false) {
+        $order = new Dto\Order(
+            $globalOrderParams['USER']['EMAIL'],
+            $globalOrderParams['USER']['PERSONAL_PHONE'],
+            Dto\OrderData::getFromGlobalParams($globalOrderParams),
+            Dto\Person::getFromGlobalParams($globalOrderParams)
+        );
+
+        if ($backurl) $order->redirect_url = $backurl;
+
+        return $this->_client->orderIframeLink($order);
     }
 }
