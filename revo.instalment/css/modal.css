@@ -1,0 +1,41 @@
+.rvo-modal-window {
+  position: fixed;
+  background-color: rgba(200, 200, 200, 0.75);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  opacity: 1;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  display: none;
+}
+.rvo-modal-window header {
+  font-weight: bold;
+}
+.rvo-modal-window:target {
+  opacity: 1;
+  pointer-events: auto;
+}
+.rvo-modal-window > div {
+  width: 490px;
+  position: relative;
+  margin: 5% auto;
+  padding: 2rem;
+  background: #fff;
+  color: #444;
+}
+.rvo-modal-window h1 {
+  font-size: 150%;
+  margin: 0 0 15px;
+}
+.rvo-iframe-container iframe {
+  width: 450px;
+  height: 600px;
+  overflow-y: scroll;
+  border: none;
+}
+
+/*# sourceMappingURL=modal.css.map */

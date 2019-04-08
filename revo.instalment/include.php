@@ -1,6 +1,6 @@
 <?php
 
-if(!function_exists('loadClassesFromOGModuleDir')){
+if(!function_exists('loadRevoClasses')){
     /**
      * Function recursively parse directory and associate files with classes.
      * File name have to match with class name and class should have namespace $rootNameSpace + \ + SUBDIRECTORY_NAME
@@ -11,7 +11,7 @@ if(!function_exists('loadClassesFromOGModuleDir')){
      * @return array - Array for \Bitrix\Main\Loader::registerAutoLoadClasses second parameter
      * @author emaslov
      */
-    function loadClassesFromOGModuleDir($dir, $rootNameSpace, $rootModuleDir) {
+    function loadRevoClasses($dir, $rootNameSpace, $rootModuleDir) {
         $arClasses = array();
 
         $classDirIterator = new RecursiveIteratorIterator(
@@ -48,9 +48,13 @@ $classesDirPath = __DIR__ . DIRECTORY_SEPARATOR . 'classes';
 
 \Bitrix\Main\Loader::registerAutoLoadClasses(
     'revo.instalment',
-    loadClassesFromOGModuleDir(
+    loadRevoClasses(
         $classesDirPath,
         $rootNameSpace,
         __DIR__
     )
 );
+
+\CJSCore::RegisterExt('revo.instalment', array(
+    'lang' => '/local/modules/revo.instalment/lang/'.LANGUAGE_ID.'/js.php'
+));
