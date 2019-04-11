@@ -20,6 +20,16 @@ BX.ready(function() {
         }
     );
 
+    if (REVO && REVO.Form) {
+        REVO.Form.onClose(function() {
+            modal.style.display = 'none';
+        });
+
+        REVO.Form.onResult(function(result) {
+            modal.style.display = 'none';
+        });
+    }
+
     document.getElementsByName('PAY_SYSTEM_ID').forEach(function (a) {
         if (parseInt(a.value) === parseInt(REVO_PAY_SYSTEM_ID)) {
             BX.bind(a.parentNode, 'click', function () {
@@ -44,18 +54,14 @@ BX.ready(function() {
 
     function showModal(iframeLink) {
         let successCallback = function(data) {
-            REVO.Form.show(data.url, '#revo-iframe-container');
+            if (data.url) {
+                REVO.Form.show(data.url, '#revo-iframe-container');
 
-            var modal = document.getElementById('revo-modal-window');
-            modal.style.display = 'block';
+                var modal = document.getElementById('revo-modal-window');
+                modal.style.display = 'block';
+            } else {
 
-            REVO.Form.onClose(function() {
-                modal.style.display = 'none';
-            });
-
-            REVO.Form.onResult(function(result) {
-                modal.style.display = 'none';
-            });
+            }
         };
 
         let failureCallback = function () {

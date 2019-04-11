@@ -2,6 +2,7 @@
 
 class SDKTest extends PHPUnit\Framework\TestCase
 {
+    const USER_SESSID = 'TEST_SESSID';
     public function testSDK()
     {
         if (!\Bitrix\Main\Loader::includeModule('revo.instalment')) {
@@ -38,5 +39,13 @@ class SDKTest extends PHPUnit\Framework\TestCase
             $el->getRegistrationUri(),
             'Can\'t get link for iframe'
         );
+    }
+
+    public function testUserSave() {
+        $addingUser = \Revo\Models\RegisteredUsersTable::addUser(self::USER_SESSID);
+        $this->assertTrue($addingUser, 'User have not been added');
+
+        $userExist = \Revo\Models\RegisteredUsersTable::get(self::USER_SESSID);
+        $this->assertTrue(!!$userExist, 'User do not exist');
     }
 }

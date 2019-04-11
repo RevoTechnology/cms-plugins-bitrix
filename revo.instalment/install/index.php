@@ -81,6 +81,9 @@ class revo_instalment extends CModule
 
     public function InstallDb()
     {
+        require_once __DIR__ . './../classes/models/DataManager.php';
+        require_once __DIR__ . './../classes/models/RegisteredUsersTable.php';
+
         \Bitrix\Main\Loader::includeModule('sale');
         $arAdd = array(
             'NAME' => GetMessage('REVO_MODULE_PAYMENT_NAME'),
@@ -176,6 +179,8 @@ class revo_instalment extends CModule
             'redirect_url',
             $prefix . $_SERVER['HTTP_HOST'] . '/personal/cart/'
         );
+
+        \Revo\Models\RegisteredUsersTable::reinstallTable();
     }
 
     public function UnInstallDb()
@@ -185,6 +190,8 @@ class revo_instalment extends CModule
             \Bitrix\Main\Loader::includeModule('sale');
             \Bitrix\Sale\PaySystem\Manager::delete($paySystemId);
         }
+
+        \Revo\Models\RegisteredUsersTable::dropTableIfExist();
     }
 
 
