@@ -70,4 +70,15 @@ class API
 
         return $result;
     }
+
+    public function finalizeOrder($orderId, $filePath)
+    {
+        $data = json_encode(['order_id' => $orderId]);
+        $fields = ['body' => $data];
+        $files = ['check' => $filePath];
+        $response = $this->api->callService($data, 'return');
+        $result = $this->api->parseReturnResponse($response);
+
+        return $result;
+    }
 }

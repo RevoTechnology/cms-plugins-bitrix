@@ -48,4 +48,10 @@ class SDKTest extends PHPUnit\Framework\TestCase
         $userExist = \Revo\Models\RegisteredUsersTable::get(self::USER_SESSID);
         $this->assertTrue(!!$userExist, 'User do not exist');
     }
+
+    public function finalizeOrderTest() {
+        $revoClient = \Revo\Instalment::getInstance();
+        $response = $revoClient->finalizeOrder(5, $_SERVER['DOCUMENT_ROOT'] . '/include/logo.png');
+        var_dump($response);
+    }
 }

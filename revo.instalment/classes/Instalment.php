@@ -86,6 +86,10 @@ class Instalment
         return $this->_client->orderIframeLink($order);
     }
 
+    public function finalizeOrder($orderId, $filePath) {
+        return $this->_client->finalizeOrder($orderId, $filePath);
+    }
+
     public function getEndpoint() {
         return $this->_endpoint;
     }

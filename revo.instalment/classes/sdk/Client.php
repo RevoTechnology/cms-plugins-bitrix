@@ -45,16 +45,25 @@ class Client
         return json_encode(['order_id' => $orderId, 'sum' => number_format($amount, 2, '.', ''), 'kind' => 'cancel']);
     }
 
-    public function callService($data, $type)
+    public function callService($data, $type, $files = false)
     {
         $signature = $this->sign($data);
         $query = ['store_id' => $this->config->storeId, 'signature' => $signature];
 
         try {
-            $response = Requests::post(
-                $this->buildUrl($type, $query),
-                $data
-            );
+            if (!$files) {
+                $response = Requests::post(
+                    $this->buildUrl($type, $query),
+                    $data
+                );
+            } else {
+                $response = Requests::post_with_files(
+                    $this->buildUrl($type, $query),
+                    $data,
+                    $files
+                );
+            }
+
 
             if ($response->status) {
                 throw new Error((object)['status' => $response->status_code, 'message' => $response->message ? $response->message : "Can't connect to API host"]);

@@ -15,4 +15,15 @@ class Events
 
         \CJSCore::Init(array('revo.instalment'));
     }
+
+    public function onStatusOrder($id, $val) {
+        if ($val == 'F') {
+            $revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
+            $order = \CSaleOrder::GetById($id);
+            if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
+                $revoClient = Instalment::getInstance();
+                $revoClient->finalizeOrder($order['ID'], $_SERVER['DOCUMENT_ROOT'] . '/include/logo.png');
+            }
+        }
+    }
 }
