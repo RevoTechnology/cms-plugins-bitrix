@@ -44,18 +44,20 @@ BX.ready(function() {
 
     function showModal(iframeLink) {
         let successCallback = function(data) {
-            var iframe = BX.create('iframe', {
-                    attrs: {
-                        'src': data.url
-                    }
-                }),
-                container = document.getElementById('revo-iframe-container');
-
-            BX.append(iframe, container);
+            REVO.Form.show(data.url, '#revo-iframe-container');
 
             var modal = document.getElementById('revo-modal-window');
             modal.style.display = 'block';
+
+            REVO.Form.onClose(function() {
+                modal.style.display = 'none';
+            });
+
+            REVO.Form.onResult(function(result) {
+                modal.style.display = 'none';
+            });
         };
+
         let failureCallback = function () {
 
         };
@@ -77,7 +79,7 @@ BX.ready(function() {
     function updatePrice() {
         var priceEl = document.getElementsByClassName('product-item-detail-price-current')[0];
         if (priceEl) {
-            var price = parseFloat(document.getElementsByClassName('product-item-detail-price-current')[0].innerText);
+            var price = parseFloat(document.getElementsByClassName('product-item-detail-price-current')[0].innerText.replace(/[^0-9]/, ''));
             var btnEl = document.getElementsByClassName('product-item-detail-buy-button')[0];
 
             if (btnEl) {
@@ -92,4 +94,37 @@ BX.ready(function() {
             }
         }
     }
+    function handleMessage(event) {
+        try {
+            var eventData = JSON.parse(event.data),
+                type = eventData.type;
+
+            if (type === 'result') {
+                eventData = eventData.data;
+                console.log(eventData);
+                if (eventData.decision === 'approved') {
+
+                }
+            }
+        } catch (e) {
+            return false;
+        }
+    }
+
+
+    function fastOrder() {
+        var data = {};
+
+        BX.ajax({
+            method: 'POST',
+            dataType: 'json',
+            url: '/ajax/revo.instalment/ajax.php',
+            data:  data,
+            onsuccess: function (data) {
+                location.href = data.url;
+            }
+        });
+    }
+
+    window.addEventListener('message', handleMessage);
 });

@@ -40,9 +40,9 @@
   &-iframe-container {
     iframe {
       width: 450px;
-      height: 600px;
-      overflow-y: scroll;
       border: none;
     }
+    overflow-y: scroll;
+    max-height: 600px;
   }
 }

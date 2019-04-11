@@ -29,5 +29,4 @@ class Config
 
         $this->baseHost = ( $this->testMode ? self::TEST_ENDPOINT : self::ENDPOINT );
     }
-
 }

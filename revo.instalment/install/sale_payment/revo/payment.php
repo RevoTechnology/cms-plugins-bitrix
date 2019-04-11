@@ -8,7 +8,7 @@ try {
     $url = \Revo\Instalment::getInstance()
         ->getOrderIframeUri(
             $GLOBALS["SALE_INPUT_PARAMS"],
-            'http' . (CMain::IsHTTPS() ? 's':'') . SITE_SERVER_NAME . '/personal/orders/'
+            'http' . (CMain::IsHTTPS() ? 's':'') . '://' . SITE_SERVER_NAME . '/personal/orders/'
         );
     ?>
     <script>

@@ -4,6 +4,7 @@ namespace Revo;
 
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Config\Option;
+use Revo\Sdk\Config;
 
 class Instalment
 {
@@ -14,6 +15,8 @@ class Instalment
 
     private $_config;
     private $_client;
+
+    private $_endpoint;
 
     const MODULE_ID = 'revo.instalment';
 
@@ -32,9 +35,10 @@ class Instalment
     private function __construct()
     {
         try {
+            $testMode = $this->_getOption('debug_mode', 'Y') != 'N';
             $this->_config = new Sdk\Config(
                 [
-                    'testMode' => $this->_getOption('debug_mode', 'Y') == 'N' ? false : true,
+                    'testMode' => $testMode,
                     'redirectUrl' => $this->_getOption('redirect_url', 'http://example.com/'),
                     'callbackUrl' => $this->_getOption('callback_url', 'http://example.com/'),
                     'storeId' => $this->_getOption('api_merchant', 204),
@@ -43,7 +47,7 @@ class Instalment
             );
 
             $this->_client = new Sdk\API($this->_config);
-
+            $this->_endpoint = $testMode ? Config::TEST_ENDPOINT : Config::ENDPOINT;
         } catch (Sdk\Error $e) {
             $this->_log('SDK building error: '. $e->getMessage());
         }
@@ -80,5 +84,9 @@ class Instalment
         if ($backurl) $order->redirect_url = $backurl;
 
         return $this->_client->orderIframeLink($order);
+    }
+
+    public function getEndpoint() {
+        return $this->_endpoint;
     }
 }
