@@ -42,6 +42,10 @@ class SDKTest extends PHPUnit\Framework\TestCase
     }
 
     public function testUserSave() {
+        if (!\Bitrix\Main\Loader::includeModule('revo.instalment')) {
+            $this->fail('Module not installed');
+        }
+
         $addingUser = \Revo\Models\RegisteredUsersTable::addUser(self::USER_SESSID);
         $this->assertTrue($addingUser, 'User have not been added');
 
@@ -49,9 +53,14 @@ class SDKTest extends PHPUnit\Framework\TestCase
         $this->assertTrue(!!$userExist, 'User do not exist');
     }
 
-    public function finalizeOrderTest() {
+    public function testFinalizeOrder() {
+        if (!\Bitrix\Main\Loader::includeModule('revo.instalment')) {
+            $this->fail('Module not installed');
+        }
+
         $revoClient = \Revo\Instalment::getInstance();
-        $response = $revoClient->finalizeOrder(5, $_SERVER['DOCUMENT_ROOT'] . '/include/logo.png');
-        var_dump($response);
+        $response = $revoClient->finalizeOrder(25, 30, 'http://www.africau.edu/images/default/sample.pdf');
+
+        $this->assertTrue($response['status'] == 'ok', 'Finalize order request did not sent');
     }
 }

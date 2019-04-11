@@ -71,12 +71,12 @@ class API
         return $result;
     }
 
-    public function finalizeOrder($orderId, $filePath)
+    public function finalizeOrder($orderId, $sum, $filePath)
     {
-        $data = json_encode(['order_id' => $orderId]);
+        $data = json_encode(['order_id' => $orderId, 'amount' => $sum]);
         $fields = ['body' => $data];
         $files = ['check' => $filePath];
-        $response = $this->api->callService($data, 'return');
+        $response = $this->api->callService($fields, 'finish', $files);
         $result = $this->api->parseReturnResponse($response);
 
         return $result;

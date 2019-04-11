@@ -22,7 +22,7 @@ class Events
             $order = \CSaleOrder::GetById($id);
             if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
                 $revoClient = Instalment::getInstance();
-                $revoClient->finalizeOrder($order['ID'], $_SERVER['DOCUMENT_ROOT'] . '/include/logo.png');
+                $revoClient->finalizeOrder($order['ID'], $order['SUM_PAID'], 'http://www.africau.edu/images/default/sample.pdf');
             }
         }
     }

@@ -11,7 +11,8 @@ class Client
         'return' => '/online/v1/return',
         'phone' => '/api/external/v1/client/limit',
         'preorder' => '/factoring/v1/limit/auth',
-        'order' => '/factoring/v1/precheck/auth'
+        'order' => '/factoring/v1/precheck/auth',
+        'finish' => '/factoring/v1/precheck/finish'
     ];
 
     public function __construct($config)
@@ -47,7 +48,7 @@ class Client
 
     public function callService($data, $type, $files = false)
     {
-        $signature = $this->sign($data);
+        $signature = $this->sign($files ? $data['body'] : $data);
         $query = ['store_id' => $this->config->storeId, 'signature' => $signature];
 
         try {
@@ -63,7 +64,6 @@ class Client
                     $files
                 );
             }
-
 
             if ($response->status) {
                 throw new Error((object)['status' => $response->status_code, 'message' => $response->message ? $response->message : "Can't connect to API host"]);

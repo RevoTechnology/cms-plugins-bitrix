@@ -34,7 +34,10 @@ class Requests
         $boundary = uniqid();
         $files = array();
         foreach ($filenames as $key => $f){
-            $files[$key] = file_get_contents($f);
+            $files[$key] = [
+                'content' => file_get_contents($f),
+                'file_name' => array_pop(explode(DIRECTORY_SEPARATOR, $f))
+            ];
         }
 
         $data = '';
@@ -51,15 +54,14 @@ class Requests
 
         foreach ($files as $name => $content) {
             $data .= "--" . $delimiter . $eol
-                . 'Content-Disposition: form-data; name="' . $name . '"; filename="' . $name . '"' . $eol
+                . 'Content-Disposition: form-data; name="' . $name . '"; filename="' . $content['file_name'] . '"' . $eol
                 . 'Content-Transfer-Encoding: binary'.$eol
             ;
 
             $data .= $eol;
-            $data .= $content . $eol;
+            $data .= $content['content'] . $eol;
         }
         $data .= "--" . $delimiter . "--".$eol;
-
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -74,8 +76,6 @@ class Requests
                 "Content-Type: multipart/form-data; boundary=" . $delimiter,
                 "Content-Length: " . strlen($data)
             ),
-
-
         ));
 
         $response = curl_exec($curl);
