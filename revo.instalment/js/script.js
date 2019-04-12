@@ -39,6 +39,8 @@ BX.ready(function() {
         document.getElementsByName('PAY_SYSTEM_ID').forEach(function (a) {
             if (parseInt(a.value) === parseInt(REVO_PAY_SYSTEM_ID)) {
                 BX.bind(a.parentNode, 'click', function () {
+                    if (window.revoSent) return;
+                    window.revoSent = true;
                     showModal();
                 });
             }
@@ -65,6 +67,7 @@ BX.ready(function() {
                 REVO.Form.show(data.url, '#revo-iframe-container');
 
                 revoModal().style.display = 'block';
+                window.revoSent = false;
             } else {
 
             }
