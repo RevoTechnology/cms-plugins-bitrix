@@ -17,12 +17,17 @@ class Events
     }
 
     public function onStatusOrder($id, $val) {
+
         if ($val == 'F') {
             $revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
             $order = \CSaleOrder::GetById($id);
             if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
                 $revoClient = Instalment::getInstance();
-                $revoClient->finalizeOrder($order['ID'], $order['SUM_PAID'], 'http://www.africau.edu/images/default/sample.pdf');
+
+                $result = $revoClient->finalizeOrder($order['ID'], $order['SUM_PAID'], 'http://www.africau.edu/images/default/sample.pdf');
+                Logger::log([
+                    'Finalization have been sent to REVO', $result
+                ], 'finalization');
             }
         }
     }
