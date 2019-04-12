@@ -15,7 +15,8 @@ BX.ready(function() {
             if(!e) {
                 e = window.event;
             }
-            showModal();
+            window.productDetailMode = true;
+            showModal(true);
             return BX.PreventDefault(e);
         }
     );
@@ -27,20 +28,24 @@ BX.ready(function() {
 
     if (REVO && REVO.Form) {
         REVO.Form.onClose(function() {
-
             revoModal().style.display = 'none';
         });
 
         REVO.Form.onResult(function(result) {
             revoModal().style.display = 'none';
+            if (window.productDetailMode) {
+                document.getElementsByClassName('product-item-detail-buy-button')[0].click();
+            }
         });
     }
+
     setInterval(function () {
         document.getElementsByName('PAY_SYSTEM_ID').forEach(function (a) {
             if (parseInt(a.value) === parseInt(REVO_PAY_SYSTEM_ID)) {
                 BX.bind(a.parentNode, 'click', function () {
                     if (window.revoSent) return;
                     window.revoSent = true;
+
                     showModal();
                 });
             }
@@ -61,7 +66,7 @@ BX.ready(function() {
     });
 
 
-    function showModal(iframeLink) {
+    function showModal(fastBuyMode) {
         let successCallback = function(data) {
             if (data.url) {
                 REVO.Form.show(data.url, '#revo-iframe-container');
@@ -69,7 +74,9 @@ BX.ready(function() {
                 revoModal().style.display = 'block';
                 window.revoSent = false;
             } else {
-
+                if (fastBuyMode) {
+                    document.getElementsByClassName('product-item-detail-buy-button')[0].click();
+                }
             }
         };
 
