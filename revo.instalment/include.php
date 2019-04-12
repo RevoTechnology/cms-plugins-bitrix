@@ -58,3 +58,5 @@ $classesDirPath = __DIR__ . DIRECTORY_SEPARATOR . 'classes';
 \CJSCore::RegisterExt('revo.instalment', array(
     'lang' => '/local/modules/revo.instalment/lang/'.LANGUAGE_ID.'/js.php'
 ));
+
+require_once __DIR__ . '/vendor/autoload.php';
