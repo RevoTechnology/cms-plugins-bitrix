@@ -10,7 +10,6 @@ namespace Revo;
 
 require_once(__DIR__ . '/../lib/fpdf/fpdf.php');
 require_once(__DIR__ . '/../lib/fpdf/fpdf_to_html.php');
-require_once(__DIR__ . '/../lib/fpdf/pdf_mc_table.php');
 
 class Documents
 {
