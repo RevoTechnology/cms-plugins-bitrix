@@ -1,0 +1,6 @@
+{
+  "minimum-stability": "dev",
+  "require": {
+    "tecnickcom/tc-lib-pdf": "dev-master"
+  }
+}
