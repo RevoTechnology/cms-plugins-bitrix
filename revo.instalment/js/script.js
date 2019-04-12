@@ -20,23 +20,30 @@ BX.ready(function() {
         }
     );
 
+    function revoModal() {
+        var modal = document.getElementById('revo-modal-window');
+        return modal;
+    }
+
     if (REVO && REVO.Form) {
         REVO.Form.onClose(function() {
-            modal.style.display = 'none';
+
+            revoModal().style.display = 'none';
         });
 
         REVO.Form.onResult(function(result) {
-            modal.style.display = 'none';
+            revoModal().style.display = 'none';
         });
     }
-
-    document.getElementsByName('PAY_SYSTEM_ID').forEach(function (a) {
-        if (parseInt(a.value) === parseInt(REVO_PAY_SYSTEM_ID)) {
-            BX.bind(a.parentNode, 'click', function () {
-                showModal();
-            });
-        }
-    });
+    setInterval(function () {
+        document.getElementsByName('PAY_SYSTEM_ID').forEach(function (a) {
+            if (parseInt(a.value) === parseInt(REVO_PAY_SYSTEM_ID)) {
+                BX.bind(a.parentNode, 'click', function () {
+                    showModal();
+                });
+            }
+        });
+    }, 1000);
 
     BX.ajax({
         method: 'GET',
@@ -57,8 +64,7 @@ BX.ready(function() {
             if (data.url) {
                 REVO.Form.show(data.url, '#revo-iframe-container');
 
-                var modal = document.getElementById('revo-modal-window');
-                modal.style.display = 'block';
+                revoModal().style.display = 'block';
             } else {
 
             }
@@ -67,6 +73,7 @@ BX.ready(function() {
         let failureCallback = function () {
 
         };
+
         let data = {
             'action': 'registration_url'
         };
@@ -91,6 +98,7 @@ BX.ready(function() {
             if (btnEl) {
                 var priceMonthly = Math.round(price / 3);
                 var link = document.createElement('a');
+
                 link.innerHTML = BX.message('REVO_BUY_DETAIL').replace('#PRICE#', priceMonthly);
                 link.href = '#';
                 link.className = 'js-rvo-buy-link rvo-buy-link';
@@ -98,22 +106,6 @@ BX.ready(function() {
                     .parentElement
                     .appendChild(link);
             }
-        }
-    }
-    function handleMessage(event) {
-        try {
-            var eventData = JSON.parse(event.data),
-                type = eventData.type;
-
-            if (type === 'result') {
-                eventData = eventData.data;
-                console.log(eventData);
-                if (eventData.decision === 'approved') {
-
-                }
-            }
-        } catch (e) {
-            return false;
         }
     }
 
@@ -131,6 +123,4 @@ BX.ready(function() {
             }
         });
     }
-
-    window.addEventListener('message', handleMessage);
 });
