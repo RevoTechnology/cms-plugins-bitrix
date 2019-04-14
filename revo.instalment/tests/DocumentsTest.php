@@ -8,9 +8,11 @@ class DocumentsTest extends PHPUnit\Framework\TestCase
         if (!\Bitrix\Main\Loader::includeModule('revo.instalment')) {
             $this->fail('Module not installed');
         }
-
+        $html = \Revo\Documents::printCheck(455);
         \Revo\Documents::convertHtmlToPdf(
-            '<p>Test pdf</p>',
+            \Bitrix\Main\Text\Encoding::convertEncoding(
+                $html, SITE_CHARSET, 'cp1251'
+            ),
             self::FILE_TEST_PATH
         );
         $fullPath = $_SERVER['DOCUMENT_ROOT'] . self::FILE_TEST_PATH;
@@ -20,6 +22,8 @@ class DocumentsTest extends PHPUnit\Framework\TestCase
             'Pdf was not created'
         );
 
-        unlink($fullPath);
+//        unlink($fullPath);
+
+
     }
 }

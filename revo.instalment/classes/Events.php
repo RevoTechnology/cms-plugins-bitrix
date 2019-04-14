@@ -24,7 +24,17 @@ class Events
             if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
                 $revoClient = Instalment::getInstance();
 
-                $result = $revoClient->finalizeOrder($order['ID'], $order['SUM_PAID'], 'http://www.africau.edu/images/default/sample.pdf');
+                $html = \Revo\Documents::printCheck($id);
+                $path = '/upload/check/'.$id.'.pdf';
+                \Revo\Documents::convertHtmlToPdf(
+                    \Bitrix\Main\Text\Encoding::convertEncoding(
+                        $html, SITE_CHARSET, 'cp1251'
+                    ),
+                    $path
+                );
+                $fullPath = $_SERVER['DOCUMENT_ROOT'] . $path;
+
+                $result = $revoClient->finalizeOrder($order['ID'], $order['SUM_PAID'], $fullPath);
                 Logger::log([
                     'Finalization have been sent to REVO', $result
                 ], 'finalization');

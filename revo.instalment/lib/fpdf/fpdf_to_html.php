@@ -57,9 +57,9 @@ class PDF_HTML extends \FPDF
     function WriteHTML($html)
     {
         //HTML parser
-        $html = strip_tags($html, "<b><u><i><a><img><p><br><strong><em><font><tr><blockquote>"); //supprime tous les tags sauf ceux reconnus
-        $html = str_replace("\n", ' ', $html); //remplace retour à la ligne par un espace
-        $a = preg_split('/<(.*)>/U', $html, -1, PREG_SPLIT_DELIM_CAPTURE); //éclate la chaîne avec les balises
+        $html = strip_tags($html, "<b><u><i><a><img><p><br><strong><em><font><tr><blockquote>");
+        $html = str_replace("\n", ' ', $html);
+        $a = preg_split('/<(.*)>/U', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($a as $i => $e) {
             if ($i % 2 == 0) {
                 //Text
