@@ -202,6 +202,7 @@ class revo_instalment extends CModule
         CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/admin/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin');
         CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/sale_payment/', $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/sale_payment', true, true);
         CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/ajax/', $_SERVER['DOCUMENT_ROOT'] . '/ajax/'.$this->MODULE_ID.'/', true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/components/', $_SERVER['DOCUMENT_ROOT'] . '/local/components/revo/', true);
         mkdir($_SERVER['DOCUMENT_ROOT'] . '/upload/check/');
         return true;
     }
@@ -212,6 +213,7 @@ class revo_instalment extends CModule
         DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/admin/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin');
         DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/sale_payment/', $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/sale_payment');
         DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/ajax/', $_SERVER['DOCUMENT_ROOT'] . '/ajax/'.$this->MODULE_ID.'/');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/components/', $_SERVER['DOCUMENT_ROOT'] . '/local/components/revo/');
         rmdir($_SERVER['DOCUMENT_ROOT'] . '/upload/check/');
         return true;
     }
