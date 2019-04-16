@@ -1,3 +1,3 @@
 <?php
-$MESS['REVO_BUY_PARAM_PRODUCT_ID'] = 'ID Ð¿Ñ€Ð¾Ð´ÑƒÐºÑ‚Ð°';
-$MESS['REVO_BUY_PARAM_PRICE'] = 'Ð¡Ñ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ (Ñ€ÑƒÐ±. / Ð¼ÐµÑ.)';
+$MESS['REVO_BUY_PARAM_PRODUCT_ID'] = 'ID ïðîäóêòà';
+$MESS['REVO_BUY_PARAM_PRICE'] = 'Ñòîèìîñòü (ðóá. / ìåñ.)';
