@@ -9,9 +9,14 @@ $arComponentParameters = array(
             "TYPE" => "STRING",
             "DEFAULT" => '={$_REQUEST["ELEMENT_ID"]}'
         ),
-        "PRICE" => array(
+        "MONTHLY_PRICE" => array(
             "PARENT" => "BASE",
             "NAME" => GetMessage("REVO_BUY_PARAM_PRICE"),
+            "TYPE" => "STRING",
+        ),
+        "BUY_BTN_SELECTOR" => array(
+            "PARENT" => "BASE",
+            "NAME" => GetMessage("REVO_BUY_PARAM_BTN_SELECTOR"),
             "TYPE" => "STRING",
         ),
     ),

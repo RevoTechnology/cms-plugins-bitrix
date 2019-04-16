@@ -16,6 +16,7 @@ BX.ready(function() {
                 e = window.event;
             }
             window.productDetailMode = true;
+            window.buyBtnSelector = this.dataset.buybtn;
             showModal(true);
             return BX.PreventDefault(e);
         }
@@ -34,7 +35,21 @@ BX.ready(function() {
         REVO.Form.onResult(function(result) {
             revoModal().style.display = 'none';
             if (window.productDetailMode) {
-                document.getElementsByClassName('product-item-detail-buy-button')[0].click();
+                var node = false;
+                if (window.buyBtnSelector) {
+                    if (window.buyBtnSelector[0] === '.') {
+                        var className = window.buyBtnSelector[0].replace('.', '');
+                        node = document.getElementsByClassName(className)[0];
+                    }
+                    if (window.buyBtnSelector[0] === '#') {
+                        var idName = window.buyBtnSelector[0].replace('#', '');
+                        node = document.getElementById(idName);
+                    }
+                } else {
+                    node = document.getElementsByClassName('product-item-detail-buy-button')[0];
+                }
+
+                node && node.click();
             }
         });
     }
