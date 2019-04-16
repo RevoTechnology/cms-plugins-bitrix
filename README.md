@@ -35,6 +35,10 @@
 
 _! После установки модуля необходимо обновить кэш списка компонентов и сниппетов в визуальном редакторе_
 
+![Компонент](http://revo.test-modules.tw1.ru/local/modules/revo.instalment/img/component.png)
+
+![Сниппет](http://revo.test-modules.tw1.ru/local/modules/revo.instalment/img/snippet.png)
+
 ## Запуск тестов
 
 ```
