@@ -10,6 +10,8 @@ class OrderData
     public $amount;
     public $prepayment_amount;
 
+    const PAYMENT_PART = 90;
+
     public function __construct($id, $amount)
     {
         $this->order_id = $id;
@@ -19,7 +21,7 @@ class OrderData
     public static function getFromGlobalParams($arParams) {
         $obj = new self('', '');
         $obj->order_id = $arParams['ORDER']['ID'];
-        $obj->amount = $arParams['PAYMENT']['SUM'];
+        $obj->amount = $arParams['PAYMENT']['SUM'] * self::PAYMENT_PART / 100;
         return $obj;
     }
 }

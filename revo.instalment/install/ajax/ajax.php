@@ -11,7 +11,7 @@ $action = trim($_REQUEST['action']);
 
 $result = false;
 switch ($action) {
-    case "registration_url":
+    case "register":
         $sessid = bitrix_sessid();
         $currentUser = \Revo\Models\RegisteredUsersTable::get($sessid);
         if (!$currentUser) {
@@ -43,13 +43,25 @@ switch ($action) {
                 $order = CSaleOrder::GetById($data->order_id);
                 if ($order) {
                     $statusId = false;
+                    $cancel = true;
+
                     switch ($data->decision) {
                         case "approved":
-                            $statusId = 'P';
-                            CSaleOrder::PayOrder(
+
+                            CSaleOrder::Update(
                                 $order['ID'],
-                                'Y'
+                                ['SUM_PAID' => intval($data->amount)]
                             );
+
+                            if (intval($data->amount) == intval($arOrder['PRICE'])) {
+                                CSaleOrder::PayOrder(
+                                    $order['ID'],
+                                    'Y'
+                                );
+                                $statusId = 'P';
+                            }
+                            $cancel = false;
+
                             break;
                     }
 
@@ -58,7 +70,7 @@ switch ($action) {
                             $order['ID'],
                             $statusId
                         );
-                    } else {
+                    } else if ($cancel) {
                         CSaleOrder::CancelOrder($order['ID'], 'Y', 'Auto cancel from revo service');
                     }
                     $result = ['result' => 'success', 'message' => 'Order updated'];

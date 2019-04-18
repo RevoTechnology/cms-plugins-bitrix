@@ -1,4 +1,54 @@
+function revoModal() {
+    var modal = document.getElementById('revo-modal-window');
+    return modal;
+}
+
+function revoShowModal(fastBuyMode, orderModeUrl) {
+    let successCallback = function(data) {
+        if (data.url) {
+            REVO.Form.show(data.url, '#revo-iframe-container');
+
+            revoModal().style.display = 'block';
+            window.revoSent = false;
+            window.ORDER_MODE_URL = orderModeUrl;
+        } else {
+            if (fastBuyMode) {
+                document.getElementsByClassName('product-item-detail-buy-button')[0].click();
+            }
+
+            if (orderModeUrl) {
+                REVO.Form.show(orderModeUrl, '#revo-iframe-container');
+
+                revoModal().style.display = 'block';
+                window.ORDER_MODE = true;
+            }
+        }
+    };
+
+    let failureCallback = function () {
+
+    };
+
+    let data = {
+        'action': 'register'
+    };
+
+    BX.ajax({
+        timeout: 120,
+        method: 'POST',
+        dataType: 'json',
+        url: '/ajax/revo.instalment/ajax.php',
+        data:  data,
+        onsuccess: successCallback,
+        onfailure: failureCallback
+    });
+}
+
 BX.ready(function() {
+    var MIN_PRICE = 3000;
+    var INSTALMENT_PERIOD = 12;
+
+
     window.onmessage = function(e) {
         console.log(e);
         return;
@@ -17,15 +67,10 @@ BX.ready(function() {
             }
             window.productDetailMode = true;
             window.buyBtnSelector = this.dataset.buybtn;
-            showModal(true);
+            revoShowModal(true);
             return BX.PreventDefault(e);
         }
     );
-
-    function revoModal() {
-        var modal = document.getElementById('revo-modal-window');
-        return modal;
-    }
 
     if (REVO && REVO.Form) {
         REVO.Form.onClose(function() {
@@ -33,6 +78,7 @@ BX.ready(function() {
         });
 
         REVO.Form.onResult(function(result) {
+            console.log(result);
             revoModal().style.display = 'none';
             if (window.productDetailMode) {
                 var node = false;
@@ -51,6 +97,16 @@ BX.ready(function() {
 
                 node && node.click();
             }
+
+            if (window.ORDER_MODE_URL) {
+                REVO.Form.show(window.ORDER_MODE_URL, '#revo-iframe-container');
+
+                revoModal().style.display = 'block';
+            }
+
+            if (window.ORDER_MODE) {
+                location.href = '/personal/orders/';
+            }
         });
     }
 
@@ -61,7 +117,7 @@ BX.ready(function() {
                     if (window.revoSent) return;
                     window.revoSent = true;
 
-                    showModal();
+                    revoShowModal();
                 });
             }
         });
@@ -77,42 +133,11 @@ BX.ready(function() {
             BX.bind(document.getElementById('revo-modal-window'), 'click', function () {
                 this.style.display = 'none' ;
             });
+
+            var event = new Event('revo_modal_ready');
+            document.dispatchEvent(event);
         }
     });
-
-
-    function showModal(fastBuyMode) {
-        let successCallback = function(data) {
-            if (data.url) {
-                REVO.Form.show(data.url, '#revo-iframe-container');
-
-                revoModal().style.display = 'block';
-                window.revoSent = false;
-            } else {
-                if (fastBuyMode) {
-                    document.getElementsByClassName('product-item-detail-buy-button')[0].click();
-                }
-            }
-        };
-
-        let failureCallback = function () {
-
-        };
-
-        let data = {
-            'action': 'registration_url'
-        };
-
-        BX.ajax({
-            timeout: 120,
-            method: 'POST',
-            dataType: 'json',
-            url: '/ajax/revo.instalment/ajax.php',
-            data:  data,
-            onsuccess: successCallback,
-            onfailure: failureCallback
-        });
-    }
 
     function updatePrice() {
         var priceEl = document.getElementsByClassName('product-item-detail-price-current')[0];
@@ -120,8 +145,8 @@ BX.ready(function() {
             var price = parseFloat(document.getElementsByClassName('product-item-detail-price-current')[0].innerText.replace(/[^0-9]/, ''));
             var btnEl = document.getElementsByClassName('product-item-detail-buy-button')[0];
 
-            if (btnEl) {
-                var priceMonthly = Math.round(price / 3);
+            if (btnEl && price >= MIN_PRICE) {
+                var priceMonthly = Math.round(price / INSTALMENT_PERIOD);
                 var link = document.createElement('a');
 
                 link.innerHTML = BX.message('REVO_BUY_DETAIL').replace('#PRICE#', priceMonthly);
