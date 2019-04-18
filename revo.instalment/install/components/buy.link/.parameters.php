@@ -9,7 +9,7 @@ $arComponentParameters = array(
             "TYPE" => "STRING",
             "DEFAULT" => '={$_REQUEST["ELEMENT_ID"]}'
         ),
-        "MONTHLY_PRICE" => array(
+        "PRICE" => array(
             "PARENT" => "BASE",
             "NAME" => GetMessage("REVO_BUY_PARAM_PRICE"),
             "TYPE" => "STRING",
