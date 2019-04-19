@@ -63,4 +63,29 @@ class SDKTest extends PHPUnit\Framework\TestCase
 
         $this->assertTrue($response['status'] == 'ok', 'Finalize order request did not sent');
     }
+
+    public function testOrderData() {
+        if (!\Bitrix\Main\Loader::includeModule('revo.instalment')) {
+            $this->fail('Module not installed');
+        }
+
+        $orderData = \Revo\Dto\OrderData::getFromGlobalParams([
+            'ORDER' => ['ID' => 4],
+            'PAYMENT' => ['SUM' => 300]
+        ]);
+
+        $this->assertEquals($orderData->order_id,4);
+        $this->assertEquals($orderData->amount,300);
+
+        \Bitrix\Main\Config\Option::set('revo.instalment', 'detail_max_order_part', 50);
+
+        $orderData = \Revo\Dto\OrderData::getFromGlobalParams([
+            'ORDER' => ['ID' => 4],
+            'PAYMENT' => ['SUM' => 300]
+        ]);
+
+        $this->assertEquals($orderData->amount,150);
+
+        \Bitrix\Main\Config\Option::set('revo.instalment', 'detail_max_order_part', 100);
+    }
 }

@@ -16,11 +16,14 @@ Loc::loadMessages(__FILE__);
 
 
 $arAllOptions = array(
+    ['detail_max_order_part', Loc::getMessage('OPTIONS_DETAIL_MAX_ORDER_PART'), '100', ['text', 200]],
+    ['detail_min_price', Loc::getMessage('OPTIONS_DETAIL_MIN_PRICE'), '0', ['text', 200]],
+    ['orders_url', Loc::getMessage('OPTIONS_ORDERS_URL'), '/personal/orders/', ['text', 200]],
 );
 
 
 $arRevoModuleOptions = [
-    ['orders_url', Loc::getMessage('OPTIONS_ORDERS_URL'), '/personal/orders/', ['text', 200]],
+
     ['callback_url', Loc::getMessage('OPTIONS_API_CALLBACK'), '', ['text', 200]],
     ['redirect_url', Loc::getMessage('OPTIONS_API_REDIRECT'), '', ['text', 200]],
     ['api_merchant', Loc::getMessage('OPTIONS_API_METCHANT'), '', ['text', 100]],

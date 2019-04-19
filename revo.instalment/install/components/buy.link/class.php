@@ -4,7 +4,6 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 
 class CRevoBuyLink extends \CBitrixComponent
 {
-    const MIN_PRICE = 3000;
     /**
      * Подключает языковые файлы
      */
@@ -67,7 +66,7 @@ class CRevoBuyLink extends \CBitrixComponent
 
             $this->arParams['PRICE'] = \CPrice::GetBasePrice($this->arParams['PRODUCT_ID'])['PRICE'];
         }
-        if ($this->arParams['PRICE'] >= self::MIN_PRICE)
+        if ($this->arParams['PRICE'] >= \Bitrix\Main\Config\Option::get('revo.instalment', 'detail_min_price', 0))
             $this->includeComponentTemplate();
     }
 

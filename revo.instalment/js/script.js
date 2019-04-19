@@ -63,7 +63,6 @@ function revoShowModal(fastBuyMode, orderModeUrl) {
 }
 
 BX.ready(function() {
-    var MIN_PRICE = 3000;
     var INSTALMENT_PERIOD = 12;
 
 
@@ -146,7 +145,7 @@ BX.ready(function() {
             var price = parseFloat(document.getElementsByClassName('product-item-detail-price-current')[0].innerText.replace(/[^0-9]/, ''));
             var btnEl = document.getElementsByClassName('product-item-detail-buy-button')[0];
 
-            if (btnEl && price >= MIN_PRICE) {
+            if (btnEl && price >= REVO_MIN_PRICE) {
                 var priceMonthly = Math.round(price / INSTALMENT_PERIOD);
                 var link = document.createElement('a');
 
