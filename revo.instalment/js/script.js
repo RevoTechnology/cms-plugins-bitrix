@@ -3,6 +3,24 @@ function revoModal() {
     return modal;
 }
 
+function tryToClickAddCart() {
+    var node = false;
+    if (window.buyBtnSelector) {
+        if (window.buyBtnSelector[0] === '.') {
+            var className = window.buyBtnSelector.replace('.', '');
+            node = document.getElementsByClassName(className)[0];
+        }
+        if (window.buyBtnSelector[0] === '#') {
+            var idName = window.buyBtnSelector.replace('#', '');
+            node = document.getElementById(idName);
+        }
+    } else {
+        node = document.getElementsByClassName('product-item-detail-buy-button')[0];
+    }
+
+    node && node.click();
+}
+
 function revoShowModal(fastBuyMode, orderModeUrl) {
     let successCallback = function(data) {
         if (data.url) {
@@ -13,7 +31,7 @@ function revoShowModal(fastBuyMode, orderModeUrl) {
             window.ORDER_MODE_URL = orderModeUrl;
         } else {
             if (fastBuyMode) {
-                document.getElementsByClassName('product-item-detail-buy-button')[0].click();
+                tryToClickAddCart();
             }
 
             if (orderModeUrl) {
@@ -78,28 +96,13 @@ BX.ready(function() {
         });
 
         REVO.Form.onResult(function(result) {
-            console.log(result);
             revoModal().style.display = 'none';
             if (window.productDetailMode) {
-                var node = false;
-                if (window.buyBtnSelector) {
-                    if (window.buyBtnSelector[0] === '.') {
-                        var className = window.buyBtnSelector[0].replace('.', '');
-                        node = document.getElementsByClassName(className)[0];
-                    }
-                    if (window.buyBtnSelector[0] === '#') {
-                        var idName = window.buyBtnSelector[0].replace('#', '');
-                        node = document.getElementById(idName);
-                    }
-                } else {
-                    node = document.getElementsByClassName('product-item-detail-buy-button')[0];
-                }
-
-                node && node.click();
+                tryToClickAddCart();
             }
 
             if (window.ORDER_MODE) {
-                location.href = '/personal/orders/';
+                location.href = REVO_ORDERS_URL;
             } else if (window.ORDER_MODE_URL) {
                 REVO.Form.show(window.ORDER_MODE_URL, '#revo-iframe-container');
 

@@ -19,7 +19,8 @@ $arAllOptions = array(
 );
 
 
-$arVpbxApiOptions = [
+$arRevoModuleOptions = [
+    ['orders_url', Loc::getMessage('OPTIONS_ORDERS_URL'), '/personal/orders/', ['text', 200]],
     ['callback_url', Loc::getMessage('OPTIONS_API_CALLBACK'), '', ['text', 200]],
     ['redirect_url', Loc::getMessage('OPTIONS_API_REDIRECT'), '', ['text', 200]],
     ['api_merchant', Loc::getMessage('OPTIONS_API_METCHANT'), '', ['text', 100]],
@@ -45,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST' && strlen($Update.$Apply.$RestoreDefaul
     if (strlen($RestoreDefaults) > 0) {
         Option::delete(ADMIN_MODULE_NAME);
     } else {
-        foreach (array_merge($arAllOptions, $arVpbxApiOptions) as $arOption) {
+        foreach (array_merge($arAllOptions, $arRevoModuleOptions) as $arOption) {
             $optionName = $arOption[0];
             $optionValue = $_REQUEST[$optionName];
 
@@ -104,7 +105,7 @@ $tabControl->Begin(); ?>
 
     $tabControl->BeginNextTab();
 
-    foreach ($arVpbxApiOptions as $arOption){
+    foreach ($arRevoModuleOptions as $arOption){
 
         $val = Option::get(ADMIN_MODULE_NAME, $arOption[0], $arOption[2]);
         $type = $arOption[3];
