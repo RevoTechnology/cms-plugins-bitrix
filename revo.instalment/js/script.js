@@ -98,14 +98,12 @@ BX.ready(function() {
                 node && node.click();
             }
 
-            if (window.ORDER_MODE_URL) {
+            if (window.ORDER_MODE) {
+                location.href = '/personal/orders/';
+            } else if (window.ORDER_MODE_URL) {
                 REVO.Form.show(window.ORDER_MODE_URL, '#revo-iframe-container');
 
                 revoModal().style.display = 'block';
-            }
-
-            if (window.ORDER_MODE) {
-                location.href = '/personal/orders/';
             }
         });
     }
