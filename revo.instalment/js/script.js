@@ -110,6 +110,7 @@ BX.ready(function() {
             } else if (window.ORDER_MODE_URL) {
                 REVO.Form.show(window.ORDER_MODE_URL, '#revo-iframe-container');
                 window.ORDER_MODE_URL = false;
+                window.ORDER_MODE = true;
                 revoModal().style.display = 'block';
             } else {
                 revoModal().style.display = 'none';
