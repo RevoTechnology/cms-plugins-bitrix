@@ -122,10 +122,10 @@ $tabControl->Begin(); ?>
         $type = $arOption[3];
         ?>
         <tr>
-            <td>
+            <td width="50%" class="adm-detail-content-cell-l">
                 <?=$arOption[1]?>
             </td>
-            <td>
+            <td width="50%" class="adm-detail-content-cell-r">
                 <? if ($type[0] == 'checkbox'): ?>
                     <input type="checkbox" id="<?= htmlspecialcharsbx($arOption[0]) ?>"
                            name="<?= htmlspecialcharsbx($arOption[0]) ?>"
