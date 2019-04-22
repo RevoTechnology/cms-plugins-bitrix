@@ -132,7 +132,7 @@ $tabControl->Begin(); ?>
                            value="Y"<? if ($val == 'Y') echo " checked"; ?>><?= $arOption[4] ?>
                 <?
                 elseif ($type[0] == 'text'): ?>
-                    <input type="text" size="<?= $type[1] ?>" maxlength="255" value="<?= htmlspecialcharsbx($val) ?>"
+                    <input type="text" maxlength="<?= $type[1] ?>" value="<?= htmlspecialcharsbx($val) ?>"
                            name="<?= htmlspecialcharsbx($arOption[0]) ?>"><?= $arOption[4] ?>
                 <?
                 elseif ($type[0] == 'textarea'): ?>
