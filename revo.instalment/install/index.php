@@ -113,6 +113,7 @@ class revo_instalment extends CModule
 
         $result = \Bitrix\Sale\Internals\PaySystemActionTable::add($arAdd);
 
+
         if (!$result->isSuccess()) {
             $this->errors[] = GetMessage('REVO_MODULE_PAYMENT_FAIL');
         } else {
@@ -168,7 +169,20 @@ class revo_instalment extends CModule
                     'CONSUMER_KEY' => 'PAYSYSTEM_' . $paySystemId
                 ]);
             }
+
+            $fields = array(
+                "SERVICE_ID" => $paySystemId,
+                "SERVICE_TYPE" => Bitrix\Sale\Services\PaySystem\Restrictions\Manager::SERVICE_TYPE_PAYMENT,
+                "SORT" => 100,
+                "PARAMS" => [
+                    'MIN_VALUE' => 3000
+                ]
+            );
+
+            Bitrix\Sale\Services\PaySystem\Restrictions\Price::save($fields);
         }
+
+
         $prefix = CMain::IsHTTPS() ? 'https' : 'http' . '://' ;
             Option::set(
             $this->MODULE_ID,

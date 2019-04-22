@@ -6,6 +6,7 @@ $MESS['API_OPTIONS_TITLE'] = 'Настройки API';
 $MESS['OPTIONS_ORDERS_URL'] = 'Страница перенаправления пользователя после оформления заказа';
 $MESS['OPTIONS_DETAIL_MIN_PRICE'] = 'Минимальная цена товара для отображения виджета';
 $MESS['OPTIONS_DETAIL_MAX_ORDER_PART'] = 'Максимальная доля заказа для оплаты в рассрочку, %';
+$MESS['OPTIONS_DETAIL_MAX_ORDER_PART_MIN'] = 'Доля заказа для оплаты в рассрочку должна быть от 20% до 100%';
 $MESS['OPTIONS_API_URL'] = 'Боевой URL';
 $MESS['OPTIONS_API_TEST_URL'] = 'Тестовый URL';
 $MESS['OPTIONS_API_METCHANT'] = 'ID Магазина';

@@ -3,6 +3,7 @@
 namespace Revo;
 
 use Bitrix\Main\Config\Option;
+use Bitrix\Main\Localization\Loc;
 
 class Events
 {
@@ -23,7 +24,7 @@ class Events
 
     public function onStatusOrder($id, $val)
     {
-
+        IncludeModuleLangFile(__FILE__);
         if ($val == 'F') {
             $revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
             $order = \CSaleOrder::GetById($id);
@@ -35,6 +36,10 @@ class Events
                 \Revo\Documents::billToPDF($id, $fullPdfPath);
 
                 $result = $revoClient->finalizeOrder($order['ID'], $order['SUM_PAID'], $fullPdfPath);
+
+                if ($result['status'] != 'ok') {
+                    throw new \Bitrix\Sale\UserMessageException(Loc::getMessage('REVO_FINALIZATION_ERROR'));
+                }
 
                 Logger::log([
                     'Finalization have been sent to REVO', $result

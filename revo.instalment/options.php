@@ -58,12 +58,20 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST' && strlen($Update.$Apply.$RestoreDefaul
             if ($fieldType == 'checkbox' && $optionValue != 'Y')
                 $optionValue = 'N';
 
+            if ($optionName == 'detail_max_order_part') {
+
+                if ($optionValue < 20 || $optionValue > 100) {
+                    $APPLICATION->ThrowException(Loc::getMessage('OPTIONS_DETAIL_MAX_ORDER_PART_MIN'));
+                    $optionValue = 100;
+                }
+            }
             Option::set(ADMIN_MODULE_NAME, $optionName, $optionValue);
         }
     }
 }
-
+?><?CAdminMessage::ShowOldStyleError($APPLICATION->GetException());?><?
 $tabControl->Begin(); ?>
+
 <form method="post" action="<?=$APPLICATION->GetCurPage()?>?mid=<?=urlencode($mid)?>&amp;lang=<? echo LANGUAGE_ID ?>">
     <?
     $tabControl->BeginNextTab();
@@ -83,7 +91,7 @@ $tabControl->Begin(); ?>
                            value="Y"<? if ($val == 'Y') echo " checked"; ?>><?= $arOption[4] ?>
                 <?
                 elseif ($type[0] == 'text'): ?>
-                    <input type="text" size="<?= $type[1] ?>" maxlength="255" value="<?= htmlspecialcharsbx($val) ?>"
+                    <input type="text" maxlength="<?= $type[1] ?>" value="<?= htmlspecialcharsbx($val) ?>"
                            name="<?= htmlspecialcharsbx($arOption[0]) ?>"><?= $arOption[4] ?>
                 <?
                 elseif ($type[0] == 'textarea'): ?>
