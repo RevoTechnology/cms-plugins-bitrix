@@ -6,8 +6,7 @@ var REVO_GLOBALS = {
 };
 
 function revoModal() {
-    var modal = document.getElementById('revo-modal-window');
-    return modal;
+    return document.getElementById('revo-modal-window');
 }
 
 function tryToClickAddCart() {
@@ -25,6 +24,7 @@ function tryToClickAddCart() {
         node = document.getElementsByClassName(REVO_GLOBALS.DEFAULT_BUY_BTN_CLASS)[0] ||
             document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CHECKOUT_BTN_CLASS)[0];
     }
+
 
     node && node.click();
 }
@@ -72,12 +72,6 @@ function revoShowModal(fastBuyMode, orderModeUrl) {
 
 BX.ready(function() {
     var INSTALMENT_PERIOD = 12;
-
-
-    window.onmessage = function(e) {
-        console.log(e);
-        return;
-    };
 
     if (window.revoLoaded) return;
     window.revoLoaded = true;
@@ -179,7 +173,7 @@ BX.ready(function() {
         }
     }
 
-    BX.addCustomEvent('OnBasketChange', function (data) {
+    BX.addCustomEvent('OnBasketChange', function () {
         setTimeout(function () {updatePrice();}, 1000);
     });
 });
