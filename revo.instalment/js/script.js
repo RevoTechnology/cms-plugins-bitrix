@@ -3,7 +3,7 @@ var REVO_GLOBALS = {
     'DEFAULT_CHECKOUT_BTN_CLASS': 'basket-btn-checkout',
     'DEFAULT_DETAIL_PRICE_CLASS': 'product-item-detail-price-current',
     'DEFAULT_CART_PRICE_CLASS': 'basket-coupon-block-total-price-current',
-}
+};
 
 function revoModal() {
     var modal = document.getElementById('revo-modal-window');
