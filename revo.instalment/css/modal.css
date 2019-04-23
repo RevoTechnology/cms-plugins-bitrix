@@ -39,5 +39,11 @@
   width: 450px;
   border: none;
 }
+.rvo-buy-link {
+  display: block;
+  padding-top: 10px;
+  color: #2f3435;
+  font-weight: bold;
+}
 
 /*# sourceMappingURL=modal.css.map */

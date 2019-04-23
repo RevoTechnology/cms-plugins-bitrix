@@ -45,4 +45,11 @@
     overflow-y: scroll;
     max-height: 600px !important;
   }
+
+  &-buy-link {
+    display: block;
+    padding-top: 10px;
+    color: #2f3435;
+    font-weight: bold;
+  }
 }

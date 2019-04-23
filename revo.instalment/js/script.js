@@ -1,3 +1,10 @@
+var REVO_GLOBALS = {
+    'DEFAULT_BUY_BTN_CLASS': 'product-item-detail-buy-button',
+    'DEFAULT_CHECKOUT_BTN_CLASS': 'basket-btn-checkout',
+    'DEFAULT_DETAIL_PRICE_CLASS': 'product-item-detail-price-current',
+    'DEFAULT_CART_PRICE_CLASS': 'basket-coupon-block-total-price-current',
+}
+
 function revoModal() {
     var modal = document.getElementById('revo-modal-window');
     return modal;
@@ -15,7 +22,8 @@ function tryToClickAddCart() {
             node = document.getElementById(idName);
         }
     } else {
-        node = document.getElementsByClassName('product-item-detail-buy-button')[0];
+        node = document.getElementsByClassName(REVO_GLOBALS.DEFAULT_BUY_BTN_CLASS)[0] ||
+            document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CHECKOUT_BTN_CLASS)[0];
     }
 
     node && node.click();
@@ -74,7 +82,7 @@ BX.ready(function() {
     if (window.revoLoaded) return;
     window.revoLoaded = true;
 
-    updatePrice();
+    setTimeout(function () {updatePrice();}, 1000);
 
     BX.bindDelegate(
         document.body, 'click', {className: 'js-rvo-buy-link' },
@@ -148,10 +156,14 @@ BX.ready(function() {
     });
 
     function updatePrice() {
-        var priceEl = document.getElementsByClassName('product-item-detail-price-current')[0];
+        var priceEl = document.getElementsByClassName(REVO_GLOBALS.DEFAULT_DETAIL_PRICE_CLASS)[0]
+            || document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CART_PRICE_CLASS)[0];
+
         if (priceEl) {
-            var price = parseFloat(document.getElementsByClassName('product-item-detail-price-current')[0].innerText.replace(/[^0-9]/, ''));
-            var btnEl = document.getElementsByClassName('product-item-detail-buy-button')[0];
+            var price = parseFloat(priceEl.innerText.replace(/[^0-9]/, ''));
+
+            var btnEl = document.getElementsByClassName(REVO_GLOBALS.DEFAULT_BUY_BTN_CLASS)[0] ||
+                document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CHECKOUT_BTN_CLASS)[0];
 
             if (btnEl && price >= REVO_MIN_PRICE) {
                 var priceMonthly = Math.round(price / INSTALMENT_PERIOD);
@@ -167,18 +179,7 @@ BX.ready(function() {
         }
     }
 
-
-    function fastOrder() {
-        var data = {};
-
-        BX.ajax({
-            method: 'POST',
-            dataType: 'json',
-            url: '/ajax/revo.instalment/ajax.php',
-            data:  data,
-            onsuccess: function (data) {
-                location.href = data.url;
-            }
-        });
-    }
+    BX.addCustomEvent('OnBasketChange', function (data) {
+        setTimeout(function () {updatePrice();}, 1000);
+    });
 });
