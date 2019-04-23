@@ -47,18 +47,17 @@ switch ($action) {
 
                     switch ($data->decision) {
                         case "approved":
-
-                            CSaleOrder::Update(
-                                $order['ID'],
-                                ['SUM_PAID' => intval($data->amount)]
-                            );
-
-                            if (intval($data->amount) == intval($arOrder['PRICE'])) {
+                            if (intval($data->amount) >= intval($arOrder['PRICE'])) {
                                 CSaleOrder::PayOrder(
                                     $order['ID'],
                                     'Y'
                                 );
                                 $statusId = 'P';
+                            } else {
+                                CSaleOrder::Update(
+                                    $order['ID'],
+                                    ['SUM_PAID' => intval($data->amount)]
+                                );
                             }
                             $cancel = false;
 
