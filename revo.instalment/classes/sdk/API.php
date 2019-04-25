@@ -73,11 +73,16 @@ class API
 
     public function finalizeOrder($orderId, $sum, $filePath)
     {
-        $data = json_encode(['order_id' => $orderId, 'amount' => $sum]);
-        $fields = ['body' => $data];
-        $files = ['check' => $filePath];
-        $response = $this->api->callService($fields, 'finish', $files);
-        $result = $this->api->parseReturnResponse($response);
+        try {
+            $data = json_encode(['order_id' => $orderId, 'amount' => $sum]);
+            $fields = ['body' => $data];
+            $files = ['check' => $filePath];
+            $response = $this->api->callService($fields, 'finish', $files);
+            $result = $this->api->parseReturnResponse($response);
+        } catch (Error $e) {
+            return false;
+        }
+
 
         return $result;
     }
