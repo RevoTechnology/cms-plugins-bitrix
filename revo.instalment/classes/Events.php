@@ -35,9 +35,14 @@ class Events
                 $fullPdfPath = $_SERVER['DOCUMENT_ROOT'] . $pdfPath;
                 \Revo\Documents::billToPDF($id, $fullPdfPath);
 
-                $result = $revoClient->finalizeOrder($order['ID'], $order['SUM_PAID'], $fullPdfPath);
 
-                if ($result['status'] != 'ok') {
+                $result = $revoClient->finalizeOrder(
+                    $order['ID'],
+                    $order['SUM_PAID'],
+                    $fullPdfPath
+                );
+
+                if ($result['status'] !== 'ok') {
                     throw new \Bitrix\Sale\UserMessageException(Loc::getMessage('REVO_FINALIZATION_ERROR'));
                 }
 
