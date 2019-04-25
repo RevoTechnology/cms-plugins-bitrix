@@ -80,7 +80,10 @@ class API
             $response = $this->api->callService($fields, 'finish', $files);
             $result = $this->api->parseReturnResponse($response);
         } catch (Error $e) {
-            return false;
+            return [
+                'result' => 'error',
+                'msg' => $e->getMessage()
+            ];
         }
 
 
