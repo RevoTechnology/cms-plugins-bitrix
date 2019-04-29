@@ -31,12 +31,12 @@ function tryToClickAddCart() {
 
 function revoShowModal(fastBuyMode, orderModeUrl) {
     let successCallback = function(data) {
-        if (data.url) {
+        if (data.url && !orderModeUrl) {
             REVO.Form.show(data.url, '#revo-iframe-container');
 
             revoModal().style.display = 'block';
             window.revoSent = false;
-            window.ORDER_MODE_URL = orderModeUrl;
+            // window.ORDER_MODE_URL = orderModeUrl;
         } else {
             if (fastBuyMode) {
                 tryToClickAddCart();
