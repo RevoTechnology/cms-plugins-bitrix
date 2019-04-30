@@ -20,9 +20,9 @@
   pointer-events: auto;
 }
 .rvo-modal-window > div {
-  width: 490px;
+  width: 660px;
   position: relative;
-  margin: 1% auto;
+  margin: 0 auto;
   padding: 2rem;
   background: #fff;
   color: #444;
@@ -33,7 +33,7 @@
 }
 .rvo-iframe-container {
   overflow-y: scroll;
-  max-height: 600px !important;
+  max-height: 750px !important;
 }
 .rvo-iframe-container iframe {
   width: 450px;

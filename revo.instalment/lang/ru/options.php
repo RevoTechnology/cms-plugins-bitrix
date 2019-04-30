@@ -5,14 +5,14 @@ $MESS['API_OPTIONS_TAB'] = 'API';
 $MESS['API_OPTIONS_TITLE'] = 'Настройки API';
 $MESS['OPTIONS_ORDERS_URL'] = 'Страница перенаправления пользователя после оформления заказа';
 $MESS['OPTIONS_DETAIL_MIN_PRICE'] = 'Минимальная цена товара для отображения виджета';
-$MESS['OPTIONS_DETAIL_MAX_ORDER_PART'] = 'Максимальная доля заказа для оплаты в рассрочку, %';
-$MESS['OPTIONS_DETAIL_MAX_ORDER_PART_MIN'] = 'Доля заказа для оплаты в рассрочку должна быть от 20% до 100%';
+$MESS['OPTIONS_DETAIL_MAX_ORDER_PART'] = 'Максимальная доля заказа для оплаты частями, %';
+$MESS['OPTIONS_DETAIL_MAX_ORDER_PART_MIN'] = 'Доля заказа для оплаты частями должна быть от 20% до 100%';
 $MESS['OPTIONS_API_URL'] = 'Боевой URL';
 $MESS['OPTIONS_API_TEST_URL'] = 'Тестовый URL';
 $MESS['OPTIONS_API_METCHANT'] = 'ID Магазина';
 $MESS['OPTIONS_API_SECRET'] = 'Секретный ключ';
 $MESS['OPTIONS_API_TEST_MODE'] = 'Тестовый режим';
-$MESS['OPTIONS_API_CALLBACK'] = 'URL для возврата результатов от Рево';
+$MESS['OPTIONS_API_CALLBACK'] = 'URL для возврата результатов от РЕВО';
 $MESS['OPTIONS_API_REDIRECT'] = 'URL для возврата пользователя после регистрации или оформления заказа';
 
 

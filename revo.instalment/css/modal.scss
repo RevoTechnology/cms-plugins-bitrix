@@ -23,9 +23,9 @@
     }
 
     > div {
-      width: 490px;
+      width: 690px;
       position: relative;
-      margin: 1% auto;
+      margin: 0 auto;
       padding: 2rem;
       background: #fff;
       color: #444;
@@ -39,11 +39,11 @@
 
   &-iframe-container {
     iframe {
-      width: 450px;
+      width: 660px;
       border: none;
     }
     overflow-y: scroll;
-    max-height: 600px !important;
+    max-height: 750px !important;
   }
 
   &-buy-link {
