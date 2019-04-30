@@ -1,4 +1,4 @@
 <?php
 $MESS['REVO_BUY_NAME'] = 'Ссылка на получение лимита';
 $MESS['REVO_BUY_DESC'] = 'Ссылка на получение лимита с последующим добавлением товара в корзину';
-$MESS['REVO_BUY_SECTION_NAME'] = 'Рассрочка';
+$MESS['REVO_BUY_SECTION_NAME'] = 'Оплата частями';

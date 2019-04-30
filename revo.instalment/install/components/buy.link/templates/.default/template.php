@@ -6,5 +6,5 @@ define('INSTALMENT_PERIOD', 12);
 <a href="#" class="js-rvo-buy-link"
    data-item="<?=$arParams['ITEM_ID']?>"
    data-buybtn="<?=$arParams['BUY_BTN_SELECTOR']?>">
-    Купить за <?=round($arParams['PRICE'] / INSTALMENT_PERIOD)?> руб. в месяц
+    Оплата частями от <?=round($arParams['PRICE'] / INSTALMENT_PERIOD)?> руб. в месяц.
 </a>

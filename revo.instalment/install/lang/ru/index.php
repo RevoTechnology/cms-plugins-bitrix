@@ -1,6 +1,6 @@
 <?
-$MESS['REVO_MODULE_NAME'] = 'REVO';
-$MESS['REVO_MODULE_DESCRIPTION'] = '';
+$MESS['REVO_MODULE_NAME'] = 'РЕВО - оплата частями';
+$MESS['REVO_MODULE_DESCRIPTION'] = 'Модуль добавляет в магазин оплату заказа частями.';
 $MESS['REVO_MODULE_PARTNER_NAME'] = 'Рево - оплата частями';
 $MESS['REVO_MODULE_PAYMENT_NAME'] = 'Рево - оплата частями';
 $MESS['REVO_MODULE_PAYMENT_DESC'] = 'Оформление оплаты частями на 6/12 месяцев';
