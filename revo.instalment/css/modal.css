@@ -20,7 +20,7 @@
   pointer-events: auto;
 }
 .rvo-modal-window > div {
-  width: 660px;
+  width: 690px;
   position: relative;
   margin: 0 auto;
   padding: 2rem;
@@ -36,7 +36,7 @@
   max-height: 750px !important;
 }
 .rvo-iframe-container iframe {
-  width: 450px;
+  width: 660px;
   border: none;
 }
 .rvo-buy-link {

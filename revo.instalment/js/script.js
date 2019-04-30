@@ -100,22 +100,17 @@ BX.ready(function() {
         });
 
         REVO.Form.onResult(function(result) {
-            if (window.productDetailMode) {
-                revoModal().style.display = 'none';
-                tryToClickAddCart();
-            }
-
-            if (window.ORDER_MODE) {
-                window.revoCloseTrigger = function() {
-                    location.href = REVO_ORDERS_URL;
-                }
-            } else if (window.ORDER_MODE_URL) {
+            if (window.ORDER_MODE_URL) {
                 REVO.Form.show(window.ORDER_MODE_URL, '#revo-iframe-container');
                 window.ORDER_MODE_URL = false;
                 window.ORDER_MODE = true;
                 revoModal().style.display = 'block';
             } else {
-                revoModal().style.display = 'none';
+                window.revoCloseTrigger = function() {
+                    if (REVO_ORDERS_URL) {
+                        location.href = REVO_ORDERS_URL;
+                    }
+                }
             }
         });
     }
