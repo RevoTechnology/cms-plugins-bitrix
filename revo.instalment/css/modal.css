@@ -27,6 +27,11 @@
   background: #fff;
   color: #444;
 }
+@media (max-width: 750px) {
+  .rvo-modal-window > div {
+    width: 100%;
+  }
+}
 .rvo-modal-window h1 {
   font-size: 150%;
   margin: 0 0 15px;

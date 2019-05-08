@@ -29,6 +29,10 @@
       padding: 2rem;
       background: #fff;
       color: #444;
+      
+      @media (max-width: 750px) {
+        width: 100%;
+      }
     }
 
     h1 {
