@@ -75,8 +75,8 @@ class Instalment
 
     public function getOrderIframeUri($globalOrderParams, $backurl = false) {
         $order = new Dto\Order(
-            $globalOrderParams['USER']['EMAIL'],
-            $globalOrderParams['USER']['PERSONAL_PHONE'],
+            $globalOrderParams['PROPERTY']['EMAIL'],
+            $globalOrderParams['PROPERTY']['PHONE'],
             Dto\OrderData::getFromGlobalParams($globalOrderParams),
             Dto\Person::getFromGlobalParams($globalOrderParams)
         );

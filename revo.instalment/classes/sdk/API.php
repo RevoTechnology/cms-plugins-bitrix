@@ -6,6 +6,7 @@ use Bitrix\Main\Application;
 use Revo\Dto\Order;
 use Revo\Dto\OrderData;
 use Revo\Dto\Person;
+use Revo\Logger;
 
 class API
 {
@@ -54,9 +55,10 @@ class API
             $order = Converter::convertObjectToUtf($order);
         }
         $order = json_encode($order);
-
+        Logger::log($order, 'order_link');
         $response = $this->api->callService($order, 'order');
         $result = $this->api->parseOrderResponse($response);
+        Logger::log($result, 'order_link');
 
         return $result;
 

@@ -7,7 +7,11 @@ use Bitrix\Main\Config\Option;
 
 class Logger
 {
+    static $_debugMode = true;
+
     public static function log($el, $prefix = 'log') {
+        if (!self::$_debugMode) return;
+
         $bLog = Option::get('revo.instalment', 'log', 'Y') != 'N';
 
         if (!$bLog) return;
