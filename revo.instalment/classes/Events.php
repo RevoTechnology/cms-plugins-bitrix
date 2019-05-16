@@ -25,10 +25,12 @@ class Events
     public function onStatusOrder($id, $val)
     {
         IncludeModuleLangFile(__FILE__);
-        if ($val == 'F') {
-            $revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
-            $order = \CSaleOrder::GetById($id);
-            if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
+        $returnStatus = Option::get('revo.instalment', 'return_status', 'RP');
+        $revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
+        $order = \CSaleOrder::GetById($id);
+
+        if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
+            if ($val == 'F') {
                 $revoClient = Instalment::getInstance();
 
                 $pdfPath = '/upload/check/' . $id . '.pdf';
@@ -49,18 +51,12 @@ class Events
                 Logger::log([
                     'Finalization have been sent to REVO', $result
                 ], 'finalization');
-            }
-        }
-    }
 
-    public function onCancelOrder($id, $val, $description) {
-        if ($val == 'Y') {
-            $order = \CSaleOrder::GetById($id);
-            $revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
-            if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
+            } elseif ($val == $returnStatus) {
                 $revoClient = Instalment::getInstance();
                 $result = $revoClient->returnOrder($order['SUM_PAID'], $id);
                 Logger::log($result, 'cancel');
+
             }
         }
     }

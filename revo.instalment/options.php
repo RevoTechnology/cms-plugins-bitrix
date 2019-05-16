@@ -19,6 +19,7 @@ $arAllOptions = array(
     ['detail_max_order_part', Loc::getMessage('OPTIONS_DETAIL_MAX_ORDER_PART'), '100', ['text', 200]],
     ['detail_min_price', Loc::getMessage('OPTIONS_DETAIL_MIN_PRICE'), '0', ['text', 200]],
     ['orders_url', Loc::getMessage('OPTIONS_ORDERS_URL'), '/personal/orders/', ['text', 200]],
+    ['return_status', Loc::getMessage('OPTIONS_RETURN_STATUS_CODE'), 'RB', ['text', 200]],
 );
 
 
