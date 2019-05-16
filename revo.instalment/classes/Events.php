@@ -52,4 +52,16 @@ class Events
             }
         }
     }
+
+    public function onCancelOrder($id, $val, $description) {
+        if ($val == 'Y') {
+            $order = \CSaleOrder::GetById($id);
+            $revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
+            if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
+                $revoClient = Instalment::getInstance();
+                $result = $revoClient->returnOrder($order['SUM_PAID'], $id);
+                Logger::log($result, 'cancel');
+            }
+        }
+    }
 }

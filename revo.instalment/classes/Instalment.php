@@ -90,6 +90,10 @@ class Instalment
         return $this->_client->finalizeOrder($orderId, $sum, $filePath);
     }
 
+    public function returnOrder($orderId, $sum) {
+        return $this->_client->returnOrder($sum, $orderId);
+    }
+
     public function getEndpoint() {
         return $this->_endpoint;
     }

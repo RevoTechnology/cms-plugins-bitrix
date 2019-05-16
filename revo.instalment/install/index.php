@@ -73,12 +73,14 @@ class revo_instalment extends CModule
     {
         RegisterModuleDependences('main', 'onProlog',$this->MODULE_ID, '\Revo\Events','onProlog');
         RegisterModuleDependences('sale', 'OnSaleStatusOrder',$this->MODULE_ID, '\Revo\Events','onStatusOrder');
+        RegisterModuleDependences('sale', 'OnSaleCancelOrder',$this->MODULE_ID, '\Revo\Events','onCancelOrder');
     }
 
     public function UnInstallEvents()
     {
         UnRegisterModuleDependences('main', 'onProlog',$this->MODULE_ID, '\Revo\Events','onProlog');
         UnRegisterModuleDependences('sale', 'OnSaleStatusOrder',$this->MODULE_ID, '\Revo\Events','onStatusOrder');
+        UnRegisterModuleDependences('sale', 'OnSaleCancelOrder',$this->MODULE_ID, '\Revo\Events','onCancelOrder');
     }
 
     public function InstallDb()
