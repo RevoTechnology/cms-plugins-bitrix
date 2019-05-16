@@ -7,8 +7,20 @@ class Documents
         \Bitrix\Main\Loader::includeModule('sale');
         $arPaySysAction["ENCODING"] = "";
         $arOrder = \CSaleOrder::GetByID($ORDER_ID);
-        \CSalePaySystemAction::InitParamArrays($arOrder, $arOrder["ID"]);
-
+        $objPaySys = new \CSalePaySystemAction;
+        $dbPaySysAction = $objPaySys->GetList(
+            array(),
+            array(
+                'PAY_SYSTEM_ID' => $arOrder['PAY_SYSTEM_ID'],
+                'PERSON_TYPE_ID' => $arOrder['PERSON_TYPE_ID']
+            ),
+            false,
+            array('nTopCount' => 1),
+            array('NAME', 'ACTION_FILE', 'NEW_WINDOW', 'PARAMS', 'ENCODING')
+        );
+        if ($arPaySysAction = $dbPaySysAction->Fetch()) {
+            \CSalePaySystemAction::InitParamArrays($arOrder, $arOrder["ID"], $arPaySysAction['PARAMS']);
+        }
 
         if ($_REQUEST['BLANK'] == 'Y')
             $blank = true;
@@ -254,7 +266,7 @@ class Documents
         );
         if ($arBasket = $dbBasket->Fetch())
         {
-            $arCurFormat = \CCurrencyLang::GetCurrencyFormat($GLOBALS["SALE_INPUT_PARAMS"]["ORDER"]["CURRENCY"]);
+            $arCurFormat = strip_tags(\CCurrencyLang::GetCurrencyFormat($GLOBALS["SALE_INPUT_PARAMS"]["ORDER"]["CURRENCY"]));
             $currency = trim(str_replace('#', '', $arCurFormat['FORMAT_STRING']));
 
             $arColsCaption = array(
