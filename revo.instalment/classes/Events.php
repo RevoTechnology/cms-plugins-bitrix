@@ -54,7 +54,7 @@ class Events
 
             } elseif ($val == $returnStatus) {
                 $revoClient = Instalment::getInstance();
-                $result = $revoClient->returnOrder($order['SUM_PAID'], $id);
+                $result = $revoClient->returnOrder($id, $order['SUM_PAID']);
                 Logger::log($result, 'cancel');
 
             }
