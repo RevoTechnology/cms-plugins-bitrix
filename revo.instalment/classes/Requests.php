@@ -55,11 +55,12 @@ class Requests
         foreach ($files as $name => $content) {
             $data .= "--" . $delimiter . $eol
                 . 'Content-Disposition: form-data; name="' . $name . '"; filename="' . $content['file_name'] . '"' . $eol
-                . 'Content-Transfer-Encoding: binary'.$eol
+                . 'Content-Transfer-Encoding: base64'.$eol
+                . 'Content-Type: application/pdf'.$eol
             ;
 
             $data .= $eol;
-            $data .= $content['content'] . $eol;
+            $data .= base64_encode($content['content']) . $eol;
         }
         $data .= "--" . $delimiter . "--".$eol;
 
@@ -79,6 +80,7 @@ class Requests
         ));
 
         $response = curl_exec($curl);
+        Logger::log($data, 'request');
         return $response;
     }
 }
