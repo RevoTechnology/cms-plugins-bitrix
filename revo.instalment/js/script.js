@@ -10,6 +10,8 @@ function revoModal() {
 }
 
 function tryToClickAddCart() {
+    return;
+
     var node = false;
     if (window.buyBtnSelector) {
         if (window.buyBtnSelector[0] === '.') {
