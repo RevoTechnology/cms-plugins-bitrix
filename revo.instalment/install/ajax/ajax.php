@@ -23,7 +23,7 @@ switch ($action) {
         }
 
         $el = \Revo\Instalment::getInstance();
-        $result['url'] = $el->getRegistrationUri();
+        $result['url'] = $el->getRegistrationUri($_SERVER['HTTP_REFERER']);
         break;
     default:
         $data = file_get_contents("php://input");
