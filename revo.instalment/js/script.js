@@ -110,7 +110,7 @@ BX.ready(function() {
             } else {
                 window.revoCloseTrigger = function() {
                     if (REVO_ORDERS_URL) {
-                        // location.href = REVO_ORDERS_URL;
+                        location.href = REVO_ORDERS_URL;
                     }
                 }
             }
