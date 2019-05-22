@@ -25,6 +25,9 @@ $_SERVER['SERVER_NAME'] = array_key_exists('SERVER_NAME', $_SERVER)? $_SERVER['S
 
 define('NO_KEEP_STATISTIC', true);
 define('STOP_STATISTICS', true);
+define('NOT_CHECK_PERMISSIONS', true);
+define('SITE_ID', 's1');
+
 include_once $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php';
 
 error_reporting(E_ERROR);

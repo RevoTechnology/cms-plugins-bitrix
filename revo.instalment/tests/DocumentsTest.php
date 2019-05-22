@@ -19,10 +19,7 @@ class DocumentsTest extends PHPUnit\Framework\TestCase
             'Pdf was not created'
         );
 
-        var_dump($fullPath);
-
-
-//        unlink($fullPath);
+        unlink($fullPath);
 
 
     }
