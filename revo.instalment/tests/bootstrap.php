@@ -32,3 +32,23 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_befo
 
 error_reporting(E_ERROR);
 ini_set('display_errors', '1');
+
+function postRequest($url, $data, $json = false) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $json ? json_encode($data) : http_build_query($data));
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_HEADER, 1);
+    curl_setopt($ch, CURLOPT_URL, 'https://' . $_SERVER['HTTP_HOST'] . $url);
+    curl_setopt($ch, CURLOPT_REFERER, 'https://' . $_SERVER['HTTP_HOST'] . $url);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+    $webPage = curl_exec($ch);
+    curl_close($ch);
+    return $webPage;
+}

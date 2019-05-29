@@ -22,6 +22,7 @@ class RegisteredUsersTable extends DataManager
             new Entity\DatetimeField('timestamp'),
             new Entity\StringField('sessid'),
             new Entity\BooleanField('approved'),
+            new Entity\BooleanField('declined')
         );
     }
 

@@ -20,6 +20,9 @@ switch ($action) {
             $result['url'] = false;
             $result['message'] = 'registered';
             break;
+        } elseif ($currentUser['declined']) {
+            $result['message'] = 'declined';
+            break;
         }
 
         $el = \Revo\Instalment::getInstance();
@@ -36,7 +39,7 @@ switch ($action) {
             if ($registeredUser = \Revo\Models\RegisteredUsersTable::get($data->order_id)) {
                 \Revo\Models\RegisteredUsersTable::update(
                     $registeredUser['id'],
-                    ['approved' => true]
+                    [($data->decision == 'approved' ? 'approved' : 'declined') => true]
                 );
                 $result = ['result' => 'success', 'message' => 'User updated'];
             } else {

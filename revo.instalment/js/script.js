@@ -33,7 +33,10 @@ function tryToClickAddCart() {
 
 function revoShowModal(fastBuyMode, orderModeUrl) {
     let successCallback = function(data) {
-        if (data.url && !orderModeUrl) {
+        if (data.message === 'declined') {
+            alert('Вам отказано в кредитном лимите.');
+            return false;
+        } else if (data.url && !orderModeUrl) {
             REVO.Form.show(data.url, '#revo-iframe-container');
 
             revoModal().style.display = 'block';
@@ -121,6 +124,10 @@ BX.ready(function() {
         document.getElementsByName('PAY_SYSTEM_ID').forEach(function (a) {
             if (parseInt(a.value) === parseInt(REVO_PAY_SYSTEM_ID)) {
                 BX.bind(a.parentNode, 'click', function () {
+                    if (REVO_REQUEST_DECLINED) {
+                        alert('Вам отказано в кредитном лимите.');
+                        return;
+                    }
                     if (window.revoSent) return;
                     window.revoSent = true;
 

@@ -3,6 +3,10 @@
 class ModuleTest extends PHPUnit\Framework\TestCase
 {
     const MODULE_ID = 'revo.instalment';
+    private function _post($url, $data) {
+
+    }
+
     public function testInstall() {
         global $USER;
         $USER->Authorize(1);
@@ -17,6 +21,10 @@ class ModuleTest extends PHPUnit\Framework\TestCase
         $module->DoInstall();
 
         $this->assertTrue(\Bitrix\Main\Loader::includeModule(self::MODULE_ID), '�� ������� ���������� ������');
+
+    }
+
+    public function testDeclined() {
 
     }
 }
