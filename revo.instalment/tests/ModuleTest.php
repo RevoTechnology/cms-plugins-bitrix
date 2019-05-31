@@ -3,9 +3,6 @@
 class ModuleTest extends PHPUnit\Framework\TestCase
 {
     const MODULE_ID = 'revo.instalment';
-    private function _post($url, $data) {
-
-    }
 
     public function testInstall() {
         global $USER;
