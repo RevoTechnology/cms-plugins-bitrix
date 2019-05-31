@@ -71,7 +71,7 @@ class Client
 
             return $response;
         } catch (\Exception $e) {
-            \Revo\Logger::log([$this->buildUrl($type, $query), $response], 'requests');
+            \Revo\Logger::log([$this->buildUrl($type, $query), $data, $response], 'requests');
             throw new Error([], $e);
         }
     }
