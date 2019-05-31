@@ -3,6 +3,7 @@
 namespace Revo;
 
 use Bitrix\Main\Config\Option;
+use Bitrix\Main\Loader;
 use Bitrix\Main\Localization\Loc;
 use Revo\Models\RegisteredUsersTable;
 
@@ -10,18 +11,19 @@ class Events
 {
     public function onProlog()
     {
-        $a = \Bitrix\Main\Page\Asset::getInstance();
-        $a->addJs('/local/modules/revo.instalment/js/script.js');
-        $a->addJs(Instalment::getInstance()->getEndpoint() . '/javascripts/iframe/v2/revoiframe.js');
-        $a->addString('<link href="/local/modules/revo.instalment/css/modal.css" type="text/css" rel="stylesheet" />');
-        $a->addString('<script>REVO_PAY_SYSTEM_ID=' . intval(Option::get('revo.instalment', 'paysys_id', 0)) . ';</script>');
-        $a->addString('<script>REVO_MIN_PRICE=' . intval(Option::get('revo.instalment', 'detail_min_price', 0)) . ';</script>');
-        $a->addString('<script>REVO_REQUEST_DECLINED=' . intval(RegisteredUsersTable::get(bitrix_sessid())['declined']) . ';</script>');
-        $a->addString('<script>REVO_ORDERS_URL = "' .
-            Option::get('revo.instalment', 'orders_url', '/personal/orders/') .
-            '";</script>');
-
-        \CJSCore::Init(array('revo.instalment'));
+        if (Loader::includeModule('revo.instalment')) {
+            $a = \Bitrix\Main\Page\Asset::getInstance();
+            $a->addJs('/local/modules/revo.instalment/js/script.js');
+            $a->addJs(Instalment::getInstance()->getEndpoint() . '/javascripts/iframe/v2/revoiframe.js');
+            $a->addString('<link href="/local/modules/revo.instalment/css/modal.css" type="text/css" rel="stylesheet" />');
+            $a->addString('<script>REVO_PAY_SYSTEM_ID=' . intval(Option::get('revo.instalment', 'paysys_id', 0)) . ';</script>');
+            $a->addString('<script>REVO_MIN_PRICE=' . intval(Option::get('revo.instalment', 'detail_min_price', 0)) . ';</script>');
+            $a->addString('<script>REVO_REQUEST_DECLINED=' . intval(RegisteredUsersTable::get(bitrix_sessid())['declined']) . ';</script>');
+            $a->addString('<script>REVO_ORDERS_URL = "' .
+                Option::get('revo.instalment', 'orders_url', '/personal/orders/') .
+                '";</script>');
+            \CJSCore::Init(array('revo.instalment'));
+        }
     }
 
     public function onStatusOrder($id, $val)
