@@ -130,7 +130,8 @@ BX.ready(function() {
                 }
                 if (!clickBound) {
                     clickBound = true;
-                    BX.bind(a.parentNode, 'click', function () {
+
+                    BX.bind(document.body, 'bxchange', {name: a.name, value: a.value}, function () {
                         if (REVO_REQUEST_DECLINED) {
                             alert('Вам отказано в кредитном лимите.');
                             return;
