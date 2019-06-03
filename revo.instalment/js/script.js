@@ -120,22 +120,27 @@ BX.ready(function() {
         });
     }
 
+    let clickBound = false;
+
     setInterval(function () {
         document.getElementsByName('PAY_SYSTEM_ID').forEach(function (a) {
             if (parseInt(a.value) === parseInt(REVO_PAY_SYSTEM_ID)) {
                 if (REVO_REQUEST_DECLINED) {
                     a.disabled = 'disabled';
                 }
-                BX.bind(a.parentNode, 'click', function () {
-                    if (REVO_REQUEST_DECLINED) {
-                        alert('Вам отказано в кредитном лимите.');
-                        return;
-                    }
-                    if (window.revoSent) return;
-                    window.revoSent = true;
+                if (!clickBound) {
+                    clickBound = true;
+                    BX.bind(a.parentNode, 'click', function () {
+                        if (REVO_REQUEST_DECLINED) {
+                            alert('Вам отказано в кредитном лимите.');
+                            return;
+                        }
+                        if (window.revoSent) return;
+                        window.revoSent = true;
 
-                    revoShowModal();
-                });
+                        revoShowModal();
+                    });
+                }
             }
         });
     }, 1000);
