@@ -131,7 +131,15 @@ BX.ready(function() {
                 if (!clickBound) {
                     clickBound = true;
 
-                    BX.bind(document.body, 'bxchange', {name: a.name, value: a.value}, function () {
+                    BX.bindDelegate(document.body, 'click', {'callback': function(obj) {
+                        let a = false;
+                        for (let i in obj.childNodes) {
+                            if (obj.childNodes[i].id === 'ID_PAY_SYSTEM_ID_'+REVO_PAY_SYSTEM_ID) {
+                                a = true;
+                            }
+                        }
+                        return a;
+                    }}, function () {
                         if (REVO_REQUEST_DECLINED) {
                             alert('Вам отказано в кредитном лимите.');
                             return;
