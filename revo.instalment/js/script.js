@@ -171,25 +171,27 @@ BX.ready(function() {
     });
 
     function updatePrice() {
-        var priceEl = document.getElementsByClassName(REVO_GLOBALS.DEFAULT_DETAIL_PRICE_CLASS)[0]
-            || document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CART_PRICE_CLASS)[0];
+        if (REVO_ADD_PRICE_BLOCK) {
+            var priceEl = document.getElementsByClassName(REVO_GLOBALS.DEFAULT_DETAIL_PRICE_CLASS)[0]
+                || document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CART_PRICE_CLASS)[0];
 
-        if (priceEl) {
-            var price = parseFloat(priceEl.innerText.replace(/[^0-9]/, ''));
+            if (priceEl) {
+                var price = parseFloat(priceEl.innerText.replace(/[^0-9]/, ''));
 
-            var btnEl = document.getElementsByClassName(REVO_GLOBALS.DEFAULT_BUY_BTN_CLASS)[0] ||
-                document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CHECKOUT_BTN_CLASS)[0];
+                var btnEl = document.getElementsByClassName(REVO_GLOBALS.DEFAULT_BUY_BTN_CLASS)[0] ||
+                    document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CHECKOUT_BTN_CLASS)[0];
 
-            if (btnEl && price >= REVO_MIN_PRICE) {
-                var priceMonthly = Math.round(price / INSTALMENT_PERIOD);
-                var link = document.createElement('a');
+                if (btnEl && price >= REVO_MIN_PRICE) {
+                    var priceMonthly = Math.round(price / INSTALMENT_PERIOD);
+                    var link = document.createElement('a');
 
-                link.innerHTML = BX.message('REVO_BUY_DETAIL').replace('#PRICE#', priceMonthly);
-                link.href = '#';
-                link.className = 'js-rvo-buy-link rvo-buy-link';
-                btnEl
-                    .parentElement
-                    .appendChild(link);
+                    link.innerHTML = BX.message('REVO_BUY_DETAIL').replace('#PRICE#', priceMonthly);
+                    link.href = '#';
+                    link.className = 'js-rvo-buy-link rvo-buy-link';
+                    btnEl
+                        .parentElement
+                        .appendChild(link);
+                }
             }
         }
     }

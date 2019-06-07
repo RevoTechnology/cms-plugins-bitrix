@@ -11,6 +11,7 @@ class Events
 {
     public function onProlog()
     {
+        global $USER;
         if (Loader::includeModule('revo.instalment')) {
             $a = \Bitrix\Main\Page\Asset::getInstance();
             $a->addJs('/local/modules/revo.instalment/js/script.js');
@@ -19,6 +20,9 @@ class Events
             $a->addString('<script>REVO_PAY_SYSTEM_ID=' . intval(Option::get('revo.instalment', 'paysys_id', 0)) . ';</script>');
             $a->addString('<script>REVO_MIN_PRICE=' . intval(Option::get('revo.instalment', 'detail_min_price', 0)) . ';</script>');
             $a->addString('<script>REVO_REQUEST_DECLINED=' . intval(RegisteredUsersTable::get(bitrix_sessid())['declined']) . ';</script>');
+            $a->addString('<script>REVO_ADD_PRICE_BLOCK=' . intval(
+                Option::get('revo.instalment', 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin()
+                ) . ';</script>');
             $a->addString('<script>REVO_ORDERS_URL = "' .
                 Option::get('revo.instalment', 'orders_url', '/personal/orders/') .
                 '";</script>');
