@@ -1,6 +1,6 @@
 <?
 if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
-
+use Bitrix\Main\Config\Option;
 
 class CRevoBuyLink extends \CBitrixComponent
 {
@@ -61,12 +61,18 @@ class CRevoBuyLink extends \CBitrixComponent
     }
 
     protected function getResult() {
+        global $USER;
+
         if (!$this->arParams['PRICE']) {
             \Bitrix\Main\Loader::includeModule('catalog');
 
             $this->arParams['PRICE'] = \CPrice::GetBasePrice($this->arParams['PRODUCT_ID'])['PRICE'];
         }
-        if ($this->arParams['PRICE'] >= \Bitrix\Main\Config\Option::get('revo.instalment', 'detail_min_price', 0))
+
+        $showBlock = Option::get('revo.instalment', 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin();
+        $minPrice = Option::get('revo.instalment', 'detail_min_price', 0);
+
+        if ($showBlock && $this->arParams['PRICE'] >= $minPrice)
             $this->includeComponentTemplate();
     }
 
