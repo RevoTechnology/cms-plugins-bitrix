@@ -171,7 +171,7 @@ BX.ready(function() {
     });
 
     function updatePrice() {
-        if (REVO_ADD_PRICE_BLOCK) {
+        if (REVO_ADD_PRICE_BLOCK > 0) {
             var priceEl = document.getElementsByClassName(REVO_GLOBALS.DEFAULT_DETAIL_PRICE_CLASS)[0]
                 || document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CART_PRICE_CLASS)[0];
 
