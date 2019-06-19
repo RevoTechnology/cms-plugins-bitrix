@@ -36,7 +36,9 @@ switch ($action) {
          */
         if ($data->order_id) {
             \Bitrix\Main\Loader::includeModule('sale');
-            if ($registeredUser = \Revo\Models\RegisteredUsersTable::get($data->order_id)) {
+            if (strpos($data->order_id, ':') !== false) {
+                $session = array_shift(explode(':', $data->order_id));
+                $registeredUser = \Revo\Models\RegisteredUsersTable::get($session);
                 \Revo\Models\RegisteredUsersTable::update(
                     $registeredUser['id'],
                     [($data->decision == 'approved' ? 'approved' : 'declined') => true]

@@ -37,7 +37,7 @@ class API
         $order = new Order(
             $email,
             $phone,
-            new OrderData(bitrix_sessid(), 1),
+            new OrderData(bitrix_sessid().":".uniqid(), 1),
             new Person($name,$last_name,'')
         );
 
