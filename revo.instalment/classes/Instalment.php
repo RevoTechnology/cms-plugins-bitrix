@@ -4,6 +4,7 @@ namespace Revo;
 
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Config\Option;
+use Bitrix\Main\Loader;
 use Revo\Sdk\Config;
 
 class Instalment
@@ -76,11 +77,20 @@ class Instalment
     public function getOrderIframeUri($globalOrderParams, $backurl = false) {
         global $USER;
         $u = \CUser::GetByID($USER->GetID())->Fetch();
+        Loader::includeModule('sale');
+        $rs = \CSaleBasket::GetList([], [
+            'ORDER_ID' => $globalOrderParams['ORDER']['ID']
+        ]);
+        $arCart = [];
+        while ($ar = $rs->Fetch()) {
+            $arCart[] = $ar;
+        }
         $order = new Dto\Order(
             $u['EMAIL'],
             $u['PERSONAL_PHONE'],
             Dto\OrderData::getFromGlobalParams($globalOrderParams),
-            Dto\Person::getFromGlobalParams($globalOrderParams)
+            Dto\Person::getFromGlobalParams($globalOrderParams),
+            $arCart
         );
 
         if ($backurl) $order->redirect_url = $backurl;

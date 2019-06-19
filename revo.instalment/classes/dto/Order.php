@@ -20,8 +20,9 @@ class Order
      * @var Person
      */
     public $person;
+    public $cart_items;
 
-    public function __construct($email, $phone, OrderData $order, Person $person)
+    public function __construct($email, $phone, OrderData $order, Person $person, $arCart = [])
     {
         $this->callback_url = Option::get(
             'revo.instalment',
@@ -35,5 +36,13 @@ class Order
         $this->primary_email = $email;
         $this->current_order = $order;
         $this->person = $person;
+        $this->cart_items = [];
+        foreach ($arCart as $cartItem) {
+            $oCart = new OrderItem();
+            $oCart->name = $cartItem['NAME'];
+            $oCart->price = $cartItem['PRICE'];
+            $oCart->quantity = $cartItem['QUANTITY'];
+            $this->cart_items[] = $oCart;
+        }
     }
 }
