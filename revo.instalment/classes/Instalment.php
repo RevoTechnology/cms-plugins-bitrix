@@ -77,8 +77,8 @@ class Instalment
         global $USER;
         $u = \CUser::GetByID($USER->GetID())->Fetch();
         $order = new Dto\Order(
-            $u['EMAIL']?: $globalOrderParams['PROPERTY']['EMAIL'],
-            $u['PERSONAL_PHONE'] ?: $globalOrderParams['PROPERTY']['PHONE'],
+            $u['EMAIL'],
+            $u['PERSONAL_PHONE'],
             Dto\OrderData::getFromGlobalParams($globalOrderParams),
             Dto\Person::getFromGlobalParams($globalOrderParams)
         );
