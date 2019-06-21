@@ -76,10 +76,18 @@ class Instalment
 
     public function getOrderIframeUri($globalOrderParams, $backurl = false) {
         global $USER;
+        $orderId = $globalOrderParams['ORDER']['ID'];
+
+        if (!isset($_SESSION['REVO_SAVED_ORDER_URI'])) $_SESSION['REVO_SAVED_ORDER_URI'] = [];
+
+        if (array_key_exists($orderId, $_SESSION['REVO_SAVED_ORDER_URI'])) {
+            return $_SESSION['REVO_SAVED_ORDER_URI'][$orderId];
+        }
+
         $u = \CUser::GetByID($USER->GetID())->Fetch();
         Loader::includeModule('sale');
         $rs = \CSaleBasket::GetList([], [
-            'ORDER_ID' => $globalOrderParams['ORDER']['ID']
+            'ORDER_ID' => $orderId
         ]);
         $arCart = [];
         while ($ar = $rs->Fetch()) {
@@ -95,7 +103,8 @@ class Instalment
 
         if ($backurl) $order->redirect_url = $backurl;
 
-        return $this->_client->orderIframeLink($order);
+        $_SESSION['REVO_SAVED_ORDER_URI'][$orderId] = $this->_client->orderIframeLink($order);
+        return $_SESSION['REVO_SAVED_ORDER_URI'];
     }
 
     public function finalizeOrder($orderId, $sum, $filePath) {
