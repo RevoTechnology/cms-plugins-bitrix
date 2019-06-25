@@ -80,7 +80,7 @@ class Instalment
 
         if (!isset($_SESSION['REVO_SAVED_ORDER_URI'])) $_SESSION['REVO_SAVED_ORDER_URI'] = [];
 
-        if (array_key_exists($orderId, $_SESSION['REVO_SAVED_ORDER_URI'])) {
+        if (array_key_exists($orderId, $_SESSION['REVO_SAVED_ORDER_URI']) && $_SESSION['REVO_SAVED_ORDER_URI'][$orderId]) {
             return $_SESSION['REVO_SAVED_ORDER_URI'][$orderId];
         }
 
@@ -104,7 +104,7 @@ class Instalment
         if ($backurl) $order->redirect_url = $backurl;
 
         $_SESSION['REVO_SAVED_ORDER_URI'][$orderId] = $this->_client->orderIframeLink($order);
-        return $_SESSION['REVO_SAVED_ORDER_URI'];
+        return $_SESSION['REVO_SAVED_ORDER_URI'][$orderId];
     }
 
     public function finalizeOrder($orderId, $sum, $filePath) {
