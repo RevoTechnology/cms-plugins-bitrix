@@ -27,6 +27,8 @@ define('NO_KEEP_STATISTIC', true);
 define('STOP_STATISTICS', true);
 define('NOT_CHECK_PERMISSIONS', true);
 define('SITE_ID', 's1');
+define('LANGUAGE_ID', 'ru');
+define('LID', 'ru');
 
 include_once $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/main/include/prolog_before.php';
 
