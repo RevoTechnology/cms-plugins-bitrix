@@ -77,7 +77,8 @@ class Events
 
         if ($order['PAY_SYSTEM_ID'] == $revoPaysysId && $is_cancel == 'Y') {
             $revoClient = Instalment::getInstance();
-            $result = $revoClient->returnOrder($id, $order['SUM_PAID']);
+            // @fixme - надо тянуть сумму оплаты с $revoPaysysId
+            $result = $revoClient->returnOrder($id, $order['PRICE']);
             Logger::log($result, 'cancel');
         }
     }
