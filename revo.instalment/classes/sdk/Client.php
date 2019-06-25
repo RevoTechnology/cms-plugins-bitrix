@@ -12,7 +12,9 @@ class Client
         'phone' => '/api/external/v1/client/limit',
         'preorder' => '/factoring/v1/limit/auth',
         'order' => '/factoring/v1/precheck/auth',
-        'finish' => '/factoring/v1/precheck/finish'
+        'finish' => '/factoring/v1/precheck/finish',
+        'status' => '/factoring/v1/status',
+        'cancel' => '/factoring/v1/precheck/cancel'
     ];
 
     public function __construct($config)
