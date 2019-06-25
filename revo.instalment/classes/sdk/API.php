@@ -67,7 +67,19 @@ class API
     public function returnOrder($amount, $orderId)
     {
         $data = $this->api->returnData($amount, $orderId);
-        $response = $this->api->callService($data, 'return');
+
+        // check order status
+        $status = $this->api->callService($data, 'status');
+
+        // order exists
+        if ($status && $status->current_order) {
+            // cancel limit holding
+            if ($status->current_order->status == 'hold')
+                $response = $this->api->callService($data, 'cancel');
+            else if ($status->current_order->status == 'finished')
+                $response = $this->api->callService($data, 'return');
+        }
+
         $result = $this->api->parseReturnResponse($response);
 
         return $result;
