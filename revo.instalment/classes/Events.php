@@ -30,35 +30,44 @@ class Events
         }
     }
 
-    public function onStatusOrder($id, $val)
-    {
-        IncludeModuleLangFile(__FILE__);
-        $revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
-        $order = \CSaleOrder::GetById($id);
+	public function onStatusOrder($id, $val)
+	{
+		IncludeModuleLangFile(__FILE__);
+		$returnStatus = Option::get('revo.instalment', 'return_status', 'RP');
+		$revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
+		$order = \CSaleOrder::GetById($id);
 
-        if ($order['PAY_SYSTEM_ID'] == $revoPaysysId && $val == 'F') {
-            $revoClient = Instalment::getInstance();
+		if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
+			if ($val == 'F') {
+				$revoClient = Instalment::getInstance();
 
-            $pdfPath = '/upload/check/' . $id . '.pdf';
-            $fullPdfPath = $_SERVER['DOCUMENT_ROOT'] . $pdfPath;
-            \Revo\Documents::billToPDF($id, $fullPdfPath);
+				$pdfPath = '/upload/check/' . $id . '.pdf';
+				$fullPdfPath = $_SERVER['DOCUMENT_ROOT'] . $pdfPath;
+				\Revo\Documents::billToPDF($id, $fullPdfPath);
 
 
-            $result = $revoClient->finalizeOrder(
-                $order['ID'],
-                $order['SUM_PAID'],
-                $fullPdfPath
-            );
+				$result = $revoClient->finalizeOrder(
+					$order['ID'],
+					$order['SUM_PAID'],
+					$fullPdfPath
+				);
 
-            if ($result['status'] !== 'ok') {
-                throw new \Bitrix\Sale\UserMessageException(Loc::getMessage('REVO_FINALIZATION_ERROR'));
-            }
+				if ($result['status'] !== 'ok') {
+					throw new \Bitrix\Sale\UserMessageException(Loc::getMessage('REVO_FINALIZATION_ERROR'));
+				}
 
-            Logger::log([
-                'Finalization have been sent to REVO', $result
-            ], 'finalization');
-        }
-    }
+				Logger::log([
+					'Finalization have been sent to REVO', $result
+				], 'finalization');
+
+			} elseif ($val == $returnStatus) {
+				$revoClient = Instalment::getInstance();
+				$result = $revoClient->returnOrder($id, $order['SUM_PAID']);
+				Logger::log($result, 'cancel');
+
+			}
+		}
+	}
 
     public function onCancelOrder($id, $is_cancel, $description)
     {
