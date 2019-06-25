@@ -73,12 +73,14 @@ class revo_instalment extends CModule
     {
         RegisterModuleDependences('main', 'onProlog',$this->MODULE_ID, '\Revo\Events','onProlog');
         RegisterModuleDependences('sale', 'OnSaleStatusOrder',$this->MODULE_ID, '\Revo\Events','onStatusOrder');
+        RegisterModuleDependences('sale', 'OnSaleCancelOrder',$this->MODULE_ID, '\Revo\Events','onCancelOrder');
     }
 
     public function UnInstallEvents()
     {
         UnRegisterModuleDependences('main', 'onProlog',$this->MODULE_ID, '\Revo\Events','onProlog');
         UnRegisterModuleDependences('sale', 'OnSaleStatusOrder',$this->MODULE_ID, '\Revo\Events','onStatusOrder');
+        UnRegisterModuleDependences('sale', 'OnSaleCancelOrder',$this->MODULE_ID, '\Revo\Events','onCancelOrder');
     }
 
     public function InstallDb()
@@ -97,6 +99,9 @@ class revo_instalment extends CModule
             'ALLOW_EDIT_PAYMENT' => 'Y',
             'IS_CASH' => 'N',
             'SORT' => 100,
+            'LOGOTIP' => CFile::SaveFile(CFile::MakeFileArray(
+                dirname(__FILE__) . '/img/revoplus.png'
+             ), '/revo.instalment/'),
             'ENCODING' => 'utf-8',
             'DESCRIPTION' => GetMessage('REVO_MODULE_PAYMENT_DESC'),
             'ACTION_FILE' => '/local/php_interface/include/sale_payment/revo',
