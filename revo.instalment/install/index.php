@@ -185,7 +185,7 @@ class revo_instalment extends CModule
         }
 
 
-        $prefix = CMain::IsHTTPS() ? 'https' : 'http' . '://' ;
+        $prefix = (CMain::IsHTTPS() ? 'https' : 'http') . '://' ;
             Option::set(
             $this->MODULE_ID,
             'callback_url',
