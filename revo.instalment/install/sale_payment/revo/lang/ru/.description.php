@@ -1,7 +1,7 @@
 <?
-$MESS['T_PAYSYS_DESCRIPTION'] = 'Платёжная система <a href="https://revo.ru">РЕВО - оплата частями</a>';
+$MESS['T_PAYSYS_DESCRIPTION'] = 'Платёжная система <a href="https://revo.ru">Рево - оплата частями</a>';
 $MESS['T_PAYSYS_OPT_MERCHANTID'] = 'Ваш ID в системе Revo';
-$MESS['T_PAYSYS_OPT_MERCHANTID_DESC'] = 'Вы получите его после <a href="https://revo.ru/">регистрации</a>';
+$MESS['T_PAYSYS_OPT_MERCHANTID_DESC'] = 'Вы получите его после <a href="https://revo.ru/lp/connect-manager">регистрации</a>';
 $MESS['T_PAYSYS_OPT_ORDER_ID'] = 'Order ID заказа';
 $MESS['T_PAYSYS_OPT_ORDER_ID_DESC'] = 'Уникальный id заказа на вашем сайте необходим для идентификации платежа';
 $MESS['T_PAYSYS_OPT_ORDER_SUM'] = 'Сумма заказа';
