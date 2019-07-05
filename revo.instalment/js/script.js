@@ -181,7 +181,7 @@ BX.ready(function() {
                 var btnEl = document.getElementsByClassName(REVO_GLOBALS.DEFAULT_BUY_BTN_CLASS)[0] ||
                     document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CHECKOUT_BTN_CLASS)[0];
 
-                if (btnEl && price >= REVO_MIN_PRICE) {
+                if (btnEl && price >= REVO_MIN_PRICE && (REVO_MAX_PRICE > 0 && price <= REVO_MAX_PRICE)) {
                     var priceMonthly = Math.round(price / INSTALMENT_PERIOD);
                     var link = document.createElement('a');
 

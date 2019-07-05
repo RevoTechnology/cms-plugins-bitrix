@@ -19,6 +19,7 @@ class Events
             $a->addString('<link href="/local/modules/revo.instalment/css/modal.css" type="text/css" rel="stylesheet" />');
             $a->addString('<script>REVO_PAY_SYSTEM_ID=' . intval(Option::get('revo.instalment', 'paysys_id', 0)) . ';</script>');
             $a->addString('<script>REVO_MIN_PRICE=' . intval(Option::get('revo.instalment', 'detail_min_price', 0)) . ';</script>');
+			$a->addString('<script>REVO_MAX_PRICE=' . intval(Option::get('revo.instalment', 'detail_max_price', 0)) . ';</script>');
             $a->addString('<script>REVO_REQUEST_DECLINED=' . intval(RegisteredUsersTable::get(bitrix_sessid())['declined']) . ';</script>');
             $a->addString('<script>REVO_ADD_PRICE_BLOCK=' . intval(
                     Option::get('revo.instalment', 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin()
@@ -48,7 +49,7 @@ class Events
 
                 $result = $revoClient->finalizeOrder(
                     $order['ID'],
-                    $order['SUM_PAID'],
+                    $order['PRICE'],
                     $fullPdfPath
                 );
 
@@ -62,7 +63,7 @@ class Events
 
             } elseif ($val == $returnStatus) {
                 $revoClient = Instalment::getInstance();
-                $result = $revoClient->returnOrder($id, $order['SUM_PAID']);
+                $result = $revoClient->returnOrder($id, $order['PRICE']);
                 Logger::log($result, 'cancel');
 
             }
