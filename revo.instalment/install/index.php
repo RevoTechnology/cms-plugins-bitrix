@@ -100,7 +100,7 @@ class revo_instalment extends CModule
             'IS_CASH' => 'N',
             'SORT' => 100,
             'LOGOTIP' => CFile::SaveFile(CFile::MakeFileArray(
-                dirname(__FILE__) . '/img/revoplus.png'
+                dirname(__FILE__) . '/img/logo.png'
              ), '/revo.instalment/'),
             'ENCODING' => 'utf-8',
             'DESCRIPTION' => GetMessage('REVO_MODULE_PAYMENT_DESC'),

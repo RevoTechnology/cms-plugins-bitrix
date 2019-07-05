@@ -71,8 +71,9 @@ class CRevoBuyLink extends \CBitrixComponent
 
         $showBlock = Option::get('revo.instalment', 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin();
         $minPrice = Option::get('revo.instalment', 'detail_min_price', 0);
+		$maxPrice = Option::get('revo.instalment', 'detail_max_price', 0);
 
-        if ($showBlock && $this->arParams['PRICE'] >= $minPrice)
+        if ($showBlock && $this->arParams['PRICE'] >= $minPrice && ($maxPrice && $this->arParams['PRICE'] <= $maxPrice))
             $this->includeComponentTemplate();
     }
 
