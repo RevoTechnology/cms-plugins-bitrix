@@ -8,4 +8,3 @@ define('INSTALMENT_PERIOD', 12);
    data-buybtn="<?= $arParams['BUY_BTN_SELECTOR'] ?>">
     Оплата частями от <?= round($arParams['PRICE'] / INSTALMENT_PERIOD) ?> руб. в месяц.
 </a>
-<?php
