@@ -12,7 +12,7 @@ class Logger
     public static function log($el, $prefix = 'log') {
         if (!self::$_debugMode) return;
 
-        $bLog = Option::get('revo.instalment', 'log', 'Y') != 'N';
+        $bLog = Option::get('a.revo', 'log', 'Y') != 'N';
 
         if (!$bLog) return;
 

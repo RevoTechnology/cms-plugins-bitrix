@@ -1,10 +1,10 @@
 <?
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 use \Bitrix\Main\Localization\Loc;
-\Bitrix\Main\Loader::includeModule('revo.instalment');
+\Bitrix\Main\Loader::includeModule('a.revo');
 
 Loc::loadLanguageFile(__FILE__);
-$paysystem = CSalePaySystem::GetById(\Bitrix\Main\Config\Option::get('revo.instalment', 'paysys_id'));
+$paysystem = CSalePaySystem::GetById(\Bitrix\Main\Config\Option::get('a.revo', 'paysys_id'));
 
 try {
     $url = \Revo\Instalment::getInstance()

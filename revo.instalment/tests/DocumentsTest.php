@@ -4,7 +4,7 @@ class DocumentsTest extends PHPUnit\Framework\TestCase
     const FILE_TEST_PATH = '/upload/testpdf.pdf';
 
     public function testConvertToPDF() {
-        if (!\Bitrix\Main\Loader::includeModule('revo.instalment')) {
+        if (!\Bitrix\Main\Loader::includeModule('a.revo')) {
             $this->fail('Module not installed');
         }
         $fullPath = $_SERVER['DOCUMENT_ROOT'] . self::FILE_TEST_PATH;

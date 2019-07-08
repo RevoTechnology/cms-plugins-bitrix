@@ -1,3 +1,3 @@
 <?
-$MODULE_ID = 'revo.instalment';
-define('ADMIN_MODULE_NAME', 'revo.instalment');
+$MODULE_ID = 'a.revo';
+define('ADMIN_MODULE_NAME', 'a.revo');

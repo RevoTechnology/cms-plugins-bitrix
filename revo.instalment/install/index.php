@@ -5,7 +5,7 @@ use Bitrix\Main\Localization\Loc,
 
 Loc::loadMessages(__FILE__);
 
-class revo_instalment extends CModule
+class a_revo extends CModule
 {
 
     const OPTION_PAYSYS_ID = 'paysys_id';
@@ -26,12 +26,13 @@ class revo_instalment extends CModule
         $path = str_replace('\\', '/', __FILE__);
         $path = substr($path, 0, strlen($path) - strlen('/index.php'));
         include($path . '/version.php');
-        $this->MODULE_ID = 'revo.instalment';
+        $this->MODULE_ID = 'a.revo';
         $this->MODULE_VERSION = $arModuleVersion['VERSION'];
         $this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
         $this->MODULE_NAME = GetMessage('REVO_MODULE_NAME');
         $this->MODULE_DESCRIPTION = GetMessage('REVO_MODULE_DESCRIPTION');
         $this->PARTNER_NAME = GetMessage('REVO_MODULE_PARTNER_NAME');
+        $this->PARTNER_URI = 'https://revo.ru/';
     }
 
 
@@ -101,7 +102,7 @@ class revo_instalment extends CModule
             'SORT' => 100,
             'LOGOTIP' => CFile::SaveFile(CFile::MakeFileArray(
                 dirname(__FILE__) . '/img/logo.png'
-             ), '/revo.instalment/'),
+             ), '/a.revo/'),
             'ENCODING' => 'utf-8',
             'DESCRIPTION' => GetMessage('REVO_MODULE_PAYMENT_DESC'),
             'ACTION_FILE' => '/local/php_interface/include/sale_payment/revo',
@@ -189,7 +190,7 @@ class revo_instalment extends CModule
             Option::set(
             $this->MODULE_ID,
             'callback_url',
-                $prefix . $_SERVER['HTTP_HOST'] . '/ajax/revo.instalment/ajax.php'
+                $prefix . $_SERVER['HTTP_HOST'] . '/ajax/a.revo/ajax.php'
         );
 
         Option::set(

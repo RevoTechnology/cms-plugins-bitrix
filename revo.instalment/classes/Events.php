@@ -12,30 +12,30 @@ class Events
     public function onProlog()
     {
         global $USER;
-        if (Loader::includeModule('revo.instalment')) {
+        if (Loader::includeModule('a.revo')) {
             $a = \Bitrix\Main\Page\Asset::getInstance();
-            $a->addJs('/local/modules/revo.instalment/js/script.js');
+            $a->addJs('/local/modules/a.revo/js/script.js');
             $a->addJs(Instalment::getInstance()->getEndpoint() . '/javascripts/iframe/v2/revoiframe.js');
-            $a->addString('<link href="/local/modules/revo.instalment/css/modal.css" type="text/css" rel="stylesheet" />');
-            $a->addString('<script>REVO_PAY_SYSTEM_ID=' . intval(Option::get('revo.instalment', 'paysys_id', 0)) . ';</script>');
-            $a->addString('<script>REVO_MIN_PRICE=' . intval(Option::get('revo.instalment', 'detail_min_price', 0)) . ';</script>');
-			$a->addString('<script>REVO_MAX_PRICE=' . intval(Option::get('revo.instalment', 'detail_max_price', 0)) . ';</script>');
+            $a->addString('<link href="/local/modules/a.revo/css/modal.css" type="text/css" rel="stylesheet" />');
+            $a->addString('<script>REVO_PAY_SYSTEM_ID=' . intval(Option::get('a.revo', 'paysys_id', 0)) . ';</script>');
+            $a->addString('<script>REVO_MIN_PRICE=' . intval(Option::get('a.revo', 'detail_min_price', 0)) . ';</script>');
+			$a->addString('<script>REVO_MAX_PRICE=' . intval(Option::get('a.revo', 'detail_max_price', 0)) . ';</script>');
             $a->addString('<script>REVO_REQUEST_DECLINED=' . intval(RegisteredUsersTable::get(bitrix_sessid())['declined']) . ';</script>');
             $a->addString('<script>REVO_ADD_PRICE_BLOCK=' . intval(
-                    Option::get('revo.instalment', 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin()
+                    Option::get('a.revo', 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin()
                 ) . ';</script>');
             $a->addString('<script>REVO_ORDERS_URL = "' .
-                Option::get('revo.instalment', 'orders_url', '/personal/orders/') .
+                Option::get('a.revo', 'orders_url', '/personal/orders/') .
                 '";</script>');
-            \CJSCore::Init(array('revo.instalment'));
+            \CJSCore::Init(array('a.revo'));
         }
     }
 
     public function onStatusOrder($id, $val)
     {
         IncludeModuleLangFile(__FILE__);
-        $returnStatus = Option::get('revo.instalment', 'return_status', 'RP');
-        $revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
+        $returnStatus = Option::get('a.revo', 'return_status', 'RP');
+        $revoPaysysId = Option::get('a.revo', 'paysys_id', 0);
         $order = \CSaleOrder::GetById($id);
 
         if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
@@ -73,7 +73,7 @@ class Events
     public function onCancelOrder($id, $is_cancel, $description)
     {
         IncludeModuleLangFile(__FILE__);
-        $revoPaysysId = Option::get('revo.instalment', 'paysys_id', 0);
+        $revoPaysysId = Option::get('a.revo', 'paysys_id', 0);
         $order = \CSaleOrder::GetById($id);
 
         if ($order['PAY_SYSTEM_ID'] == $revoPaysysId && $is_cancel == 'Y') {

@@ -2,7 +2,7 @@
 
 class ModuleTest extends PHPUnit\Framework\TestCase
 {
-    const MODULE_ID = 'revo.instalment';
+    const MODULE_ID = 'a.revo';
 
     public function testInstall() {
         global $USER;

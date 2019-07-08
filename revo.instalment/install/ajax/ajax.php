@@ -2,7 +2,7 @@
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
 $action = trim($_REQUEST['action']);
-\Bitrix\Main\Loader::includeModule('revo.instalment');
+\Bitrix\Main\Loader::includeModule('a.revo');
 
 \Revo\Logger::log([
     $_REQUEST,

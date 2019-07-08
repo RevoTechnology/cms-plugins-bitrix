@@ -47,7 +47,7 @@ $rootNameSpace = 'Revo';
 $classesDirPath = __DIR__ . DIRECTORY_SEPARATOR . 'classes';
 
 \Bitrix\Main\Loader::registerAutoLoadClasses(
-    'revo.instalment',
+    'a.revo',
     loadRevoClasses(
         $classesDirPath,
         $rootNameSpace,
@@ -55,6 +55,6 @@ $classesDirPath = __DIR__ . DIRECTORY_SEPARATOR . 'classes';
     )
 );
 
-\CJSCore::RegisterExt('revo.instalment', array(
-    'lang' => '/local/modules/revo.instalment/lang/'.LANGUAGE_ID.'/js.php'
+\CJSCore::RegisterExt('a.revo', array(
+    'lang' => '/local/modules/a.revo/lang/'.LANGUAGE_ID.'/js.php'
 ));

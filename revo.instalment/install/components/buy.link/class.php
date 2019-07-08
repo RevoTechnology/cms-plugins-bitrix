@@ -29,7 +29,7 @@ class CRevoBuyLink extends \CBitrixComponent
      */
     protected function checkModules()
     {
-        \Bitrix\Main\Loader::includeModule('revo.instalment');
+        \Bitrix\Main\Loader::includeModule('a.revo');
     }
 
     /**
@@ -69,9 +69,9 @@ class CRevoBuyLink extends \CBitrixComponent
             $this->arParams['PRICE'] = \CPrice::GetBasePrice($this->arParams['PRODUCT_ID'])['PRICE'];
         }
 
-        $showBlock = Option::get('revo.instalment', 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin();
-        $minPrice = Option::get('revo.instalment', 'detail_min_price', 0);
-		$maxPrice = Option::get('revo.instalment', 'detail_max_price', 0);
+        $showBlock = Option::get('a.revo', 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin();
+        $minPrice = Option::get('a.revo', 'detail_min_price', 0);
+		$maxPrice = Option::get('a.revo', 'detail_max_price', 0);
 
         if ($showBlock && $this->arParams['PRICE'] >= $minPrice && ($maxPrice && $this->arParams['PRICE'] <= $maxPrice))
             $this->includeComponentTemplate();

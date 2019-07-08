@@ -19,7 +19,7 @@ class Instalment
 
     private $_endpoint;
 
-    const MODULE_ID = 'revo.instalment';
+    const MODULE_ID = 'a.revo';
 
     private function _log($el) {
 

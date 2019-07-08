@@ -25,11 +25,11 @@ class Order
     public function __construct($email, $phone, OrderData $order, Person $person, $arCart = [])
     {
         $this->callback_url = Option::get(
-            'revo.instalment',
+            'a.revo',
             'callback_url'
         );
         $this->redirect_url = Option::get(
-            'revo.instalment',
+            'a.revo',
             'redirect_url'
         );
         $this->primary_phone = $phone;

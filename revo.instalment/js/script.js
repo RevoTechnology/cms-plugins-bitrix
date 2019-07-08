@@ -68,7 +68,7 @@ function revoShowModal(fastBuyMode, orderModeUrl) {
         timeout: 120,
         method: 'POST',
         dataType: 'json',
-        url: '/ajax/revo.instalment/ajax.php',
+        url: '/ajax/a.revo/ajax.php',
         data:  data,
         onsuccess: successCallback,
         onfailure: failureCallback
@@ -157,7 +157,7 @@ BX.ready(function() {
     BX.ajax({
         method: 'GET',
         dataType: 'html',
-        url: '/local/modules/revo.instalment/html/modal.template.html',
+        url: '/local/modules/a.revo/html/modal.template.html',
         onsuccess: function (data) {
             var doc = new DOMParser().parseFromString(data, "text/html");
             BX.append(doc.body.firstChild, document.body);
