@@ -35,7 +35,7 @@
 В стандартный компонент "Корзина товаров" модуля "Интернет-магазин" автоматически добавляется 
 ссылка оформления заказа в рассрочку.
 
-![Сниппет в корзине](http://revo.test-modules.tw1.ru/local/modules/revo.instalment/img/cart.png)
+![Сниппет в корзине](http://revo.test-modules.tw1.ru/local/modules/a.revo/img/cart.png)
 
 ## Финализация заказа
 
@@ -51,9 +51,9 @@
 
 _! После установки модуля необходимо обновить кэш списка компонентов и сниппетов в визуальном редакторе_
 
-![Компонент](http://revo.test-modules.tw1.ru/local/modules/revo.instalment/img/component.png)
+![Компонент](http://revo.test-modules.tw1.ru/local/modules/a.revo/img/component.png)
 
-![Сниппет](http://revo.test-modules.tw1.ru/local/modules/revo.instalment/img/snippet.png)
+![Сниппет](http://revo.test-modules.tw1.ru/local/modules/a.revo/img/snippet.png)
 
 ## Установка компонента в шаблон другого компонента
 
