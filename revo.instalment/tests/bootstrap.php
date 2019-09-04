@@ -1,6 +1,6 @@
 <?php
 
-#/local/modules/a.revo/tests
+#/bitrix/modules/a.revo/tests
 $_SERVER['DOCUMENT_ROOT'] = realpath(dirname(__FILE__) . '/../../../../');
 
 function shutdown()

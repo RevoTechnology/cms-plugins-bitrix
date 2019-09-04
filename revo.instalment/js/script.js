@@ -57,7 +57,7 @@ function revoShowModal(fastBuyMode, orderModeUrl) {
     };
 
     let failureCallback = function () {
-
+        alert('Server error. Please check the settings.');
     };
 
     let data = {
@@ -157,7 +157,7 @@ BX.ready(function() {
     BX.ajax({
         method: 'GET',
         dataType: 'html',
-        url: '/local/modules/a.revo/html/modal.template.html',
+        url: '/bitrix/html/a.revo/modal.template.html',
         onsuccess: function (data) {
             var doc = new DOMParser().parseFromString(data, "text/html");
             BX.append(doc.body.firstChild, document.body);

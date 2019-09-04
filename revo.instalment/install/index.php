@@ -1,7 +1,9 @@
 <?
 
+use Bitrix\Main\Application;
 use Bitrix\Main\Localization\Loc,
     \Bitrix\Main\Config\Option;
+use Bitrix\Main\Text\Encoding;
 
 Loc::loadMessages(__FILE__);
 
@@ -10,13 +12,13 @@ class a_revo extends CModule
 
     const OPTION_PAYSYS_ID = 'paysys_id';
 
-    public $MODULE_ID;
+    public $MODULE_ID = 'a.revo';
     public $MODULE_VERSION;
     public $MODULE_VERSION_DATE;
     public $MODULE_NAME;
     public $MODULE_DESCRIPTION;
     public $PARTNER_NAME;
-    public $PARTNER_URI;
+    public $PARTNER_URI = 'https://revo.ru/';
 
 
     public function __construct()
@@ -216,11 +218,48 @@ class a_revo extends CModule
 
     public function InstallFiles($arParams = array())
     {
-        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/admin/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin');
-        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/sale_payment/', $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/sale_payment', true, true);
-        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/ajax/', $_SERVER['DOCUMENT_ROOT'] . '/ajax/'.$this->MODULE_ID.'/', true);
-        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/components/', $_SERVER['DOCUMENT_ROOT'] . '/local/components/revo/', true, true);
-        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/snippets/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/', true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/admin/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin');
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/sale_payment/', $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/sale_payment', true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/ajax/', $_SERVER['DOCUMENT_ROOT'] . '/ajax/'.$this->MODULE_ID.'/', true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/components/', $_SERVER['DOCUMENT_ROOT'] . '/local/components/revo/', true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/snippets/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/', true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/css/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/css/'.$this->MODULE_ID.'/', true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/js/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/js/'.$this->MODULE_ID.'/', true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/html/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/html/'.$this->MODULE_ID.'/', true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/bitrix/snippets/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/', true, true);
+
+        $snippetsExists = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/.content.php');
+        if ($snippetsExists) {
+            $snippetsAdd = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/snippet_content/.content.add.php');
+        } else {
+            $snippetsAdd = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/snippet_content/.content.php');
+        }
+        if (Application::getInstance()->isUtfMode()) {
+            $snippetsAdd = \Bitrix\Main\Text\Encoding::convertEncoding(
+                $snippetsAdd,
+                'cp1251',
+                'utf-8'
+            );
+        }
+        $snippetsExists = $snippetsExists.$snippetsAdd;
+        file_put_contents(
+            $_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/.content.php',
+            $snippetsExists
+        );
+
+
+        if (Application::getInstance()->isUtfMode()) {
+            $textSnippet = Encoding::convertEncoding(
+                file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/revo/fast-buy.snp'),
+                'cp1251',
+                'utf-8'
+            );
+
+            file_put_contents(
+                $_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/revo/fast-buy.snp',
+                $textSnippet
+            );
+        }
         mkdir($_SERVER['DOCUMENT_ROOT'] . '/upload/check/');
         return true;
     }
@@ -228,11 +267,14 @@ class a_revo extends CModule
 
     public function UnInstallFiles()
     {
-        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/admin/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin');
-        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/sale_payment/', $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/sale_payment');
-        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/ajax/', $_SERVER['DOCUMENT_ROOT'] . '/ajax/'.$this->MODULE_ID.'/');
-        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/components/', $_SERVER['DOCUMENT_ROOT'] . '/local/components/revo/');
-        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/snippets/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/admin/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/sale_payment/', $_SERVER['DOCUMENT_ROOT'] . '/local/php_interface/include/sale_payment');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/ajax/', $_SERVER['DOCUMENT_ROOT'] . '/ajax/'.$this->MODULE_ID.'/');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/components/', $_SERVER['DOCUMENT_ROOT'] . '/local/components/revo/');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/snippets/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/css/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/css/'.$this->MODULE_ID.'/');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/js/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/js/'.$this->MODULE_ID.'/');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/html/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/html/'.$this->MODULE_ID.'/');
         rmdir($_SERVER['DOCUMENT_ROOT'] . '/upload/check/');
         return true;
     }

@@ -14,9 +14,9 @@ class Events
         global $USER;
         if (Loader::includeModule('a.revo')) {
             $a = \Bitrix\Main\Page\Asset::getInstance();
-            $a->addJs('/local/modules/a.revo/js/script.js');
+            $a->addJs('/bitrix/js/a.revo/script.js');
             $a->addJs(Instalment::getInstance()->getEndpoint() . '/javascripts/iframe/v2/revoiframe.js');
-            $a->addString('<link href="/local/modules/a.revo/css/modal.css" type="text/css" rel="stylesheet" />');
+            $a->addString('<link href="/bitrix/css/a.revo/modal.css" type="text/css" rel="stylesheet" />');
             $a->addString('<script>REVO_PAY_SYSTEM_ID=' . intval(Option::get('a.revo', 'paysys_id', 0)) . ';</script>');
             $a->addString('<script>REVO_MIN_PRICE=' . intval(Option::get('a.revo', 'detail_min_price', 0)) . ';</script>');
 			$a->addString('<script>REVO_MAX_PRICE=' . intval(Option::get('a.revo', 'detail_max_price', 0)) . ';</script>');

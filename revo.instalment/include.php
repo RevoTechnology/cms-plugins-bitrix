@@ -56,5 +56,5 @@ $classesDirPath = __DIR__ . DIRECTORY_SEPARATOR . 'classes';
 );
 
 \CJSCore::RegisterExt('a.revo', array(
-    'lang' => '/local/modules/a.revo/lang/'.LANGUAGE_ID.'/js.php'
+    'lang' => '/bitrix/modules/a.revo/lang/'.LANGUAGE_ID.'/js.php'
 ));

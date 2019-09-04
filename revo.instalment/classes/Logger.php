@@ -35,6 +35,6 @@ class Logger
         fputs($f, $el);
         fputs($f, "\r\n\r\n");
 
-        fclose($el);
+        fclose($f);
     }
 }
