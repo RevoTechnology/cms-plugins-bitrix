@@ -5,6 +5,8 @@ namespace Revo;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
+use CSaleOrder;
+use CSaleOrderPropsValue;
 use Revo\Sdk\Config;
 
 class Instalment
@@ -64,7 +66,35 @@ class Instalment
 
     public function getRegistrationUri($backurl = false) {
         global $USER;
+        \CModule::IncludeModule('sale');
         $u = \CUser::GetByID($USER->GetID())->Fetch();
+        $arOrder = CSaleOrder::GetList(['ID' => 'DESC'], [
+            'USER_ID' => $USER->GetID()
+        ])->Fetch();
+        if ($arOrder) {
+            $rsProps = CSaleOrderPropsValue::getList(
+                [],
+                [
+                    'ORDER_ID' => $arOrder['ID']
+                ]
+            );
+            while ($ar = $rsProps->Fetch()) {
+                if ($ar['CODE'] == 'FIO' && !$u['LAST_NAME']) {
+                    list(
+                        $u['LAST_NAME'],
+                        $u['NAME'],
+                        $u['SECOND_NAME']
+                        ) = explode(' ', $ar['VALUE']);
+                }
+                if (in_array($ar['CODE'], ['EMAIL'])) {
+                    $u[$ar['CODE']] = $ar['VALUE'];
+                }
+                if (in_array($ar['CODE'], ['PHONE'])) {
+                    $u['PERSONAL_PHONE'] = $ar['VALUE'];
+                }
+            }
+        }
+
         return $this->_client->registration(
             $u['PERSONAL_PHONE'],
             $u['EMAIL'],

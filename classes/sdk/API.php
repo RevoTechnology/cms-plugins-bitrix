@@ -37,13 +37,19 @@ class API
         $order = new Order(
             $email,
             $phone,
-            new OrderData(bitrix_sessid().":".uniqid(), 1),
-            new Person($name,$last_name,'')
+            new OrderData(bitrix_sessid() . ":" . uniqid(), 1),
+            new Person($name, $last_name, '')
         );
 
+        Logger::log($order, 'data');
+
         if ($backurl) $order->redirect_url = $backurl;
-        $order = \Bitrix\Main\Web\Json::encode($order);
+        if (!Application::getInstance()->isUtfMode()) {
+            $order = Converter::convertObjectToUtf($order);
+        }
+        $order = json_encode($order);
         $response = $this->api->callService($order, 'preorder');
+
         $result = $this->api->parseOrderResponse($response);
 
         return $result;
