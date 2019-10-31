@@ -7,6 +7,10 @@ use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
 use CSaleOrder;
 use CSaleOrderPropsValue;
+use Revo\Dto\Order;
+use Revo\Dto\OrderData;
+use Revo\Dto\OrderItem;
+use Revo\Dto\Person;
 use Revo\Sdk\Config;
 
 class Instalment
@@ -123,14 +127,14 @@ class Instalment
         while ($ar = $rs->Fetch()) {
             $arCart[] = $ar;
         }
+
         $order = new Dto\Order(
-            $u['EMAIL'],
-            $u['PERSONAL_PHONE'],
+            $globalOrderParams['PROPERTY']['EMAIL'] ?: $u['EMAIL'],
+            $globalOrderParams['PROPERTY']['PHONE'] ?: $u['PERSONAL_PHONE'],
             Dto\OrderData::getFromGlobalParams($globalOrderParams),
             Dto\Person::getFromGlobalParams($globalOrderParams),
             $arCart
         );
-
         if ($backurl) $order->redirect_url = $backurl;
 
         $_SESSION['REVO_SAVED_ORDER_URI'][$orderId] = $this->_client->orderIframeLink($order);
@@ -143,6 +147,32 @@ class Instalment
 
     public function returnOrder($orderId, $sum) {
         return $this->_client->returnOrder($sum, $orderId);
+    }
+
+    public function change($orderId, $arOrderParams) {
+        $rs = \CSaleBasket::GetList([], [
+            'ORDER_ID' => $orderId
+        ]);
+        $arCart = [];
+        while ($cartItem = $rs->Fetch()) {
+            $oCart = new OrderItem();
+            $oCart->name = $cartItem['NAME'];
+            $oCart->price = $cartItem['PRICE'];
+            $oCart->quantity = $cartItem['QUANTITY'];
+
+            $arCart[] = $oCart;
+        }
+        $order = new Dto\OrderDataUpdate(
+            $orderId,
+            $arOrderParams['PRICE'],
+            null,
+            $arCart
+        );
+        return $this->_client->changeOrder($order);
+    }
+
+    public function getTariffs($amount) {
+        return $this->_client->getTariffs($amount);
     }
 
     public function getEndpoint() {

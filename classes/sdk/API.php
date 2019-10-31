@@ -5,6 +5,7 @@ namespace Revo\Sdk;
 use Bitrix\Main\Application;
 use Revo\Dto\Order;
 use Revo\Dto\OrderData;
+use Revo\Dto\OrderDataUpdate;
 use Revo\Dto\Person;
 use Revo\Logger;
 
@@ -96,6 +97,42 @@ class API
             $fields = ['body' => $data];
             $files = ['check' => $filePath];
             $response = $this->api->callService($fields, 'finish', $files);
+            $result = $this->api->parseReturnResponse($response);
+        } catch (Error $e) {
+            return [
+                'result' => 'error',
+                'msg' => $e->getMessage()
+            ];
+        }
+
+
+        return $result;
+    }
+
+    public function changeOrder(OrderDataUpdate $orderUpdateData)
+    {
+        try {
+            $data = json_encode($orderUpdateData);
+
+            $response = $this->api->callService($data, 'change');
+            $result = $this->api->parseReturnResponse($response);
+        } catch (Error $e) {
+            return [
+                'result' => 'error',
+                'msg' => $e->getMessage()
+            ];
+        }
+
+
+        return $result;
+    }
+
+    public function getTariffs($amount)
+    {
+        try {
+            $data = json_encode(['amount' => $amount]);
+
+            $response = $this->api->callService($data, 'schedule');
             $result = $this->api->parseReturnResponse($response);
         } catch (Error $e) {
             return [

@@ -47,13 +47,14 @@ try {
                     $result = ['result' => 'success', 'message' => 'User updated'];
                 } else {
                     $order = CSaleOrder::GetById($data->order_id);
+
                     if ($order) {
                         $statusId = false;
                         $cancel = true;
 
                         switch ($data->decision) {
                             case "approved":
-                                if (intval($data->amount) >= intval($arOrder['PRICE'])) {
+                                if (intval($data->amount) + ($arOrder['SUM_PAID']) >= intval($arOrder['PRICE'])) {
                                     CSaleOrder::PayOrder(
                                         $order['ID'],
                                         'Y'
@@ -76,7 +77,8 @@ try {
                                 $statusId
                             );
                         } else if ($cancel) {
-                            CSaleOrder::CancelOrder($order['ID'], 'Y', 'Auto cancel from revo service');
+                            CSaleOrder::CancelOrder($order['ID'], 'Y',
+                                'Auto cancel from revo service');
                         }
                         $result = ['result' => 'success', 'message' => 'Order updated'];
                     }

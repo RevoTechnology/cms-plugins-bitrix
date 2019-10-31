@@ -1,6 +1,7 @@
 <?
 
 use Bitrix\Main\Application;
+use Bitrix\Main\EventManager;
 use Bitrix\Main\Localization\Loc,
     \Bitrix\Main\Config\Option;
 use Bitrix\Main\Text\Encoding;
@@ -74,16 +75,22 @@ class a_revo extends CModule
 
     public function InstallEvents()
     {
-        RegisterModuleDependences('main', 'onProlog',$this->MODULE_ID, '\Revo\Events','onProlog');
-        RegisterModuleDependences('sale', 'OnSaleStatusOrder',$this->MODULE_ID, '\Revo\Events','onStatusOrder');
-        RegisterModuleDependences('sale', 'OnSaleCancelOrder',$this->MODULE_ID, '\Revo\Events','onCancelOrder');
+        RegisterModuleDependences('main', 'onProlog', $this->MODULE_ID, '\Revo\Events','onProlog');
+        RegisterModuleDependences('sale', 'OnSaleStatusOrder', $this->MODULE_ID, '\Revo\Events','onStatusOrder');
+        RegisterModuleDependences('sale', 'OnSaleCancelOrder', $this->MODULE_ID, '\Revo\Events','onCancelOrder');
+        RegisterModuleDependences('sale', 'OnBeforeOrderUpdate', $this->MODULE_ID, '\Revo\Events','onUpdateOrder');
+        $eventManager = Bitrix\Main\EventManager::getInstance();
+        $eventManager->registerEventHandler('sale', 'OnPaymentPaid', $this->MODULE_ID, '\Revo\Events','onSalePaymentPaid');
     }
 
     public function UnInstallEvents()
     {
-        UnRegisterModuleDependences('main', 'onProlog',$this->MODULE_ID, '\Revo\Events','onProlog');
-        UnRegisterModuleDependences('sale', 'OnSaleStatusOrder',$this->MODULE_ID, '\Revo\Events','onStatusOrder');
-        UnRegisterModuleDependences('sale', 'OnSaleCancelOrder',$this->MODULE_ID, '\Revo\Events','onCancelOrder');
+        UnRegisterModuleDependences('main', 'onProlog', $this->MODULE_ID, '\Revo\Events','onProlog');
+        UnRegisterModuleDependences('sale', 'OnSaleStatusOrder', $this->MODULE_ID, '\Revo\Events','onStatusOrder');
+        UnRegisterModuleDependences('sale', 'OnSaleCancelOrder', $this->MODULE_ID, '\Revo\Events','onCancelOrder');
+        UnRegisterModuleDependences('sale', 'OnBeforeOrderUpdate', $this->MODULE_ID, '\Revo\Events','onUpdateOrder');
+        $eventManager = Bitrix\Main\EventManager::getInstance();
+        $eventManager->unRegisterEventHandler('sale', 'OnPaymentPaid', $this->MODULE_ID, '\Revo\Events','onSalePaymentPaid');
     }
 
     public function InstallDb()

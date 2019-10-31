@@ -14,6 +14,7 @@ class Client
         'order' => '/factoring/v1/precheck/auth',
         'finish' => '/factoring/v1/precheck/finish',
         'status' => '/factoring/v1/status',
+        'schedule' => '/factoring/v1/schedule',
         'cancel' => '/factoring/v1/precheck/cancel'
     ];
 
@@ -98,8 +99,8 @@ class Client
 
     public function parseReturnResponse($data)
     {
-        if ($data->status == 0) {
-            return ['status' => 'ok'];
+        if ($data->status === 0) {
+            return ['status' => 'ok', 'data' => $data];
         } else {
             throw new Error($data);
         }

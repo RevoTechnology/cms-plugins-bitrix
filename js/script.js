@@ -27,7 +27,6 @@ function tryToClickAddCart() {
             document.getElementsByClassName(REVO_GLOBALS.DEFAULT_CHECKOUT_BTN_CLASS)[0];
     }
 
-
     node && node.click();
 }
 

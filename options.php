@@ -21,6 +21,8 @@ $arAllOptions = array(
 	['detail_max_price', Loc::getMessage('OPTIONS_DETAIL_MAX_PRICE'), '0', ['text', 200]],
     ['orders_url', Loc::getMessage('OPTIONS_ORDERS_URL'), '/personal/orders/', ['text', 200]],
     ['return_status', Loc::getMessage('OPTIONS_RETURN_STATUS_CODE'), 'RB', ['text', 200]],
+    ['finalization_status', Loc::getMessage('OPTIONS_FINAL_STATUS_CODE'), 'F', ['text', 200]],
+    ['admin_email', Loc::getMessage('OPTIONS_ADMIN_EMAIL'), '', ['text', 200]],
 );
 
 

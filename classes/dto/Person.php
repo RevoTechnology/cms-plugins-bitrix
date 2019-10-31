@@ -18,8 +18,9 @@ class Person
     public static function getFromGlobalParams($arParams)
     {
         $obj = new self('', '', '');
-        $obj->first_name = $arParams['USER']['NAME'];
-        $obj->surname = $arParams['USER']['LAST_NAME'];
+        $obj->first_name = $arParams['PROPERTY']['FIO'] ? array_pop(explode(' ', $arParams['PROPERTY']['FIO'], 1)) : $arParams['USER']['NAME'];
+        $obj->surname = $arParams['PROPERTY']['FIO'] && strpos($arParams['PROPERTY']['FIO'], ' ') ?
+            array_shift(explode(' ', $arParams['PROPERTY']['FIO'], 1)) : $arParams['USER']['LAST_NAME'];
         return $obj;
     }
 }

@@ -2,8 +2,11 @@
 
 namespace Revo;
 
+use Bitrix\Conversion\DayContext;
 use Bitrix\Main\Config\Option;
 use Bitrix\Main\Loader;
+use Bitrix\Main;
+use Bitrix\Sale;
 use Bitrix\Main\Localization\Loc;
 use Revo\Models\RegisteredUsersTable;
 
@@ -35,11 +38,13 @@ class Events
     {
         IncludeModuleLangFile(__FILE__);
         $returnStatus = Option::get('a.revo', 'return_status', 'RP');
+        $finalStatus = Option::get('a.revo', 'finalization_status', 'F');
         $revoPaysysId = Option::get('a.revo', 'paysys_id', 0);
+        $revoAdminEmail = Option::get('a.revo', 'email', '');
         $order = \CSaleOrder::GetById($id);
 
         if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
-            if ($val == 'F') {
+            if ($val == $finalStatus) {
                 $revoClient = Instalment::getInstance();
 
                 $pdfPath = '/upload/check/' . $id . '.pdf';
@@ -54,6 +59,17 @@ class Events
                 );
 
                 if ($result['status'] !== 'ok') {
+                    if ($revoAdminEmail) {
+                        bxmail(
+                            $revoAdminEmail,
+                            Loc::getMessage('REVO_FINALIZATION_ERROR'),
+                            str_replace(
+                                ['#ERROR#', '#ORDER#'],
+                                [$result['msg'], $order['ID']],
+                                Loc::getMessage('REVO_ERROR_TEXT'))
+                        );
+                    }
+
                     throw new \Bitrix\Sale\UserMessageException(Loc::getMessage('REVO_FINALIZATION_ERROR'));
                 }
 
@@ -83,4 +99,40 @@ class Events
             Logger::log($result, 'cancel');
         }
     }
+
+    public function onUpdateOrder($id, $arFields)
+    {
+        IncludeModuleLangFile(__FILE__);
+        $revoPaysysId = Option::get('a.revo', 'paysys_id', 0);
+        $order = \CSaleOrder::GetById($id);
+
+        if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
+
+            if ($arFields['PRICE'] && $order['PRICE'] && $order['PRICE'] != $arFields['PRICE']) {
+                $revoClient = Instalment::getInstance();
+                $result = $revoClient->change($id, $order);
+                Logger::log($result, 'change');
+            }
+        }
+    }
+
+    public static function onSalePaymentPaid(Main\Event $event)
+    {
+        $payment = $event->getParameter('ENTITY');
+        /**
+         * @var $payment Sale\Payment
+         */
+        $revoPaysysId = Option::get('a.revo', 'paysys_id', 0);
+
+        if ($payment->getPaymentSystemId() == $revoPaysysId) {
+            $order = \CSaleOrder::GetById($payment->getOrderId());
+            $revoClient = Instalment::getInstance();
+            $order['PRICE'] = $payment->getSum();
+
+            $result = $revoClient->change($payment->getOrderId(), $order);
+            Logger::log($result, 'change');
+        }
+    }
+
+
 }

@@ -27,6 +27,9 @@ class Requests
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         $response = curl_exec($ch);
 
+        Logger::log([$url, $fields], 'request');
+        Logger::log($response, 'request');
+
         return json_decode($response);
     }
 
@@ -80,7 +83,10 @@ class Requests
         ));
 
         $response = curl_exec($curl);
-        Logger::log($data, 'request');
+
+        Logger::log([$url, $fields, $filenames], 'request');
+        Logger::log($response, 'request');
+
         return $response;
     }
 }

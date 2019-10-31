@@ -9,7 +9,7 @@ class Config
     public $storeId;
     public $baseHost;
 
-    const TEST_ENDPOINT = 'https://backend.demo.revoup.ru/';
+    const TEST_ENDPOINT = 'https://backend.demo.revoup.ru';
     const ENDPOINT = 'https://r.revoplus.ru';
 
     public function __construct($options = array())

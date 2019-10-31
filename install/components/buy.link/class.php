@@ -73,7 +73,19 @@ class CRevoBuyLink extends \CBitrixComponent
         $minPrice = Option::get('a.revo', 'detail_min_price', 0);
 		$maxPrice = Option::get('a.revo', 'detail_max_price', 0);
 
-        if ($showBlock && $this->arParams['PRICE'] >= $minPrice && ($maxPrice && $this->arParams['PRICE'] <= $maxPrice))
+		$tariffs = \Revo\Instalment::getInstance()->getTariffs($this->arParams['PRICE']);
+        $data = $tariffs['data'];
+        if ($data) {
+            $oSchedule = array_pop($data->payment_schedule);
+            if ($oSchedule) {
+                $oPaymentDate = array_pop($oSchedule->payment_dates);
+                if ($oPaymentDate) {
+                    $this->arResult['AMOUNT'] = $oPaymentDate->amount;
+                }
+            }
+        }
+
+		if ($showBlock && $this->arParams['PRICE'] >= $minPrice && ($maxPrice && $this->arParams['PRICE'] <= $maxPrice))
             $this->includeComponentTemplate();
     }
 
