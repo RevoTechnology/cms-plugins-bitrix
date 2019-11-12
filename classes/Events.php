@@ -51,10 +51,19 @@ class Events
                 $fullPdfPath = $_SERVER['DOCUMENT_ROOT'] . $pdfPath;
                 \Revo\Documents::billToPDF($id, $fullPdfPath);
 
-
+                $payments = \Bitrix\Sale\Payment::getList([
+                    'filter' => [
+                        'ORDER_ID' => $id,
+                        'PAY_SYSTEM_ID' => $revoPaysysId
+                    ]
+                ]);
+                $sum = 0;
+                while ($payment = $payments->fetch()) {
+                    $sum += $payment['SUM'];
+                }
                 $result = $revoClient->finalizeOrder(
                     $order['ID'],
-                    $order['PRICE'],
+                    $sum ?: $order['PRICE'],
                     $fullPdfPath
                 );
 
@@ -83,7 +92,6 @@ class Events
                 $revoClient = Instalment::getInstance();
                 $result = $revoClient->returnOrder($id, $order['PRICE']);
                 Logger::log($result, 'cancel');
-
             }
         }
     }
