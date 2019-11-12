@@ -87,6 +87,6 @@ class Requests
         Logger::log([$url, $fields, $filenames], 'request');
         Logger::log($response, 'request');
 
-        return $response;
+        return json_decode($response);
     }
 }
