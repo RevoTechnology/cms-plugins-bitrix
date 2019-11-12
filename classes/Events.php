@@ -58,6 +58,10 @@ class Events
                     $fullPdfPath
                 );
 
+                Logger::log([
+                    'Finalization have been sent to REVO', $result
+                ], 'finalization');
+
                 if ($result['status'] !== 'ok') {
                     if ($revoAdminEmail) {
                         bxmail(
@@ -73,9 +77,7 @@ class Events
                     throw new \Bitrix\Sale\UserMessageException(Loc::getMessage('REVO_FINALIZATION_ERROR'));
                 }
 
-                Logger::log([
-                    'Finalization have been sent to REVO', $result
-                ], 'finalization');
+
 
             } elseif ($val == $returnStatus) {
                 $revoClient = Instalment::getInstance();
