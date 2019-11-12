@@ -72,7 +72,7 @@ class Client
             if ($response->status) {
                 throw new Error((object)['status' => $response->status_code, 'message' => $response->message ? $response->message : "Can't connect to API host"]);
             }
-
+            \Revo\Logger::log([$this->buildUrl($type, $query), $data, $response], 'requests');
             return $response;
         } catch (\Exception $e) {
             \Revo\Logger::log([$this->buildUrl($type, $query), $data, $response], 'requests');
