@@ -15,6 +15,7 @@ class Client
         'finish' => '/factoring/v1/precheck/finish',
         'status' => '/factoring/v1/status',
         'schedule' => '/factoring/v1/schedule',
+        'change' => '/factoring/v1/precheck/change',
         'cancel' => '/factoring/v1/precheck/cancel'
     ];
 
