@@ -2,8 +2,8 @@
 
 require_once('prolog.php');
 
-if (!$USER->IsAdmin())
-    return;
+#if (!$USER->IsAdmin())
+#    return;
 
 use \Bitrix\Main\Config\Option,
     \Bitrix\Main\Localization\Loc,
@@ -23,6 +23,7 @@ $arAllOptions = array(
     ['return_status', Loc::getMessage('OPTIONS_RETURN_STATUS_CODE'), 'RB', ['text', 200]],
     ['finalization_status', Loc::getMessage('OPTIONS_FINAL_STATUS_CODE'), 'F', ['text', 200]],
     ['admin_email', Loc::getMessage('OPTIONS_ADMIN_EMAIL'), '', ['text', 200]],
+    ['JQuery_selector', Loc::getMessage('OPTIONS_JQUERY_SELECTOR'), 'Y', ['checkbox', 'Y']],
 );
 
 

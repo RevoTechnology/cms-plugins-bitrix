@@ -1,10 +1,15 @@
 <?php
+
+use Revo\Helpers\Extensions;
+
 class DocumentsTest extends PHPUnit\Framework\TestCase
 {
     const FILE_TEST_PATH = '/upload/testpdf.pdf';
 
     public function testConvertToPDF() {
-        if (!\Bitrix\Main\Loader::includeModule('a.revo')) {
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
+        if (!\Bitrix\Main\Loader::includeModule($moduleID)) {
             $this->fail('Module not installed');
         }
         $fullPath = $_SERVER['DOCUMENT_ROOT'] . self::FILE_TEST_PATH;

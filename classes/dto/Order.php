@@ -3,9 +3,12 @@
 namespace Revo\Dto;
 
 use Bitrix\Main\Config\Option;
+use Revo\Helpers\Extensions;
 
 class Order
 {
+    private $config;
+
     public $callback_url;
     public $redirect_url;
     public $primary_phone;
@@ -24,12 +27,14 @@ class Order
 
     public function __construct($email, $phone, OrderData $order, Person $person, $arCart = [])
     {
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
         $this->callback_url = Option::get(
-            'a.revo',
+            $moduleID,
             'callback_url'
         );
         $this->redirect_url = Option::get(
-            'a.revo',
+            $moduleID,
             'redirect_url'
         );
         $this->primary_phone = $phone;

@@ -1,3 +1,8 @@
 <?
-$MODULE_ID = 'a.revo';
-define('ADMIN_MODULE_NAME', 'a.revo');
+
+use Revo\Helpers\Extensions;
+
+$extension = new Extensions();
+$moduleID = $extension->getModuleID();
+
+define('ADMIN_MODULE_NAME', $moduleID);

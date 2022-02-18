@@ -1,22 +1,23 @@
 <?
-$MESS['REVO_OPTIONS_TAB'] = 'Îñíîâíûå';
-$MESS['REVO_OPTIONS_TITLE'] = 'Îñíîâíûå íàñòðîéêè';
+$MESS['REVO_OPTIONS_TAB'] = 'ÐžÑÐ½Ð¾Ð²Ð½Ñ‹Ðµ';
+$MESS['REVO_OPTIONS_TITLE'] = 'ÐžÑÐ½Ð¾Ð²Ð½Ñ‹Ðµ Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸';
 $MESS['API_OPTIONS_TAB'] = 'API';
-$MESS['API_OPTIONS_TITLE'] = 'Íàñòðîéêè API';
-$MESS['OPTIONS_ORDERS_URL'] = 'Ñòðàíèöà ïåðåíàïðàâëåíèÿ ïîëüçîâàòåëÿ ïîñëå îôîðìëåíèÿ çàêàçà';
-$MESS['OPTIONS_DETAIL_MIN_PRICE'] = 'Ìèíèìàëüíàÿ öåíà òîâàðà äëÿ îòîáðàæåíèÿ âèäæåòà';
-$MESS['OPTIONS_DETAIL_MAX_PRICE'] = 'Ìàêñèìàëüíàÿ öåíà òîâàðà äëÿ îòîáðàæåíèÿ âèäæåòà';
-$MESS['OPTIONS_RETURN_STATUS_CODE'] = 'Êîä ñòàòóñà, ïðè êîòîðîì îòïðàâëÿòü îòìåíó çàêàçà';
-$MESS['OPTIONS_FINAL_STATUS_CODE'] = 'Êîä ñòàòóñà, ïðè êîòîðîì îòïðàâëÿòü ôèíàëèçàöèþ çàêàçà';
-$MESS['OPTIONS_DETAIL_MAX_ORDER_PART'] = 'Ìàêñèìàëüíàÿ äîëÿ çàêàçà äëÿ îïëàòû ÷àñòÿìè, %';
-$MESS['OPTIONS_DETAIL_MAX_ORDER_PART_MIN'] = 'Äîëÿ çàêàçà äëÿ îïëàòû ÷àñòÿìè äîëæíà áûòü îò 20% äî 100%';
-$MESS['OPTIONS_ADMIN_EMAIL'] = 'Email àäìèíèñòðàòîðà';
-$MESS['OPTIONS_API_URL'] = 'Áîåâîé URL';
-$MESS['OPTIONS_API_TEST_URL'] = 'Òåñòîâûé URL';
-$MESS['OPTIONS_API_METCHANT'] = 'ID Ìàãàçèíà';
-$MESS['OPTIONS_API_SECRET'] = 'Ñåêðåòíûé êëþ÷';
-$MESS['OPTIONS_API_TEST_MODE'] = 'Òåñòîâûé ðåæèì';
-$MESS['OPTIONS_API_CALLBACK'] = 'URL äëÿ âîçâðàòà ðåçóëüòàòîâ îò Ðåâî';
-$MESS['OPTIONS_API_REDIRECT'] = 'URL äëÿ âîçâðàòà ïîëüçîâàòåëÿ ïîñëå ðåãèñòðàöèè èëè îôîðìëåíèÿ çàêàçà';
+$MESS['API_OPTIONS_TITLE'] = 'ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ API';
+$MESS['OPTIONS_ORDERS_URL'] = 'Ð¡Ñ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° Ñ Ð·Ð°ÐºÐ°Ð·Ð°Ð¼Ð¸';
+$MESS['OPTIONS_DETAIL_MIN_PRICE'] = 'ÐœÐ¸Ð½Ð¸Ð¼Ð°Ð»ÑŒÐ½Ð°Ñ Ñ†ÐµÐ½Ð° Ñ‚Ð¾Ð²Ð°Ñ€Ð° Ð´Ð»Ñ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ Ð²Ð¸Ð´Ð¶ÐµÑ‚Ð°';
+$MESS['OPTIONS_DETAIL_MAX_PRICE'] = 'ÐœÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð°Ñ Ñ†ÐµÐ½Ð° Ñ‚Ð¾Ð²Ð°Ñ€Ð° Ð´Ð»Ñ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ Ð²Ð¸Ð´Ð¶ÐµÑ‚Ð°';
+$MESS['OPTIONS_RETURN_STATUS_CODE'] = 'ÐšÐ¾Ð´ ÑÑ‚Ð°Ñ‚ÑƒÑÐ°, Ð¿Ñ€Ð¸ ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ð¼ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÑ‚ÑŒ Ð¾Ñ‚Ð¼ÐµÐ½Ñƒ Ð·Ð°ÐºÐ°Ð·Ð°';
+$MESS['OPTIONS_FINAL_STATUS_CODE'] = 'ÐšÐ¾Ð´ ÑÑ‚Ð°Ñ‚ÑƒÑÐ°, Ð¿Ñ€Ð¸ ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ð¼ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÑÑ‚ÑŒ Ñ„Ð¸Ð½Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸ÑŽ Ð·Ð°ÐºÐ°Ð·Ð°';
+$MESS['OPTIONS_DETAIL_MAX_ORDER_PART'] = 'ÐœÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð°Ñ Ð´Ð¾Ð»Ñ Ð·Ð°ÐºÐ°Ð·Ð° Ð´Ð»Ñ Ð¾Ð¿Ð»Ð°Ñ‚Ñ‹ Ñ‡Ð°ÑÑ‚ÑÐ¼Ð¸, %';
+$MESS['OPTIONS_DETAIL_MAX_ORDER_PART_MIN'] = 'Ð”Ð¾Ð»Ñ Ð·Ð°ÐºÐ°Ð·Ð° Ð´Ð»Ñ Ð¾Ð¿Ð»Ð°Ñ‚Ñ‹ Ñ‡Ð°ÑÑ‚ÑÐ¼Ð¸ Ð´Ð¾Ð»Ð¶Ð½Ð° Ð±Ñ‹Ñ‚ÑŒ Ð¾Ñ‚ 20% Ð´Ð¾ 100%';
+$MESS['OPTIONS_ADMIN_EMAIL'] = 'Email Ð°Ð´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð°Ñ‚Ð¾Ñ€Ð°';
+$MESS['OPTIONS_JQUERY_SELECTOR'] = 'Ð’ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ JQuery';
+$MESS['OPTIONS_API_URL'] = 'Ð‘Ð¾ÐµÐ²Ð¾Ð¹ URL';
+$MESS['OPTIONS_API_TEST_URL'] = 'Ð¢ÐµÑÑ‚Ð¾Ð²Ñ‹Ð¹ URL';
+$MESS['OPTIONS_API_METCHANT'] = 'ID ÐœÐ°Ð³Ð°Ð·Ð¸Ð½Ð°';
+$MESS['OPTIONS_API_SECRET'] = 'Ð¡ÐµÐºÑ€ÐµÑ‚Ð½Ñ‹Ð¹ ÐºÐ»ÑŽÑ‡';
+$MESS['OPTIONS_API_TEST_MODE'] = 'Ð¢ÐµÑÑ‚Ð¾Ð²Ñ‹Ð¹ Ñ€ÐµÐ¶Ð¸Ð¼';
+$MESS['OPTIONS_API_CALLBACK'] = 'URL Ð´Ð»Ñ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð° Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð² Ð¾Ñ‚ ÐœÐ¾ÐºÐºÐ°';
+$MESS['OPTIONS_API_REDIRECT'] = 'URL Ð´Ð»Ñ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð° Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ Ð¿Ð¾ÑÐ»Ðµ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¸ Ð¸Ð»Ð¸ Ð¾Ñ„Ð¾Ñ€Ð¼Ð»ÐµÐ½Ð¸Ñ Ð·Ð°ÐºÐ°Ð·Ð°';
 
 

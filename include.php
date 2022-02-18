@@ -1,5 +1,9 @@
 <?php
 
+CJSCore::Init(array('jquery'));
+
+use Revo\Logger;
+
 if(!function_exists('loadRevoClasses')){
     /**
      * Function recursively parse directory and associate files with classes.
@@ -46,8 +50,10 @@ if(!function_exists('loadRevoClasses')){
 $rootNameSpace = 'Revo';
 $classesDirPath = __DIR__ . DIRECTORY_SEPARATOR . 'classes';
 
+$config = require __DIR__ . '/config/config.php';
+$moduleID = $config['moduleID'];
 \Bitrix\Main\Loader::registerAutoLoadClasses(
-    'a.revo',
+    $moduleID,
     loadRevoClasses(
         $classesDirPath,
         $rootNameSpace,
@@ -55,6 +61,6 @@ $classesDirPath = __DIR__ . DIRECTORY_SEPARATOR . 'classes';
     )
 );
 
-\CJSCore::RegisterExt('a.revo', array(
-    'lang' => '/bitrix/modules/a.revo/lang/'.LANGUAGE_ID.'/js.php'
+\CJSCore::RegisterExt($moduleID, array(
+    'lang' => '/bitrix/modules/'.$moduleID.'/lang/'.LANGUAGE_ID.'/js.php'
 ));

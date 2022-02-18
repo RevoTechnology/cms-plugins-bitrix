@@ -1,11 +1,15 @@
 <?php
 
+use Revo\Helpers\Extensions;
+
 class SDKTest extends PHPUnit\Framework\TestCase
 {
     const USER_SESSID = 'TEST_SESSID';
     public function testSDK()
     {
-        if (!\Bitrix\Main\Loader::includeModule('a.revo')) {
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
+        if (!\Bitrix\Main\Loader::includeModule($moduleID)) {
             $this->fail('Module not installed');
         }
 
@@ -29,7 +33,9 @@ class SDKTest extends PHPUnit\Framework\TestCase
     }
 
     public function testInstalment() {
-        if (!\Bitrix\Main\Loader::includeModule('a.revo')) {
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
+        if (!\Bitrix\Main\Loader::includeModule($moduleID)) {
             $this->fail('Module not installed');
         }
 
@@ -42,7 +48,9 @@ class SDKTest extends PHPUnit\Framework\TestCase
     }
 
     public function testUserSave() {
-        if (!\Bitrix\Main\Loader::includeModule('a.revo')) {
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
+        if (!\Bitrix\Main\Loader::includeModule($moduleID)) {
             $this->fail('Module not installed');
         }
 
@@ -54,7 +62,9 @@ class SDKTest extends PHPUnit\Framework\TestCase
     }
 
     public function testFinalizeOrder() {
-        if (!\Bitrix\Main\Loader::includeModule('a.revo')) {
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
+        if (!\Bitrix\Main\Loader::includeModule($moduleID)) {
             $this->fail('Module not installed');
         }
 
@@ -65,7 +75,9 @@ class SDKTest extends PHPUnit\Framework\TestCase
     }
 
     public function testOrderData() {
-        if (!\Bitrix\Main\Loader::includeModule('a.revo')) {
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
+        if (!\Bitrix\Main\Loader::includeModule($moduleID)) {
             $this->fail('Module not installed');
         }
 
@@ -77,7 +89,7 @@ class SDKTest extends PHPUnit\Framework\TestCase
         $this->assertEquals($orderData->order_id,4);
         $this->assertEquals($orderData->amount,300);
 
-        \Bitrix\Main\Config\Option::set('a.revo', 'detail_max_order_part', 50);
+        \Bitrix\Main\Config\Option::set($moduleID, 'detail_max_order_part', 50);
 
         $orderData = \Revo\Dto\OrderData::getFromGlobalParams([
             'ORDER' => ['ID' => 4],
@@ -86,6 +98,6 @@ class SDKTest extends PHPUnit\Framework\TestCase
 
         $this->assertEquals($orderData->amount,150);
 
-        \Bitrix\Main\Config\Option::set('a.revo', 'detail_max_order_part', 100);
+        \Bitrix\Main\Config\Option::set($moduleID, 'detail_max_order_part', 100);
     }
 }

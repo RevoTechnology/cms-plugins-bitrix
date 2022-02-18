@@ -1,2 +1,2 @@
 <?php
-$MESS['REVO_BUY_DETAIL'] = 'Оплата&nbsp;частями от&nbsp;<b>#PRICE#</b>&nbsp;руб./мес.';
+$MESS['REVO_BUY_DETAIL'] = 'РћРїР»Р°С‚Р°&nbsp;С‡Р°СЃС‚СЏРјРё РѕС‚&nbsp;<b>#PRICE#</b>&nbsp;СЂСѓР±./РјРµСЃ.';

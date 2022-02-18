@@ -1,8 +1,14 @@
 <?php
+
+use Revo\Helpers\Extensions;
+use Revo\Logger;
+
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
 
 $action = trim($_REQUEST['action']);
-\Bitrix\Main\Loader::includeModule('a.revo');
+$extension = new Extensions();
+$moduleID = $extension->getModuleID();
+\Bitrix\Main\Loader::includeModule($moduleID);
 
 \Revo\Logger::log([
     $_REQUEST,
@@ -86,7 +92,9 @@ try {
             }
             break;
     }
-
+    Logger::log([
+        json_encode($result)
+    ], 'REVO-ajax-response');
     echo(json_encode($result));
 } catch (Exception $e) {
     http_response_code(401);

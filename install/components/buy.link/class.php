@@ -1,6 +1,7 @@
 <?
 if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
 use Bitrix\Main\Config\Option;
+use Revo\Helpers\Extensions;
 
 class CRevoBuyLink extends \CBitrixComponent
 {
@@ -29,7 +30,9 @@ class CRevoBuyLink extends \CBitrixComponent
      */
     protected function checkModules()
     {
-        \Bitrix\Main\Loader::includeModule('a.revo');
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
+        \Bitrix\Main\Loader::includeModule($moduleID);
     }
 
     /**
@@ -60,7 +63,10 @@ class CRevoBuyLink extends \CBitrixComponent
 
     }
 
-    protected function getResult() {
+    protected function getResult()
+    {
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
         global $USER;
 
         if (!$this->arParams['PRICE']) {
@@ -69,9 +75,12 @@ class CRevoBuyLink extends \CBitrixComponent
             $this->arParams['PRICE'] = \CPrice::GetBasePrice($this->arParams['PRODUCT_ID'])['PRICE'];
         }
 
-        $showBlock = Option::get('a.revo', 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin();
-        $minPrice = Option::get('a.revo', 'detail_min_price', 0);
-		$maxPrice = Option::get('a.revo', 'detail_max_price', 0);
+        $showBlock = Option::get($moduleID, 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin();
+        $showBlock = true;
+		$minPrice = Option::get($moduleID, 'detail_min_price', 0);
+		$maxPrice = Option::get($moduleID, 'detail_max_price', 0);
+
+
 
 		$tariffs = \Revo\Instalment::getInstance()->getTariffs($this->arParams['PRICE']);
         $data = $tariffs['data'];
@@ -85,8 +94,16 @@ class CRevoBuyLink extends \CBitrixComponent
             }
         }
 
-		if ($showBlock && $this->arParams['PRICE'] >= $minPrice && ($maxPrice && $this->arParams['PRICE'] <= $maxPrice))
+//        if ($showBlock && $this->arParams['PRICE'] >= $minPrice
+//            && (!$maxPrice || ($maxPrice && $this->arParams['PRICE'] <= $maxPrice))) {
+//
+//            $this->includeComponentTemplate();
+//        }
+
+		if ($showBlock)
+		{
             $this->includeComponentTemplate();
+		}
     }
 
     /**

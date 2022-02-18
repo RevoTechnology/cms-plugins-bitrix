@@ -1,4 +1,5 @@
 <?php
 
-$MESS['REVO_FINALIZATION_ERROR'] = "Îøèáêà ôèíàëèçàöèè çàêàçà â ÐÅÂÎ";
-$MESS['REVO_ERROR_TEXT'] = 'Ïðîèçîøëà îøèáêà #ERROR# â çàêàçå #ORDER#';
+$MESS['REVO_FINALIZATION_ERROR'] = "ÐžÑˆÐ¸Ð±ÐºÐ° Ñ„Ð¸Ð½Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ð¸ Ð·Ð°ÐºÐ°Ð·Ð° Ð² ÐœÐ¾ÐºÐºÐ°";
+$MESS['REVO_ERROR_TEXT'] = 'ÐŸÑ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ° #ERROR# Ð² Ð·Ð°ÐºÐ°Ð·Ðµ #ORDER#';
+$MESS['REVO_ERROR_TEXT_2'] = 'ÐŸÑ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ° #ERROR# Ð² Ð·Ð°ÐºÐ°Ð·Ðµ #ORDER#, URL Ð¼Ð°Ð³Ð°Ð·Ð¸Ð½Ð°: #URL#';

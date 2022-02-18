@@ -11,6 +11,7 @@ use Revo\Dto\Order;
 use Revo\Dto\OrderData;
 use Revo\Dto\OrderItem;
 use Revo\Dto\Person;
+use Revo\Helpers\Extensions;
 use Revo\Sdk\Config;
 
 class Instalment
@@ -25,15 +26,16 @@ class Instalment
 
     private $_endpoint;
 
-    const MODULE_ID = 'a.revo';
 
     private function _log($el) {
 
     }
 
     private function _getOption($optName, $default = false) {
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
         try {
-            return Option::get(self::MODULE_ID, $optName, $default);
+            return Option::get($moduleID, $optName, $default);
         } catch (ArgumentException $e) {
             return false;
         }
@@ -108,7 +110,7 @@ class Instalment
         );
     }
 
-    public function getOrderIframeUri($globalOrderParams, $backurl = false) {
+    public function getOrderIframeUri($globalOrderParams) {
         global $USER;
         $orderId = $globalOrderParams['ORDER']['ID'];
 
@@ -135,8 +137,9 @@ class Instalment
             Dto\Person::getFromGlobalParams($globalOrderParams),
             $arCart
         );
-        if ($backurl) $order->redirect_url = $backurl;
-
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
+        $order->redirect_url = Option::get($moduleID, 'redirect_url', '/personal/');
         $_SESSION['REVO_SAVED_ORDER_URI'][$orderId] = $this->_client->orderIframeLink($order);
         return $_SESSION['REVO_SAVED_ORDER_URI'][$orderId];
     }

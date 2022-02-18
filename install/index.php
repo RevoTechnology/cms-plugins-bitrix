@@ -7,13 +7,13 @@ use Bitrix\Main\Localization\Loc,
 use Bitrix\Main\Text\Encoding;
 
 Loc::loadMessages(__FILE__);
-
 class a_revo extends CModule
 {
+    private $config;
 
     const OPTION_PAYSYS_ID = 'paysys_id';
 
-    public $MODULE_ID = 'a.revo';
+    public $MODULE_ID = "a.revo";
     public $MODULE_VERSION;
     public $MODULE_VERSION_DATE;
     public $MODULE_NAME;
@@ -24,12 +24,13 @@ class a_revo extends CModule
 
     public function __construct()
     {
+        $this->config = require __DIR__ . '/../config/config.php';
         $this->errors = false;
         $arModuleVersion = array();
         $path = str_replace('\\', '/', __FILE__);
         $path = substr($path, 0, strlen($path) - strlen('/index.php'));
         include($path . '/version.php');
-        $this->MODULE_ID = 'a.revo';
+        $this->MODULE_ID = "a.revo";
         $this->MODULE_VERSION = $arModuleVersion['VERSION'];
         $this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
         $this->MODULE_NAME = GetMessage('REVO_MODULE_NAME');
@@ -66,6 +67,7 @@ class a_revo extends CModule
             $this->UnInstallFiles();
             $this->UnInstallEvents();
             $this->UnInstallDb();
+            CAgent::RemoveModuleAgents($this->MODULE_ID);
             UnRegisterModule($this->MODULE_ID);
             $GLOBALS['errors'] = $this->errors;
             Option::delete($this->MODULE_ID);
@@ -81,6 +83,7 @@ class a_revo extends CModule
         RegisterModuleDependences('sale', 'OnBeforeOrderUpdate', $this->MODULE_ID, '\Revo\Events','onUpdateOrder');
         $eventManager = Bitrix\Main\EventManager::getInstance();
         $eventManager->registerEventHandler('sale', 'OnPaymentPaid', $this->MODULE_ID, '\Revo\Events','onSalePaymentPaid');
+        RegisterModuleDependences('main', 'onProlog', $this->MODULE_ID, '\Revo\Events','appendJQuery');
     }
 
     public function UnInstallEvents()
@@ -91,12 +94,15 @@ class a_revo extends CModule
         UnRegisterModuleDependences('sale', 'OnBeforeOrderUpdate', $this->MODULE_ID, '\Revo\Events','onUpdateOrder');
         $eventManager = Bitrix\Main\EventManager::getInstance();
         $eventManager->unRegisterEventHandler('sale', 'OnPaymentPaid', $this->MODULE_ID, '\Revo\Events','onSalePaymentPaid');
+        UnRegisterModuleDependences('main', 'onProlog', $this->MODULE_ID, '\Revo\Events','appendJQuery');
     }
 
     public function InstallDb()
     {
         require_once __DIR__ . './../classes/models/DataManager.php';
         require_once __DIR__ . './../classes/models/RegisteredUsersTable.php';
+
+        $moduleID = $this->config['moduleID'];
 
         \Bitrix\Main\Loader::includeModule('sale');
         $arAdd = array(
@@ -111,7 +117,7 @@ class a_revo extends CModule
             'SORT' => 100,
             'LOGOTIP' => CFile::SaveFile(CFile::MakeFileArray(
                 dirname(__FILE__) . '/img/logo.png'
-             ), '/a.revo/'),
+             ), '/'.$moduleID.'/', false, false, "", false),
             'ENCODING' => 'utf-8',
             'DESCRIPTION' => GetMessage('REVO_MODULE_PAYMENT_DESC'),
             'ACTION_FILE' => '/local/php_interface/include/sale_payment/revo',
@@ -199,7 +205,7 @@ class a_revo extends CModule
             Option::set(
             $this->MODULE_ID,
             'callback_url',
-                $prefix . $_SERVER['HTTP_HOST'] . '/ajax/a.revo/ajax.php'
+                $prefix . $_SERVER['HTTP_HOST'] . '/ajax/'.$this->MODULE_ID.'/ajax.php'
         );
 
         Option::set(
@@ -234,6 +240,7 @@ class a_revo extends CModule
         CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/js/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/js/'.$this->MODULE_ID.'/', true, true);
         CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/html/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/html/'.$this->MODULE_ID.'/', true, true);
         CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/bitrix/snippets/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/', true, true);
+        CopyDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/config/', $_SERVER['DOCUMENT_ROOT'] . '/local/components/revo/config', true, true);
 
         $snippetsExists = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/bitrix/templates/.default/snippets/.content.php');
         if ($snippetsExists) {
@@ -271,7 +278,7 @@ class a_revo extends CModule
         return true;
     }
 
-
+//:TODO Èñïðàâèòü ìåòîäû óäàëåíèÿ êàòàëîãîâ ïðè äåèíñòàëÿöèè ìîäóëÿ. DeleteDirFiles íå óäàëÿåò êàòàëîãè è ôàéëû âíóòðè íèõ.
     public function UnInstallFiles()
     {
         DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/admin/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin');
@@ -282,6 +289,7 @@ class a_revo extends CModule
         DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/css/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/css/'.$this->MODULE_ID.'/');
         DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/js/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/js/'.$this->MODULE_ID.'/');
         DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/html/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/html/'.$this->MODULE_ID.'/');
+        DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/config/', $_SERVER['DOCUMENT_ROOT'] . '/local/components/revo/config/');
         rmdir($_SERVER['DOCUMENT_ROOT'] . '/upload/check/');
         return true;
     }

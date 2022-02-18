@@ -29,8 +29,25 @@ function tryToClickAddCart() {
 
     node && node.click();
 }
+var moduleID;
+var existModuleID = false;
+function getModuleID() {
+    if(existModuleID == false) {
+        $.ajax({
+            type: 'POST',
+            url: '/local/components/revo/config/config.php',
+            data: 'getModuleID',
+            async: false,
+            success: function(data){
+                moduleID = JSON.parse(data);
+                // console.log('getModuleId called: '+moduleID);
+            }
+        });
+        existModuleID = true;
+    }
+}
 
-function revoShowModal(fastBuyMode, orderModeUrl) {
+function revoShowModal(fastBuyMode, orderModeUrl, display) {
     let successCallback = function(data) {
         if (data.message === 'declined') {
             alert('Вам отказано в кредитном лимите.');
@@ -49,7 +66,7 @@ function revoShowModal(fastBuyMode, orderModeUrl) {
             if (orderModeUrl) {
                 REVO.Form.show(orderModeUrl, '#revo-iframe-container');
 
-                revoModal().style.display = 'block';
+                revoModal().style.display = display;
                 window.ORDER_MODE = true;
             }
         }
@@ -63,24 +80,32 @@ function revoShowModal(fastBuyMode, orderModeUrl) {
         'action': 'register'
     };
 
+    getModuleID();
+    // console.log('moduleId: '+moduleID);
+
     BX.ajax({
         timeout: 120,
         method: 'POST',
         dataType: 'json',
-        url: '/ajax/a.revo/ajax.php',
+        url: '/ajax/'+moduleID+'/ajax.php',
         data:  data,
         onsuccess: successCallback,
         onfailure: failureCallback
     });
 }
 
+var askBtnPressed = false;
+
 BX.ready(function() {
     var INSTALMENT_PERIOD = 12;
-
     if (window.revoLoaded) return;
     window.revoLoaded = true;
 
     setTimeout(function () {updatePrice();}, 1000);
+
+    $('.price-module__modal-trigger').on('click', function() {
+        askBtnPressed = true;
+    });
 
     BX.bindDelegate(
         document.body, 'click', {className: 'js-rvo-buy-link' },
@@ -90,7 +115,9 @@ BX.ready(function() {
             }
             window.productDetailMode = true;
             window.buyBtnSelector = this.dataset.buybtn;
-            revoShowModal(true);
+            if(askBtnPressed == false) {
+                revoShowModal(true);
+            }
             return BX.PreventDefault(e);
         }
     );
@@ -131,32 +158,34 @@ BX.ready(function() {
                     clickBound = true;
 
                     BX.bindDelegate(document.body, 'click', {'callback': function(obj) {
-                        let a = false;
-                        for (let i in obj.childNodes) {
-                            if (obj.childNodes[i].id === 'ID_PAY_SYSTEM_ID_'+REVO_PAY_SYSTEM_ID) {
-                                a = true;
+                            let a = false;
+                            for (let i in obj.childNodes) {
+                                if (obj.childNodes[i].id === 'ID_PAY_SYSTEM_ID_'+REVO_PAY_SYSTEM_ID) {
+                                    a = true;
+                                }
                             }
-                        }
-                        return a;
-                    }}, function () {
+                            return a;
+                        }}, function () {
                         if (REVO_REQUEST_DECLINED) {
                             alert('Вам отказано в кредитном лимите.');
                             return;
                         }
                         if (window.revoSent) return;
                         window.revoSent = true;
-
-                        revoShowModal();
+                        console.log("show Modal on Change");
+                        //revoShowModal();
                     });
                 }
             }
         });
     }, 1000);
 
+    getModuleID();
+    // console.log('moduleId 2: '+moduleID);
     BX.ajax({
         method: 'GET',
         dataType: 'html',
-        url: '/bitrix/html/a.revo/modal.template.html',
+        url: '/bitrix/html/'+moduleID+'/modal.template.html',
         onsuccess: function (data) {
             var doc = new DOMParser().parseFromString(data, "text/html");
             BX.append(doc.body.firstChild, document.body);
@@ -166,8 +195,10 @@ BX.ready(function() {
 
             var event = new Event('revo_modal_ready');
             document.dispatchEvent(event);
+            // console.log('Second ajax is called');
         }
     });
+    console.log()
 
     function updatePrice() {
         if (REVO_ADD_PRICE_BLOCK > 0) {

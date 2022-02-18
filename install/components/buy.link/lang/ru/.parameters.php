@@ -1,4 +1,4 @@
 <?php
-$MESS['REVO_BUY_PARAM_PRODUCT_ID'] = 'ID ïðîäóêòà';
-$MESS['REVO_BUY_PARAM_PRICE'] = 'Ñòîèìîñòü (ðóá. / ìåñ.)';
-$MESS['REVO_BUY_PARAM_BTN_SELECTOR'] = 'Ñåëåêòîð êíîïêè ïîêóïêè (äëÿ íàæàòèÿ ïîñëå ïîëó÷åíèÿ ëèìèòà)';
+$MESS['REVO_BUY_PARAM_PRODUCT_ID'] = 'ID Ð¿Ñ€Ð¾Ð´ÑƒÐºÑ‚Ð°';
+$MESS['REVO_BUY_PARAM_PRICE'] = 'Ð¡Ñ‚Ð¾Ð¸Ð¼Ð¾ÑÑ‚ÑŒ (Ñ€ÑƒÐ±. / Ð¼ÐµÑ.)';
+$MESS['REVO_BUY_PARAM_BTN_SELECTOR'] = 'Ð¡ÐµÐ»ÐµÐºÑ‚Ð¾Ñ€ ÐºÐ½Ð¾Ð¿ÐºÐ¸ Ð¿Ð¾ÐºÑƒÐ¿ÐºÐ¸ (Ð´Ð»Ñ Ð½Ð°Ð¶Ð°Ñ‚Ð¸Ñ Ð¿Ð¾ÑÐ»Ðµ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ñ Ð»Ð¸Ð¼Ð¸Ñ‚Ð°)';

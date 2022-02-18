@@ -4,19 +4,23 @@ namespace Revo;
 
 
 use Bitrix\Main\Config\Option;
+use Revo\Helpers\Extensions;
 
 class Logger
 {
     static $_debugMode = true;
 
-    public static function log($el, $prefix = 'log') {
+    public static function log($el, $prefix = 'log')
+    {
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
         if (!self::$_debugMode) return;
 
-        $bLog = Option::get('a.revo', 'log', 'Y') != 'N';
+        $bLog = Option::get($moduleID, 'log', 'Y') != 'N';
 
         if (!$bLog) return;
 
-        $logDir = $_SERVER['DOCUMENT_ROOT']. '/logs/';
+        $logDir = $_SERVER['DOCUMENT_ROOT']. '/logs/revo/';
         if (!file_exists($logDir)) mkdir($logDir);
 
         $fname = $prefix . '_' . date('Ymd');
