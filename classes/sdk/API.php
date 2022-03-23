@@ -115,7 +115,7 @@ class API
     public function changeOrder(OrderDataUpdate $orderUpdateData)
     {
         try {
-            $data = json_encode($orderUpdateData);
+            $data = json_encode($orderUpdateData, JSON_UNESCAPED_UNICODE);
 
             $response = $this->api->callService($data, 'change');
             $result = $this->api->parseReturnResponse($response);
