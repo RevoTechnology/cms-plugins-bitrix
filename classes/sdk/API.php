@@ -32,12 +32,15 @@ class API
         $email = '',
         $name = '',
         $last_name = '',
+        $address = '',
         $backurl = false
     )
     {
         $order = new Order(
+            "preorder",
             $email,
             $phone,
+            $address,
             new OrderData(bitrix_sessid() . ":" . uniqid(), 1),
             new Person($name, $last_name, '')
         );
@@ -61,7 +64,7 @@ class API
         if (!Application::getInstance()->isUtfMode()) {
             $order = Converter::convertObjectToUtf($order);
         }
-        $order = json_encode($order);
+        $order = json_encode($order, JSON_PRESERVE_ZERO_FRACTION | JSON_UNESCAPED_UNICODE);
         $response = $this->api->callService($order, 'order');
         $result = $this->api->parseOrderResponse($response);
 

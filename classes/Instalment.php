@@ -98,6 +98,9 @@ class Instalment
                 if (in_array($ar['CODE'], ['PHONE'])) {
                     $u['PERSONAL_PHONE'] = $ar['VALUE'];
                 }
+                if (in_array($ar['CODE'], ['ADDRESS'])) {
+                    $u['ADDRESS'] = $ar['VALUE'];
+                }
             }
         }
 
@@ -106,6 +109,7 @@ class Instalment
             $u['EMAIL'],
             $u['NAME'],
             $u['LAST_NAME'],
+            $u['ADDRESS'],
             $backurl
         );
     }
@@ -114,11 +118,11 @@ class Instalment
         global $USER;
         $orderId = $globalOrderParams['ORDER']['ID'];
 
-        if (!isset($_SESSION['REVO_SAVED_ORDER_URI'])) $_SESSION['REVO_SAVED_ORDER_URI'] = [];
+        if (!isset($_SESSION['REVO_SAVED_ORDER_URI']))
+            $_SESSION['REVO_SAVED_ORDER_URI'] = [];
 
-        if (array_key_exists($orderId, $_SESSION['REVO_SAVED_ORDER_URI']) && $_SESSION['REVO_SAVED_ORDER_URI'][$orderId]) {
+        if (array_key_exists($orderId, $_SESSION['REVO_SAVED_ORDER_URI']) && $_SESSION['REVO_SAVED_ORDER_URI'][$orderId])
             return $_SESSION['REVO_SAVED_ORDER_URI'][$orderId];
-        }
 
         $u = \CUser::GetByID($USER->GetID())->Fetch();
         Loader::includeModule('sale');
@@ -130,9 +134,10 @@ class Instalment
             $arCart[] = $ar;
         }
 
-        $order = new Dto\Order(
+        $order = new Dto\Order("order",
             $globalOrderParams['PROPERTY']['EMAIL'] ?: $u['EMAIL'],
             $globalOrderParams['PROPERTY']['PHONE'] ?: $u['PERSONAL_PHONE'],
+            $globalOrderParams['PROPERTY']['ADDRESS'],
             Dto\OrderData::getFromGlobalParams($globalOrderParams),
             Dto\Person::getFromGlobalParams($globalOrderParams),
             $arCart
