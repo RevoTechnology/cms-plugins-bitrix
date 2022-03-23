@@ -80,9 +80,9 @@ class a_revo extends CModule
         RegisterModuleDependences('main', 'onProlog', $this->MODULE_ID, '\Revo\Events','onProlog');
         RegisterModuleDependences('sale', 'OnSaleStatusOrder', $this->MODULE_ID, '\Revo\Events','onStatusOrder');
         RegisterModuleDependences('sale', 'OnSaleCancelOrder', $this->MODULE_ID, '\Revo\Events','onCancelOrder');
-        RegisterModuleDependences('sale', 'OnBeforeOrderUpdate', $this->MODULE_ID, '\Revo\Events','onUpdateOrder');
         $eventManager = Bitrix\Main\EventManager::getInstance();
         $eventManager->registerEventHandler('sale', 'OnPaymentPaid', $this->MODULE_ID, '\Revo\Events','onSalePaymentPaid');
+        $eventManager->registerEventHandler('sale', 'OnSaleOrderBeforeSaved', $this->MODULE_ID, '\Revo\Events','onUpdateOrder');
         RegisterModuleDependences('main', 'onProlog', $this->MODULE_ID, '\Revo\Events','appendJQuery');
     }
 
@@ -91,9 +91,9 @@ class a_revo extends CModule
         UnRegisterModuleDependences('main', 'onProlog', $this->MODULE_ID, '\Revo\Events','onProlog');
         UnRegisterModuleDependences('sale', 'OnSaleStatusOrder', $this->MODULE_ID, '\Revo\Events','onStatusOrder');
         UnRegisterModuleDependences('sale', 'OnSaleCancelOrder', $this->MODULE_ID, '\Revo\Events','onCancelOrder');
-        UnRegisterModuleDependences('sale', 'OnBeforeOrderUpdate', $this->MODULE_ID, '\Revo\Events','onUpdateOrder');
         $eventManager = Bitrix\Main\EventManager::getInstance();
         $eventManager->unRegisterEventHandler('sale', 'OnPaymentPaid', $this->MODULE_ID, '\Revo\Events','onSalePaymentPaid');
+        $eventManager->unRegisterEventHandler('sale', 'OnSaleOrderBeforeSaved', $this->MODULE_ID, '\Revo\Events','onUpdateOrder');
         UnRegisterModuleDependences('main', 'onProlog', $this->MODULE_ID, '\Revo\Events','appendJQuery');
     }
 

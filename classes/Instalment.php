@@ -157,26 +157,25 @@ class Instalment
         return $this->_client->returnOrder($sum, $orderId);
     }
 
-    public function change($orderId, $arOrderParams) {
-        $rs = \CSaleBasket::GetList([], [
-            'ORDER_ID' => $orderId
-        ]);
+    public function change($order) {
+        $basket = $order->getBasket();
         $arCart = [];
-        while ($cartItem = $rs->Fetch()) {
+        foreach ($basket as $item) {
             $oCart = new OrderItem();
-            $oCart->name = $cartItem['NAME'];
-            $oCart->price = $cartItem['PRICE'];
-            $oCart->quantity = $cartItem['QUANTITY'];
+            $oCart->name = $item->getField('NAME');
+            $oCart->price = $item->getField('PRICE');
+            $oCart->quantity = $item->getField('QUANTITY');
 
             $arCart[] = $oCart;
         }
-        $order = new Dto\OrderDataUpdate(
-            $orderId,
-            $arOrderParams['PRICE'],
+
+        $orderUpdateData = new Dto\OrderDataUpdate(
+            $order->getId(),
+            $order->getPrice(),
             null,
             $arCart
         );
-        return $this->_client->changeOrder($order);
+        return $this->_client->changeOrder($orderUpdateData);
     }
 
     public function getTariffs($amount) {

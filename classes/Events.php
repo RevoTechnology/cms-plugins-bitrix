@@ -157,20 +157,32 @@ class Events
         }
     }
 
-    public function onUpdateOrder($id, $arFields)
+    public function onUpdateOrder(\Bitrix\Main\Event $event)
     {
-        $extension = new Extensions();
-        $moduleID = $extension->getModuleID();
-        IncludeModuleLangFile(__FILE__);
-        $revoPaysysId = Option::get($moduleID, 'paysys_id', 0);
-        $order = \CSaleOrder::GetById($id);
-
-        if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
-
-            if ($arFields['PRICE'] && $order['PRICE'] && $order['PRICE'] != $arFields['PRICE']) {
-                $revoClient = Instalment::getInstance();
-                $result = $revoClient->change($id, $order);
-                Logger::log($result, 'change');
+        $order = $event->getParameter("ENTITY");
+        $oldValues = $event->getParameter("VALUES");
+        $orderId = $order->getId(); // ID заказа
+        if (!empty($orderId)) {
+            $extension = new Extensions();
+            $moduleID = $extension->getModuleID();
+            IncludeModuleLangFile(__FILE__);
+            $revoPaysysId = Option::get($moduleID, 'paysys_id', 0);
+            $order = $event->getParameter('ENTITY');
+            $paymentCollection = $order->getPaymentCollection();
+            foreach ($paymentCollection as $payment) {
+                $psID = $payment->getPaymentSystemId(); // ID платежной системы
+                if ($psID == $revoPaysysId) {
+                    $revoClient = Instalment::getInstance();
+                    $result = $revoClient->change($order);
+                    Logger::log($result, 'change');
+                    if ($result['status'] != "ok") {
+                        return new \Bitrix\Main\EventResult(
+                            \Bitrix\Main\EventResult::ERROR,
+                            new \Bitrix\Sale\ResultError('Mokka. Сохранить изменения не удалось. Ошибка: '.$result['msg']),
+                            'sale'
+                        );
+                    }
+                }
             }
         }
     }
