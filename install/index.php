@@ -215,6 +215,61 @@ class a_revo extends CModule
         );
 
         \Revo\Models\RegisteredUsersTable::reinstallTable();
+
+        if (\CModule::IncludeModule('sale'))
+        {
+            $siteIds = [];
+            $rsSites = CSite::GetList();
+            while ($arSite = $rsSites->Fetch()) {
+                $siteIds[] = $arSite['LID'];
+            }
+            print_r($siteIds);
+
+            // получаем ID типа плательщика или создаем его
+            $db_ptype  = CSalePersonType::GetList([], ["NAME" => "Клиент Mokka"]);
+            if ($ptype = $db_ptype->Fetch()) {
+                $personId = $ptype['ID'];
+            } else {
+                $arFieldsPerson = new \CSalePersonType();
+                $personId = $arFieldsPerson->Add(
+                    [
+                        'LID'  => $siteIds,
+                        'NAME' => 'Клиент Mokka',
+                    ]
+                );
+            }
+
+            // получаем ID группы свойств или создаем ее
+            $db_propsGroup = CSaleOrderPropsGroup::GetList([], ["NAME" => "Mokka"]);
+            if ($propsGroup = $db_propsGroup->Fetch()) {
+                $groupId = $propsGroup['ID'];
+            } else {
+                $arFieldsGroup = new \CSaleOrderPropsGroup();
+                $groupId = $arFieldsGroup->Add(
+                    [
+                        'PERSON_TYPE_ID' => $personId,
+                        'NAME'           => 'Mokka',
+                    ]
+                );
+            }
+
+            // если свойства еще нет - создать
+            $db_props = CSaleOrderProps::GetList([], ["CODE" => "REVO_STATUS"]);
+            if (!$arProps = $db_props->Fetch()) {
+                $arFieldsProps = new \CSaleOrderProps();
+                $propId = $arFieldsProps->Add(
+                    [
+                        'CODE'            => 'REVO_STATUS',
+                        'NAME'            => 'Статус заказа в Mokka',
+                        'TYPE'            => 'TEXT',
+                        'PERSON_TYPE_ID'  => $personId,
+                        'PROPS_GROUP_ID'  => $groupId,
+                        'REQUIED'         => 'N', // Да, тут опечатка в ядре Битрикса
+                        'DESCRIPTION'     => 'Текущий статус заказа в системе Mokka',
+                    ]
+                );
+            }
+        }
     }
 
     public function UnInstallDb()
