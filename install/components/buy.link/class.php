@@ -65,45 +65,48 @@ class CRevoBuyLink extends \CBitrixComponent
 
     protected function getResult()
     {
-        $extension = new Extensions();
-        $moduleID = $extension->getModuleID();
-        global $USER;
+        // BTB-370: Изменение способа расчёта битой цены
 
-        if (!$this->arParams['PRICE']) {
-            \Bitrix\Main\Loader::includeModule('catalog');
+//        $extension = new Extensions();
+//        $moduleID = $extension->getModuleID();
+//        global $USER;
+//
+//        if (!$this->arParams['PRICE']) {
+//            \Bitrix\Main\Loader::includeModule('catalog');
+//
+//            $this->arParams['PRICE'] = \CPrice::GetBasePrice($this->arParams['PRODUCT_ID'])['PRICE'];
+//        }
+//
+//        $showBlock = Option::get($moduleID, 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin();
+//        $showBlock = true;
+//		$minPrice = Option::get($moduleID, 'detail_min_price', 0);
+//		$maxPrice = Option::get($moduleID, 'detail_max_price', 0);
+//
+//
+//
+//		$tariffs = \Revo\Instalment::getInstance()->getTariffs($this->arParams['PRICE']);
+//        $data = $tariffs['data'];
+//        if ($data) {
+//            $oSchedule = array_pop($data->payment_schedule);
+//            if ($oSchedule) {
+//                $oPaymentDate = array_pop($oSchedule->payment_dates);
+//                if ($oPaymentDate) {
+//                    $this->arResult['AMOUNT'] = $oPaymentDate->amount;
+//                }
+//            }
+//        }
 
-            $this->arParams['PRICE'] = \CPrice::GetBasePrice($this->arParams['PRODUCT_ID'])['PRICE'];
-        }
-
-        $showBlock = Option::get($moduleID, 'debug_mode', 'Y') != 'Y' || $USER->IsAdmin();
-        $showBlock = true;
-		$minPrice = Option::get($moduleID, 'detail_min_price', 0);
-		$maxPrice = Option::get($moduleID, 'detail_max_price', 0);
+        // BTB-370: Изменение способа расчёта битой цены
 
 
-
-		$tariffs = \Revo\Instalment::getInstance()->getTariffs($this->arParams['PRICE']);
-        $data = $tariffs['data'];
-        if ($data) {
-            $oSchedule = array_pop($data->payment_schedule);
-            if ($oSchedule) {
-                $oPaymentDate = array_pop($oSchedule->payment_dates);
-                if ($oPaymentDate) {
-                    $this->arResult['AMOUNT'] = $oPaymentDate->amount;
-                }
-            }
-        }
-
+        // old
 //        if ($showBlock && $this->arParams['PRICE'] >= $minPrice
 //            && (!$maxPrice || ($maxPrice && $this->arParams['PRICE'] <= $maxPrice))) {
 //
 //            $this->includeComponentTemplate();
 //        }
 
-		if ($showBlock)
-		{
-            $this->includeComponentTemplate();
-		}
+        $this->includeComponentTemplate();
     }
 
     /**

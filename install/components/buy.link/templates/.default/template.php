@@ -6,7 +6,10 @@ use Bitrix\Main\Config\Option;
 use Revo\Helpers\Extensions;
 use CCurrencyLang;
 
-define('INSTALMENT_PERIOD', 12);
+$extension = new Extensions();
+$moduleID = $extension->getModuleID();
+
+$instalment_period = Option::get($moduleID, 'instalment_period', 12);
 ?>
 
 <style>
@@ -273,7 +276,7 @@ define('INSTALMENT_PERIOD', 12);
     <a class="price-module__price">
         <p><?=GetMessage('REVO_BUY_PART_BUY_PREFIX')?></p>
         <strong><?php if(CModule::IncludeModule("currency")){
-                echo CCurrencyLang::CurrencyFormat(ceil($arResult['AMOUNT']) ?: ceil($arParams['PRICE'] / INSTALMENT_PERIOD), 'RUB', true);
+                echo CCurrencyLang::CurrencyFormat(ceil($arParams['PRICE'] / $instalment_period), 'RUB', true);
             }
             echo GetMessage('REVO_BUY_PART_BUY_POSTFIX')?></strong>
     </a>
@@ -295,10 +298,6 @@ define('INSTALMENT_PERIOD', 12);
         <button class="price-module-modal__modal-close"><img src= "/local/components/revo/buy.link/img/close.svg" alt="Закрыть окно"></button>
         <div class="price-module-modal__modal-content">
             <h3><?=GetMessage("REVO_POPUP_TEMPLATE_PHRASE_HEADER")?></h3>
-            <?php
-            $extension = new Extensions();
-            $moduleID = $extension->getModuleID();
-            ?>
             <strong><?=GetMessage("REVO_POPUP_TEMPLATE_PHRASE_01")?><br/><?=GetMessage("REVO_POPUP_TEMPLATE_PHRASE_02")?>
                 <?=intval(Option::get($moduleID, 'detail_min_price', 0))?><?=GetMessage("REVO_POPUP_TEMPLATE_PHRASE_03")?></strong>
             <ul class="price-module-modal__advantages">
