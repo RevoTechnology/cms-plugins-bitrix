@@ -26,7 +26,8 @@ try {
             } elseif ($currentUser['approved']) {
                 $result['url'] = false;
                 $result['message'] = 'registered';
-                break;
+                // не останавливаем код чтобы получить URL фрейма и в итоге показать его клиенту
+                // break;
             } elseif ($currentUser['declined']) {
                 $result['message'] = 'declined';
                 break;
@@ -51,11 +52,13 @@ try {
                         [($data->decision == 'approved' ? 'approved' : 'declined') => true]
                     );
                     $result = ['result' => 'success', 'message' => 'User updated'];
-                } else {
+                }
+                else {
                     $order = CSaleOrder::GetById($data->order_id);
 
                     if ($order) {
-                        $statusId = false;
+                        // Mokka Declined
+                        $statusId = 'MD';
                         $cancel = true;
 
                         switch ($data->decision) {
@@ -65,7 +68,8 @@ try {
                                         $order['ID'],
                                         'Y'
                                     );
-                                    $statusId = 'P';
+                                    // Mokka Approved
+                                    $statusId = 'MA';
                                 } else {
                                     CSaleOrder::Update(
                                         $order['ID'],
@@ -77,16 +81,20 @@ try {
                                 break;
                         }
 
-                        if ($statusId) {
-                            CSaleOrder::StatusOrder(
+                        if ($statusId == 'MA') {
+                            \CSaleOrder::StatusOrder(
                                 $order['ID'],
                                 $statusId
                             );
                         } else if ($cancel) {
-                            CSaleOrder::CancelOrder($order['ID'], 'Y',
+                            \CSaleOrder::StatusOrder(
+                                $order['ID'],
+                                $statusId
+                            );
+                            \CSaleOrder::CancelOrder($order['ID'], 'Y',
                                 'Auto cancel from revo service');
                         }
-                        $result = ['result' => 'success', 'message' => 'Order updated'];
+                        $result = ['result' => 'success', 'message' => 'Order updated, decision: '.$data->decision];
                     }
                 }
             }

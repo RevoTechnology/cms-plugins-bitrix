@@ -36,109 +36,11 @@ class Events
         }
     }
 
+    // вынесено в блок onOrderUpdate();
+    // не удаляется во избежание ошибок во время отработки событий
     public function onStatusOrder($id, $val)
     {
-        $extension = new Extensions();
-        $moduleID = $extension->getModuleID();
-        IncludeModuleLangFile(__FILE__);
-        $returnStatus = Option::get($moduleID, 'return_status', 'RP');
-        $finalStatus = Option::get($moduleID, 'finalization_status', 'F');
-        $revoPaysysId = Option::get($moduleID, 'paysys_id', 0);
-        $revoAdminEmail = Option::get($moduleID, 'email', '');
-        $order = \CSaleOrder::GetById($id);
-
-        if ($order['PAY_SYSTEM_ID'] == $revoPaysysId) {
-            if ($val == $finalStatus) {
-                $revoClient = Instalment::getInstance();
-
-                $pdfPath = '/upload/check/' . $id . '.pdf';
-                $fullPdfPath = $_SERVER['DOCUMENT_ROOT'] . $pdfPath;
-                \Revo\Documents::billToPDF($id, $fullPdfPath);
-
-                $payments = \Bitrix\Sale\Payment::getList([
-                    'filter' => [
-                        'ORDER_ID' => $id,
-                        'PAY_SYSTEM_ID' => $revoPaysysId
-                    ]
-                ]);
-                $sum = 0;
-                while ($payment = $payments->fetch()) {
-                    $sum += $payment['SUM'];
-                }
-                $result = $revoClient->finalizeOrder(
-                    $order['ID'],
-                    $sum ?: $order['PRICE'],
-                    $fullPdfPath
-                );
-
-                if($result['result'] != 'error') {
-                    Logger::log([
-                        'Finalization have been sent to REVO', $result
-                    ], 'finalization');
-                }
-
-                // если финализация не прошла
-                if ($result['result'] == 'error') {
-
-                    // пробуем еще раз финализировать, бывает не с первого раза срабатывает
-                    $result = $revoClient->finalizeOrder(
-                        $order['ID'],
-                        $sum ?: $order['PRICE'],
-                        $fullPdfPath
-                    );
-
-                    // если финализация снова не прошла
-                    if ($result['result'] == 'error') {
-                        $orderId = $order['ID'];
-                        $sum = $sum ?: $order['PRICE'];
-
-                        // создаем агента который с интервалом в 1 час 10 раз попробует отправить финализацию
-                        $dateCurrent = date("d.m.Y H:i:s");
-                        $dateFuture = date("d.m.Y H:i:s", strtotime($dateCurrent.'+ 1 minutes'));
-                        \CAgent::AddAgent(
-                            "\Revo\Requests::statusOrder($orderId, $sum, 1);",
-                            $moduleID,
-                            "N",
-                            3600,
-                            "$dateFuture",
-                            'Y',
-                            "$dateFuture",
-                            '',
-                            '',
-                            'N'
-                        );
-                        // уведомляем админов партнера о том что финализация не прошла
-                        if ($revoAdminEmail) {
-                            bxmail(
-                                $revoAdminEmail,
-                                Loc::getMessage('REVO_FINALIZATION_ERROR'),
-                                str_replace(
-                                    ['#ERROR#', '#ORDER#'],
-                                    [$result['msg'], $order['ID']],
-                                    Loc::getMessage('REVO_ERROR_TEXT'))
-                            );
-                        }
-                        // аналогично уведомляем РЕВО
-                        bxmail(
-                            "integration@revo.ru",
-                            Loc::getMessage('REVO_FINALIZATION_ERROR'),
-                            str_replace(
-                                ['#ERROR#', '#ORDER#', '#URL#'],
-                                [$result['msg'], $orderId, $_SERVER['HTTP_ORIGIN']],
-                                Loc::getMessage('REVO_ERROR_TEXT_2'))
-                        );
-                        Logger::log([
-                            "Заказ ID = " . $orderId . " не прошел финализацию в РЕВО.\n", $result
-                        ], 'finalization-failed');
-                        throw new \Bitrix\Sale\UserMessageException(Loc::getMessage('REVO_FINALIZATION_ERROR'));
-                    }
-                }
-            } elseif ($val == $returnStatus) {
-                $revoClient = Instalment::getInstance();
-                $result = $revoClient->returnOrder($id, $order['PRICE']);
-                Logger::log($result, 'cancel');
-            }
-        }
+        return;
     }
 
     public function onCancelOrder($id, $is_cancel, $description)
@@ -146,65 +48,216 @@ class Events
         $extension = new Extensions();
         $moduleID = $extension->getModuleID();
         IncludeModuleLangFile(__FILE__);
+        $returnStatus = Option::get($moduleID, 'return_status', 'RB');
         $revoPaysysId = Option::get($moduleID, 'paysys_id', 0);
         $order = \CSaleOrder::GetById($id);
 
         if ($order['PAY_SYSTEM_ID'] == $revoPaysysId && $is_cancel == 'Y') {
             $revoClient = Instalment::getInstance();
-            // @FIXME change to order payments with $revoPaysysId instead order
             $result = $revoClient->returnOrder($id, $order['PRICE']);
             Logger::log($result, 'cancel');
+
+            // если возврат или отмена прошли успешно - меняем статус на "Отменен" и отменяем оплату
+            if ($result['status'] == 'ok') {
+                \CSaleOrder::StatusOrder(
+                    $order['ID'],
+                    $returnStatus
+                );
+
+                // предотвращаем возврат средств на внутренний счет покупателя
+                $payments = \Bitrix\Sale\Payment::getList([
+                    'filter' => [
+                        'ORDER_ID' => $order['ID'],
+                        'PAY_SYSTEM_ID' => $revoPaysysId
+                    ]
+                ]);
+
+                $sum = 0;
+                while ($payment = $payments->fetch()) {
+                    $sum += $payment['SUM'];
+                }
+                if ($order['PAYED'] == 'Y')
+                    \CSaleUserAccount::UpdateAccount($order['USER_ID'], -$sum, $order['CURRENCY'], 'Корректировка баланса', $order['ID']);
+
+                // отмена оплаты
+                \CSaleOrder::PayOrder(
+                    $order['ID'],
+                    'N'
+                );
+            }
         }
     }
 
     public function onUpdateOrder(\Bitrix\Main\Event $event)
     {
-        $order = $event->getParameter("ENTITY");
+        $extension = new Extensions();
+        $moduleID = $extension->getModuleID();
+        IncludeModuleLangFile(__FILE__);
+        $returnStatus = Option::get($moduleID, 'return_status', 'RB');
+        $finalStatus = Option::get($moduleID, 'finalization_status', 'F');
+        $revoPaysysId = Option::get($moduleID, 'paysys_id', 0);
+        $revoAdminEmail = Option::get($moduleID, 'email', '');
+
+
+        $orderObj = $event->getParameter("ENTITY");
+        $orderId = $orderObj->getId(); // ID заказа
+        $status = $orderObj->getField('STATUS_ID'); // статус заказа
+
         $oldValues = $event->getParameter("VALUES");
-        $orderId = $order->getId(); // ID заказа
-        if (!empty($orderId)) {
-            $extension = new Extensions();
-            $moduleID = $extension->getModuleID();
-            IncludeModuleLangFile(__FILE__);
-            $revoPaysysId = Option::get($moduleID, 'paysys_id', 0);
-            $order = $event->getParameter('ENTITY');
-            $paymentCollection = $order->getPaymentCollection();
-            foreach ($paymentCollection as $payment) {
-                $psID = $payment->getPaymentSystemId(); // ID платежной системы
-                if ($psID == $revoPaysysId) {
-                    $revoClient = Instalment::getInstance();
-                    $result = $revoClient->change($order);
-                    Logger::log($result, 'change');
-                    if ($result['status'] != "ok") {
-                        return new \Bitrix\Main\EventResult(
-                            \Bitrix\Main\EventResult::ERROR,
-                            new \Bitrix\Sale\ResultError('Mokka. Сохранить изменения не удалось. Ошибка: '.$result['msg']),
-                            'sale'
-                        );
+
+        if ($orderObj->getField('PAY_SYSTEM_ID') == $revoPaysysId) {
+            // если заказ не только что созданный
+            if (!empty($orderId)) {
+                // если поменялась стоимость заказа - отправить в Мокка
+                if (!empty($oldValues['PRICE'])) {
+                    $paymentCollection = $orderObj->getPaymentCollection();
+                    foreach ($paymentCollection as $payment) {
+                        $psID = $payment->getPaymentSystemId(); // ID платежной системы
+                        if ($psID == $revoPaysysId) {
+                            $revoClient = Instalment::getInstance();
+                            $result = $revoClient->change($orderObj);
+                            Logger::log($result, 'change');
+                            if ($result['status'] != "ok") {
+                                // блокировка сохранения заказа
+                                return new \Bitrix\Main\EventResult(
+                                    \Bitrix\Main\EventResult::ERROR,
+                                    new \Bitrix\Sale\ResultError('Mokka. Сохранить изменения не удалось. Ошибка: '.$result['msg']),
+                                    'sale'
+                                );
+                            }
+                            else {
+                                $payment->setPaid("N"); // отменяем оплату
+                                $payment->setField('SUM', $orderObj->getPrice());
+                                $payment->setPaid("Y"); // выставляем оплату
+
+                                // предотвращаем возврат средств на внутренний счет покупателя
+                                $paidDiff = ($oldValues['PRICE'] - $orderObj->getPrice());
+                                if ($paidDiff > 0) {
+                                    \CSaleUserAccount::UpdateAccount($orderObj->getUserId(), -$paidDiff, $orderObj->getCurrency(), 'Корректировка баланса', $orderId);
+                                }
+                            }
+                        }
                     }
                 }
+
+                // если поменялся статус
+                if (!empty($oldValues['STATUS_ID']) and $oldValues['STATUS_ID'] != $status) {
+                    $order = \CSaleOrder::GetById($orderId);
+                    if ($status == $finalStatus) {
+                        $revoClient = Instalment::getInstance();
+
+                        $pdfPath = 'upload/check/' . $order['ID'] . '.pdf';
+                        $fullPdfPath = $_SERVER['DOCUMENT_ROOT'] . $pdfPath;
+                        \Revo\Documents::billToPDF($order['ID'], $fullPdfPath);
+
+                        $payments = \Bitrix\Sale\Payment::getList([
+                            'filter' => [
+                                'ORDER_ID' => $order['ID'],
+                                'PAY_SYSTEM_ID' => $revoPaysysId
+                            ]
+                        ]);
+                        $sum = 0;
+                        while ($payment = $payments->fetch()) {
+                            $sum += $payment['SUM'];
+                        }
+                        $result = $revoClient->finalizeOrder(
+                            $order['ID'],
+                            $sum ?: $order['PRICE'],
+                            $fullPdfPath
+                        );
+
+                        if($result['result'] != 'error') {
+                            Logger::log([
+                                'Finalization have been sent to REVO', $result
+                            ], 'finalization');
+                        }
+
+                        // если финализация не прошла
+                        if ($result['result'] == 'error') {
+                            if ($result['msg'] == 'Unable to finish - order is already finished/canceled') {
+                                // блокировка сохранения заказа
+                                return new \Bitrix\Main\EventResult(
+                                    \Bitrix\Main\EventResult::ERROR,
+                                    new \Bitrix\Sale\ResultError('Mokka. Сохранить изменения не удалось. Ошибка: '.$result['msg']),
+                                    'sale'
+                                );
+                            }
+
+                            // пробуем еще раз финализировать, бывает не с первого раза срабатывает
+                            $result = $revoClient->finalizeOrder(
+                                $order['ID'],
+                                $sum ?: $order['PRICE'],
+                                $fullPdfPath
+                            );
+
+                            // если финализация снова не прошла
+                            if ($result['result'] == 'error') {
+                                $orderId = $order['ID'];
+                                $sum = $sum ?: $order['PRICE'];
+
+                                // создаем агента который с интервалом в 1 час 10 раз попробует отправить финализацию
+                                $dateCurrent = date("d.m.Y H:i:s");
+                                $dateFuture = date("d.m.Y H:i:s", strtotime($dateCurrent.'+ 1 minutes'));
+                                \CAgent::AddAgent(
+                                    "\Revo\Requests::statusOrder($orderId, $sum, 1);",
+                                    $moduleID,
+                                    "N",
+                                    3600,
+                                    "$dateFuture",
+                                    'Y',
+                                    "$dateFuture",
+                                    '',
+                                    '',
+                                    'N'
+                                );
+                                // уведомляем админов партнера о том что финализация не прошла
+                                if ($revoAdminEmail) {
+                                    bxmail(
+                                        $revoAdminEmail,
+                                        Loc::getMessage('REVO_FINALIZATION_ERROR'),
+                                        str_replace(
+                                            ['#ERROR#', '#ORDER#'],
+                                            [$result['msg'], $order['ID']],
+                                            Loc::getMessage('REVO_ERROR_TEXT'))
+                                    );
+                                }
+                                // аналогично уведомляем РЕВО
+                                bxmail(
+                                    "integration@revo.ru",
+                                    Loc::getMessage('REVO_FINALIZATION_ERROR'),
+                                    str_replace(
+                                        ['#ERROR#', '#ORDER#', '#URL#'],
+                                        [$result['msg'], $orderId, $_SERVER['HTTP_ORIGIN']],
+                                        Loc::getMessage('REVO_ERROR_TEXT_2'))
+                                );
+                                Logger::log([
+                                    "Заказ ID = " . $orderId . " не прошел финализацию в РЕВО.\n", $result
+                                ], 'finalization-failed');
+                                throw new \Bitrix\Sale\UserMessageException(Loc::getMessage('REVO_FINALIZATION_ERROR'));
+                            }
+                        }
+                    }
+                    elseif ($status == $returnStatus) {
+                        // будет вызвано событие OnSaleCancelOrder
+                        \CSaleOrder::CancelOrder($order['ID'], 'Y',
+                            'Auto cancel from REVO when change status order to "return_status"');
+                    }
+                }
+            }
+            // если заказ новый
+            elseif(empty($orderId)) {
+                // ставим ему статус "Заказ оформлен, решение по займу не принято"
+                $orderObj->setField('STATUS_ID', 'MN');
             }
         }
     }
 
+    // теперь нет нужды отправлять /change при проставлении флага оплаты.
+    // все происходит внутри onOrderUpdate();
+    // не удаляется во избежание ошибок во время отработки событий
     public static function onSalePaymentPaid(Main\Event $event)
     {
-        $extension = new Extensions();
-        $moduleID = $extension->getModuleID();
-        $payment = $event->getParameter('ENTITY');
-        /**
-         * @var $payment Sale\Payment
-         */
-        $revoPaysysId = Option::get($moduleID, 'paysys_id', 0);
-
-        if ($payment->getPaymentSystemId() == $revoPaysysId) {
-            $order = \CSaleOrder::GetById($payment->getOrderId());
-            $revoClient = Instalment::getInstance();
-            $order['PRICE'] = $payment->getSum();
-
-            $result = $revoClient->change($payment->getOrderId(), $order);
-            Logger::log($result, 'change');
-        }
+        return;
     }
 
     public function appendJQuery() {
