@@ -20,8 +20,8 @@ class Logger
 
         if (!$bLog) return;
 
-        $logDir = $_SERVER['DOCUMENT_ROOT']. '/logs/revo/';
-        if (!file_exists($logDir)) mkdir($logDir);
+        $logDir = $_SERVER['DOCUMENT_ROOT']. 'logs/revo/';
+        if (!is_dir($logDir)) mkdir($logDir, 755, true);
 
         $fname = $prefix . '_' . date('Ymd');
 

@@ -134,7 +134,8 @@ class a_revo extends CModule
 
         if (!$result->isSuccess()) {
             $this->errors[] = GetMessage('REVO_MODULE_PAYMENT_FAIL');
-        } else {
+        }
+        else {
             $paySystemId = $result->getId();
 
             Option::set(
@@ -215,6 +216,22 @@ class a_revo extends CModule
         );
 
         \Revo\Models\RegisteredUsersTable::reinstallTable();
+
+
+        // create statuses of order
+        if (\CModule::IncludeModule('sale'))
+        {
+            $db_lang = \CLangAdmin::GetList(($b="sort"), ($o="asc"), array("ACTIVE" => "Y"));
+            while ($arLang = $db_lang->Fetch()) {
+                $lang_mn[] = ['LID' => $arLang['LID'], 'NAME' => 'Заказ оформлен, решение по займу не принято'];
+                $lang_md[] = ['LID' => $arLang['LID'], 'NAME' => 'Заказ оформлен, в займе отказано'];
+                $lang_ma[] = ['LID' => $arLang['LID'], 'NAME' => 'Заказ оформлен, займ одобрен'];
+            }
+
+            $result_mn = \CSaleStatus::Add(['ID' => 'MN', 'SORT' => '110', 'LANG' => $lang_mn]);
+            $result_md = \CSaleStatus::Add(['ID' => 'MD', 'SORT' => '110', 'LANG' => $lang_md]);
+            $result_ma =\CSaleStatus::Add(['ID' => 'MA', 'SORT' => '110', 'LANG' => $lang_ma]);
+        }
     }
 
     public function UnInstallDb()
