@@ -77,7 +77,7 @@ class Events
                     $sum += $payment['SUM'];
                 }
                 if ($order['PAYED'] == 'Y')
-                    \CSaleUserAccount::UpdateAccount($order['USER_ID'], -$sum, $order['CURRENCY'], 'Корректировка баланса', $order['ID']);
+                    \CSaleUserAccount::UpdateAccount($order['USER_ID'], -$sum, $order['CURRENCY'], Loc::getMessage('REVO_CORRECT_BALANCE_MSG'), $order['ID']);
 
                 // отмена оплаты
                 \CSaleOrder::PayOrder(
@@ -121,7 +121,7 @@ class Events
                                 // блокировка сохранения заказа
                                 return new \Bitrix\Main\EventResult(
                                     \Bitrix\Main\EventResult::ERROR,
-                                    new \Bitrix\Sale\ResultError('Mokka. Сохранить изменения не удалось. Ошибка: '.$result['msg']),
+                                    new \Bitrix\Sale\ResultError(Loc::getMessage('REVO_ERROR_TEXT_3').$result['msg']),
                                     'sale'
                                 );
                             }
@@ -133,7 +133,7 @@ class Events
                                 // предотвращаем возврат средств на внутренний счет покупателя
                                 $paidDiff = ($oldValues['PRICE'] - $orderObj->getPrice());
                                 if ($paidDiff > 0) {
-                                    \CSaleUserAccount::UpdateAccount($orderObj->getUserId(), -$paidDiff, $orderObj->getCurrency(), 'Корректировка баланса', $orderId);
+                                    \CSaleUserAccount::UpdateAccount($orderObj->getUserId(), -$paidDiff, $orderObj->getCurrency(), Loc::getMessage('REVO_CORRECT_BALANCE_MSG'), $orderId);
                                 }
                             }
                         }
@@ -178,7 +178,7 @@ class Events
                                 // блокировка сохранения заказа
                                 return new \Bitrix\Main\EventResult(
                                     \Bitrix\Main\EventResult::ERROR,
-                                    new \Bitrix\Sale\ResultError('Mokka. Сохранить изменения не удалось. Ошибка: '.$result['msg']),
+                                    new \Bitrix\Sale\ResultError(Loc::getMessage('REVO_ERROR_TEXT_3').$result['msg']),
                                     'sale'
                                 );
                             }

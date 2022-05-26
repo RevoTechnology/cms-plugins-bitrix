@@ -223,9 +223,9 @@ class a_revo extends CModule
         {
             $db_lang = \CLangAdmin::GetList(($b="sort"), ($o="asc"), array("ACTIVE" => "Y"));
             while ($arLang = $db_lang->Fetch()) {
-                $lang_mn[] = ['LID' => $arLang['LID'], 'NAME' => 'Заказ оформлен, решение по займу не принято'];
-                $lang_md[] = ['LID' => $arLang['LID'], 'NAME' => 'Заказ оформлен, в займе отказано'];
-                $lang_ma[] = ['LID' => $arLang['LID'], 'NAME' => 'Заказ оформлен, займ одобрен'];
+                $lang_mn[] = ['LID' => $arLang['LID'], 'NAME' => Loc::getMessage('REVO_DECISION_MN')];
+                $lang_md[] = ['LID' => $arLang['LID'], 'NAME' => Loc::getMessage('REVO_DECISION_MD')];
+                $lang_ma[] = ['LID' => $arLang['LID'], 'NAME' => Loc::getMessage('REVO_DECISION_MA')];
             }
 
             $result_mn = \CSaleStatus::Add(['ID' => 'MN', 'SORT' => '110', 'LANG' => $lang_mn]);
