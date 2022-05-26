@@ -17,14 +17,14 @@ Loc::loadMessages(__FILE__);
 
 $arAllOptions = array(
     ['detail_max_order_part', Loc::getMessage('OPTIONS_DETAIL_MAX_ORDER_PART'), '100', ['text', 200]],
-    ['detail_min_price', Loc::getMessage('OPTIONS_DETAIL_MIN_PRICE'), '0', ['text', 200]],
-	['detail_max_price', Loc::getMessage('OPTIONS_DETAIL_MAX_PRICE'), '0', ['text', 200]],
+//    ['detail_min_price', Loc::getMessage('OPTIONS_DETAIL_MIN_PRICE'), '0', ['text', 200]],
+//	['detail_max_price', Loc::getMessage('OPTIONS_DETAIL_MAX_PRICE'), '0', ['text', 200]],
     ['orders_url', Loc::getMessage('OPTIONS_ORDERS_URL'), '/personal/orders/', ['text', 200]],
     ['return_status', Loc::getMessage('OPTIONS_RETURN_STATUS_CODE'), 'RB', ['text', 200]],
     ['finalization_status', Loc::getMessage('OPTIONS_FINAL_STATUS_CODE'), 'F', ['text', 200]],
     ['admin_email', Loc::getMessage('OPTIONS_ADMIN_EMAIL'), '', ['text', 200]],
     ['instalment_period', Loc::getMessage('OPTION_INSTALMENT_PERIOD'), '12.00', ['text', 8]],
-    ['JQuery_selector', Loc::getMessage('OPTIONS_JQUERY_SELECTOR'), 'Y', ['checkbox', 'Y']],
+//    ['JQuery_selector', Loc::getMessage('OPTIONS_JQUERY_SELECTOR'), 'Y', ['checkbox', 'Y']],
 );
 
 

@@ -295,7 +295,7 @@ class a_revo extends CModule
         return true;
     }
 
-//:TODO Èñïðàâèòü ìåòîäû óäàëåíèÿ êàòàëîãîâ ïðè äåèíñòàëÿöèè ìîäóëÿ. DeleteDirFiles íå óäàëÿåò êàòàëîãè è ôàéëû âíóòðè íèõ.
+//:TODO Исправить методы удаления каталогов при деинсталяции модуля. DeleteDirFiles не удаляет каталоги и файлы внутри них.
     public function UnInstallFiles()
     {
         DeleteDirFiles($_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/admin/', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/admin');
