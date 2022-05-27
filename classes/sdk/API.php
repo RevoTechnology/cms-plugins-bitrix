@@ -114,6 +114,9 @@ class API
 
     public function changeOrder(OrderDataUpdate $orderUpdateData)
     {
+        if (!Application::getInstance()->isUtfMode()) {
+            $orderUpdateData = Converter::convertObjectToUtf($orderUpdateData);
+        }
         try {
             $data = json_encode($orderUpdateData, JSON_UNESCAPED_UNICODE);
 
