@@ -40,7 +40,7 @@ class Events
     // не удаляется во избежание ошибок во время отработки событий
     public function onStatusOrder($id, $val)
     {
-        return;
+        // ничего не делаем
     }
 
     public function onCancelOrder($id, $is_cancel, $description)
@@ -146,7 +146,7 @@ class Events
                     if ($status == $finalStatus) {
                         $revoClient = Instalment::getInstance();
 
-                        $pdfPath = 'upload/check/' . $order['ID'] . '.pdf';
+                        $pdfPath = '/upload/check/' . $order['ID'] . '.pdf';
                         $fullPdfPath = $_SERVER['DOCUMENT_ROOT'] . $pdfPath;
                         \Revo\Documents::billToPDF($order['ID'], $fullPdfPath);
 
@@ -257,7 +257,7 @@ class Events
     // не удаляется во избежание ошибок во время отработки событий
     public static function onSalePaymentPaid(Main\Event $event)
     {
-        return;
+        // ничего не делаем
     }
 
     public function appendJQuery() {
