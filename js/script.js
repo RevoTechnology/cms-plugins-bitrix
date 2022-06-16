@@ -186,6 +186,14 @@ BX.ready(function() {
         method: 'GET',
         dataType: 'html',
         url: '/bitrix/html/'+moduleID+'/modal.template.html',
+        /*
+        был случай когда партнер в шаблоне sale.order.ajax в файле script.js подписывался на событие onAjaxSuccess
+        BX.addCustomEvent('onAjaxSuccess', function () {*some code*}
+        script.js отрабатывает и на этапе ввода реквизитов и на этапе подтверждения платежа (тут у нас открывается модалка)
+        и вот на этапе подтверждения платежа у них в коде возникала ошибка, из-за чего наш код тоже ломался.
+        на практике выглядело так:
+        выскакивает плашка "Server error.." -> жмем ОК -> открывается наша модалка
+         */
         onsuccess: function (data) {
             var doc = new DOMParser().parseFromString(data, "text/html");
             BX.append(doc.body.firstChild, document.body);
